@@ -2463,6 +2463,12 @@
       "original_sha256": "1527de3dad5a6a3242dc98df6171cd0607706405a9522586a4691786c7cb0fc0",
       "export_sha256": "8c9e3159d82899ead55cac2caec7b8b4e5fb8e6522fe052460d6ee0bc63a690c",
       "reason": "Personal workstation path normalization"
+    },
+    {
+      "path": "handoff/AELITA_HANDOFF.md",
+      "original_sha256": "291be183c274bb5f31e329f83d0b75e4d85c2667d38cb7e342c076e615fa42b4",
+      "export_sha256": "07489affd403ace3e283e0b760370bc5dc691285d7019aa8748701ce9ae69da9",
+      "reason": "Personal workstation path normalization in legacy-encoded documentation"
     }
   ],
   "excluded": [
