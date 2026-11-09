@@ -1,0 +1,20 @@
+[CmdletBinding(PositionalBinding = $false)]
+param(
+    [ValidateSet('rollback','fallback')][string]$Direction = 'rollback',
+    [switch]$Execute, [string]$Ack = '',
+    [string]$Port = 'COM3', [string]$ExpectedPnpDeviceId = 'FTDIBUS\VID_0403+PID_6001+AG41W2BLA\0000',
+    [string]$RouterHost = '192.168.1.90', [string]$ExecutorReview = '', [string]$ExecutorReviewSha256 = '',
+    [ValidateRange(600,1800)][int]$FlashTimeoutSeconds = 1800
+)
+$ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'f322_mtd4_runtime.ps1')
+$plan = Get-F322Plan -Direction $Direction -ExecutorReview $ExecutorReview -ExecutorReviewSha256 $ExecutorReviewSha256
+$plan | ConvertTo-Json -Depth 12
+if (-not $Execute) { exit 0 }
+Assert-F322ExecutionRequest -Plan $plan -Ack $Ack -Port $Port -ExpectedPnpDeviceId $ExpectedPnpDeviceId -RouterHost $RouterHost
+$stamp = [DateTime]::UtcNow.ToString('yyyyMMddTHHmmssZ') + '-' + [Guid]::NewGuid().ToString('N').Substring(0,8)
+$runDir = Join-Path $script:F322Root ('outputs/recovery/f322-' + $Direction + '-' + $stamp)
+if (Test-Path -LiteralPath $runDir) { throw 'New evidence directory required' }
+[void][IO.Directory]::CreateDirectory($runDir)
+[IO.File]::WriteAllText((Join-Path $runDir 'plan.json'), ($plan | ConvertTo-Json -Depth 12), [Text.UTF8Encoding]::new($false))
+Invoke-F322PhysicalCycle -Plan $plan -RunDir $runDir -FlashTimeoutSeconds $FlashTimeoutSeconds -ExecutorReview $ExecutorReview -ExecutorReviewSha256 $ExecutorReviewSha256 | ConvertTo-Json -Depth 12

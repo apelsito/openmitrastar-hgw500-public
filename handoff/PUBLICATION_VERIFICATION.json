@@ -1,0 +1,24 @@
+{
+  "schema": "aelita.router-publication-verification/v1",
+  "fresh_github_clone_manifest": "PASS_8108_FILES_PRIOR_TO_BRAND_ASSET_APPEND",
+  "lyoko_npm_ci": "PASS",
+  "lyoko_tests": {
+    "passed": 52,
+    "failed": 0
+  },
+  "lyoko_build": "PASS",
+  "all_custom_python_ast": "PASS",
+  "historical_python2_examples": 5,
+  "router_accessed": false,
+  "private_doom_release": {
+    "tag": "aelita-doom-complete-20261023-v3",
+    "bytes": 5303440,
+    "sha256": "2bd43ad86b779daeb375a3173fdbd879314e25581e0b1bcef8903f5bead597a9",
+    "uploaded_digest_verified": true
+  },
+  "limits": [
+    "No new firmware build or device acceptance",
+    "Some historical scripts and tests need private/bulk omitted inputs",
+    "Source manifest lists per-file publication exclusions"
+  ]
+}

@@ -1,0 +1,35 @@
+"""Derive the shell-only R8 composer from the earlier immutable full-image builder."""
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[1]
+def once(s,a,b):
+ if s.count(a)!=1:raise ValueError('R8 builder anchor '+a[:90])
+ return s.replace(a,b,1)
+def main():
+ s=(ROOT/'tools/build_f367r6_static_image.py').read_text()
+ s=s.replace('from f367r6_rootfs_worker import VERSION,static_elf','from f367r8_rootfs_worker import VERSION\nfrom f367r6_rootfs_worker import static_elf')
+ s=once(s,"SOURCE=DEVICE/'firmware/f367r5-f365-regulatory-profile-device-bound'","SOURCE=DEVICE/'firmware/f367r7-f365-clock-observation-device-bound'\nMODE_TEST=ROOT/'outputs/preflight/f367r8-mode-contract-20260922T211028Z/result.json'\nCONTROL=ROOT/'versions/lyoko-foundation-6.11.7-f367r8-mode-contract/overlay/usr/sbin/om-f367-control'")
+ s=once(s,"BASE='openmitrastar-linux510-f367r6-hgw500bna-qcv2-a2-primary-PRIVATE-NO-FLASH'","BASE='openmitrastar-linux510-f367r8-hgw500bna-qcv2-a2-primary-PRIVATE-NO-FLASH'")
+ s=once(s,'def main():\n', '''def main():
+ test=json.loads(MODE_TEST.read_text())
+ require(test['status']=='PASS_OEM_MODE_PARSER_AND_BOUNDED_CSA_OBSERVER' and len(test['helper_cases'])==5 and all(x['passed'] for x in test['helper_cases']),'mode/observer qualification missing')
+ for path,digest in test['source_pins'].items():require(sha(path)==digest,'mode proof source drift')
+ require(test['source_pins'][str(CONTROL)]==sha(CONTROL),'controller differs from tested bytes')
+''')
+ s=s.replace('b5bc8aff0c578cf505cdcb7a5308fe2665cad16dd62da05bf4598b37ae616ce3','3ce8489e85b0d0d9292932bd7b48086a880575e276fc6915dcbc1bc70ca433f4')
+ s=s.replace('9a4364491804a3bc6cddc43a5970b39ee94efc93f30583532aebcd3ccc4753d1','5cd4118bc84061da24f917b99978477c85a405dba613743d6398ba2894a7e28c')
+ s=once(s,"final=DEVICE/'firmware/f367r6-f365-static-profile-device-bound'","final=DEVICE/'firmware/f367r8-f365-mode-contract-device-bound'")
+ s=once(s,"('f367r6-fullimage-'","('f367r8-fullimage-'")
+ s=once(s,"ROOT/'tools/f367r6_rootfs_worker.py',STATIC,PROBE","ROOT/'tools/f367r6_rootfs_worker.py',ROOT/'tools/f367r8_rootfs_worker.py',MODE_TEST,CONTROL,STATIC,PROBE")
+ s=once(s,"inputs.update(static['source_pins'])","inputs.update(static['source_pins'])\n inputs.update(test['source_pins'])")
+ s=once(s,"campaign.update(runtime_revision='F367r6',shell_runtime_reused_from='F367r5'","campaign.update(mode_contract_test=item(MODE_TEST),mode_setter_request='11ac',mode_getter_label='11ac20',channel_context_readback_deadline_ms=5000,one_write_per_mode_filter_channel=True,context_fault_before_success=True,runtime_revision='F367r8',shell_runtime_reused_from='F367r7-except-controller'")
+ s=once(s,"linux(ROOT/'tools/f367r6_rootfs_worker.py')","linux(ROOT/'tools/f367r8_rootfs_worker.py')")
+ s=once(s,"'--helper',linux(helper),'--helper-sha',sha(helper)","'--control',linux(CONTROL),'--control-sha',sha(CONTROL)")
+ s=once(s,"allowed={'/usr/sbin/om-f367-dfs-profile'","allowed={'/usr/sbin/om-f367-control'")
+ s=s.replace('openmitrastar.f367r6-static-profile-image/v1','openmitrastar.f367r8-mode-contract-image/v1').replace('PASS_OFFLINE_F367R6_STATIC_PROFILE_IMAGE','PASS_OFFLINE_F367R8_MODE_CONTRACT_IMAGE')
+ s=s.replace("'firmware':'F367r5 exact'","'firmware':'F367r7 exact'")
+ s=s.replace("'only_helper_link_and_metadata':True,'qdrv_kernel_provider_engine_supervisor_shell_unchanged':True","'only_controller_and_metadata':True,'qdrv_kernel_provider_engine_supervisor_native_helpers_unchanged':True")
+ s=s.replace("'scope':'static noatomic link of byte-identical R5 publisher source; exact target invalid-argument probe passed'","'scope':'OEM setter token11ac, safe request/rc markers, bounded CSA context readback; fault checked before success'")
+ s=s.replace("'all_prior_binaries_reused':True,'static_helper_built_twice':True","'all_modules_and_native_binaries_reused':True,'no_compilation':True")
+ s=s.replace('# F367r6 static profile helper','# F367r8 mode setter and CSA observer').replace('Only the static helper and release/profile/catalog metadata differ from R5. Kernel, qdrv, provider, engine, supervisor and every shell helper are byte-identical.','Only om-f367-control and release/profile/catalog metadata differ from R7. All modules and native binaries are byte-identical. Setter11ac maps to getter11ac20; the observer waits up to5s without repeating any write or moving deadlines.')
+ (ROOT/'tools/build_f367r8_mode_image.py').write_bytes(s.encode());print('F367R8_IMAGE_BUILDER_READY')
+if __name__=='__main__':main()

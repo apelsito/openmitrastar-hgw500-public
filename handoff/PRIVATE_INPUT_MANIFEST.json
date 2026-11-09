@@ -1,0 +1,64 @@
+{
+  "schema": "aelita.private-inputs/v1",
+  "created_utc": "2026-10-22T23:30:46.705010+00:00",
+  "files": [
+    {
+      "source_path": "/workspace/user-home\\.openmitrastar\\devices\\hgw500bna-qcv2-a2-primary\\firmware\\radioeth73-events-ram-20261022T2036Z\\BUILD_RESULT.json",
+      "bytes": 26738,
+      "sha256": "6bcb05db1fd1b7f5f7b811a9731fc2da4a11ec93db64061e2f4cb495f7e25696",
+      "transfer": "DIRECT_AUTHENTICATED_ENCRYPTED_ONLY",
+      "published_to_git": false
+    },
+    {
+      "source_path": "/workspace/user-home\\.openmitrastar\\devices\\hgw500bna-qcv2-a2-primary\\firmware\\radioeth73-events-ram-20261022T2036Z\\CONFIG.json",
+      "bytes": 1311,
+      "sha256": "cdf68f8575b88f28befaa1fb22aa50bcbe0be10525801986d630eb21b66264ae",
+      "transfer": "DIRECT_AUTHENTICATED_ENCRYPTED_ONLY",
+      "published_to_git": false
+    },
+    {
+      "source_path": "/workspace/user-home\\.openmitrastar\\devices\\hgw500bna-qcv2-a2-primary\\firmware\\radioeth73-events-ram-20261022T2036Z\\radioeth73-events-RAM-ONLY.ras.bin",
+      "bytes": 6980384,
+      "sha256": "9a2aa3766d0136b593bf476cecfcc27c53548f1b60e8f8fab1bc3644509f7e2e",
+      "transfer": "DIRECT_AUTHENTICATED_ENCRYPTED_ONLY",
+      "published_to_git": false
+    },
+    {
+      "source_path": "/workspace/user-home\\.openmitrastar\\devices\\hgw500bna-qcv2-a2-primary\\firmware\\f367r9-f365-transition-observation-device-bound\\bootbase-contract.json",
+      "bytes": 5057,
+      "sha256": "d8add36a381def0ac14501f7e1817889896d3807280a76f47f425449b9eab801",
+      "transfer": "DIRECT_AUTHENTICATED_ENCRYPTED_ONLY",
+      "published_to_git": false
+    },
+    {
+      "source_path": "/workspace/user-home\\.openmitrastar\\devices\\hgw500bna-qcv2-a2-primary\\firmware\\f367r9-f365-transition-observation-device-bound\\manifest.json",
+      "bytes": 67835,
+      "sha256": "eff3e150b7c9a03d1cac95fe3ffae3fff374180ce0ff58215acf9ff230181858",
+      "transfer": "DIRECT_AUTHENTICATED_ENCRYPTED_ONLY",
+      "published_to_git": false
+    },
+    {
+      "source_path": "/workspace/user-home\\.openmitrastar\\devices\\hgw500bna-qcv2-a2-primary\\firmware\\f367r9-f365-transition-observation-device-bound\\openmitrastar-linux510-f367r9-hgw500bna-qcv2-a2-primary-PRIVATE-NO-FLASH.kernel.raw.bin",
+      "bytes": 3733472,
+      "sha256": "8134d920fc4ca30dc8db015274412e224109b1af7d57501002c5f45973f8b5e9",
+      "transfer": "DIRECT_AUTHENTICATED_ENCRYPTED_ONLY",
+      "published_to_git": false
+    },
+    {
+      "source_path": "/workspace/user-home\\.openmitrastar\\devices\\hgw500bna-qcv2-a2-primary\\firmware\\f367r9-f365-transition-observation-device-bound\\openmitrastar-linux510-f367r9-hgw500bna-qcv2-a2-primary-PRIVATE-NO-FLASH.webformat.bin",
+      "bytes": 5468160,
+      "sha256": "6bf5a08edd5b18adf1597efbd5367d5ad439363c7f7a13a035efc615b4cee440",
+      "transfer": "DIRECT_AUTHENTICATED_ENCRYPTED_ONLY",
+      "published_to_git": false
+    },
+    {
+      "source_path": "/workspace/user-home\\.openmitrastar\\devices\\hgw500bna-qcv2-a2-primary\\firmware\\f367r9-f365-transition-observation-device-bound\\rootfs-inventory.json",
+      "bytes": 148546,
+      "sha256": "b9fefdf104f18aea7e9f2b7a936cf3e520c81972646c26ce5f08b0289c3548cb",
+      "transfer": "DIRECT_AUTHENTICATED_ENCRYPTED_ONLY",
+      "published_to_git": false
+    }
+  ],
+  "secret_content_read_or_logged": false,
+  "hardware_accessed": false
+}

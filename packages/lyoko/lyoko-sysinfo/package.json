@@ -1,0 +1,18 @@
+{
+  "package": "lyoko-sysinfo",
+  "version": "1.0.0-1",
+  "architecture": "arc700_uclibc_lyoko_v1",
+  "description": "Read-only Lyoko platform summary",
+  "maintainer": "Lyoko Project",
+  "depends": [],
+  "kernel_abi": "5.10.260-openmitrastar-radiohw",
+  "libc_abi": "uclibc",
+  "platform": "hgw-500bna-qcv2",
+  "files": [
+    {
+      "source": "files/lyoko-sysinfo",
+      "target": "/usr/bin/lyoko-sysinfo",
+      "mode": "0755"
+    }
+  ]
+}

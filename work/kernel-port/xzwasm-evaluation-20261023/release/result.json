@@ -1,0 +1,21 @@
+{
+  "tag": "v0.1.2",
+  "published_at": "2021-07-04T12:24:39Z",
+  "release_url": "https://github.com/SteveSanderson/xzwasm/releases/tag/v0.1.2",
+  "assets": [
+    {
+      "name": "xzwasm.js",
+      "bytes": 24746,
+      "sha256": "f71eb30bb46d258e5d67c77033e949e9feff75ff6beaac5e4f8d54fb5aa5e5ff",
+      "url": "https://github.com/SteveSanderson/xzwasm/releases/download/v0.1.2/xzwasm.js",
+      "github_digest": null
+    },
+    {
+      "name": "xzwasm.min.js",
+      "bytes": 19832,
+      "sha256": "fb7e7a0e39df438276f290dd15865734d1b81674084cfa36ef0b77042391df9b",
+      "url": "https://github.com/SteveSanderson/xzwasm/releases/download/v0.1.2/xzwasm.min.js",
+      "github_digest": null
+    }
+  ]
+}

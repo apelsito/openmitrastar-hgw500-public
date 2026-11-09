@@ -1,0 +1,103 @@
+{
+  "schema": "openmitrastar.basic73-overlay/v1",
+  "upstream_commit": "c03c1a14507dfaf8b856c2608f9ac216021fc222",
+  "files": [
+    {
+      "path": "arch/arc/Kconfig",
+      "sha256": "eed9ea77e11c190f5262b880b519e27d7e96db0f526f17bb19ece25ebf7b4451",
+      "bytes": 15708,
+      "upstream_sha256": "99ec7d542e4faf6c38424bad253081e17ae96aeeb5686c4cf31b36c449dc56c2"
+    },
+    {
+      "path": "arch/arc/Makefile",
+      "sha256": "236305b1f37bfc8df4a8e11c7219f1878289f76aff9bf2cc6bcfea8a16670952",
+      "bytes": 3454,
+      "upstream_sha256": "195ad5492454e1dc6e1653d014cd7923f544d243d83d2c4f11b62c027545ded4"
+    },
+    {
+      "path": "arch/arc/include/uapi/asm/swab.h",
+      "sha256": "8f26450812e83b9d5803df40901e67e45b3ac03a523d247d26fab71aa1c4e064",
+      "bytes": 1323,
+      "upstream_sha256": "7f5d7d845e4b7e4a52381a3adec0fe22be7562a4c59d5e4c2ad2cd8512674395"
+    },
+    {
+      "path": "arch/arc/include/asm/mmu-arcv2.h",
+      "sha256": "76c42a4d3c6cc4b19f5e5525259fd0a8c84bd4f1cf996d8cb1a7706309ef1476",
+      "bytes": 2598,
+      "upstream_sha256": "2225abd16396758c183186c1f98d6a0a2d426f6a1626c6cdd11ccb122f5f13e7"
+    },
+    {
+      "path": "arch/arc/include/asm/pgtable-bits-arcv2.h",
+      "sha256": "9a92c6df45df84ac671aae9f46be481b0d8217907ef4fcdd652a12c9dce3e8de",
+      "bytes": 5460,
+      "upstream_sha256": "756238efbd5d1981f9dbf525cc26fc490ffda1b8925736d562901c5ddd723bfc"
+    },
+    {
+      "path": "arch/arc/mm/tlb.c",
+      "sha256": "a52d64cf133597afea335044454018723d3e042696dd10bf39a95bcf2f4d809b",
+      "bytes": 21155,
+      "upstream_sha256": "513e8cbc838fbf485f99427b11ca71a1b9d2459c5fdc7c12bef4f2fcb9efe796"
+    },
+    {
+      "path": "arch/arc/mm/tlbex.S",
+      "sha256": "5f625a0ffdbcfb181a57fa9bb3784f1d3e7aacee19fe697961709a2b31813b15",
+      "bytes": 11526,
+      "upstream_sha256": "73abdafccbb1292becf9c2ef43f9f10226abbfc2666dce529e889a76276cba48"
+    },
+    {
+      "path": "arch/arc/mm/cache.c",
+      "sha256": "446744ea5e32f8805188bf49ec1cbd338097e4e1e6ebeadb442c00854dc82ed6",
+      "bytes": 30907,
+      "upstream_sha256": "96a4e72e711efc050134ee1a549d181eb600ae55b9e2737291cb26a2944421d1"
+    },
+    {
+      "path": "arch/arc/kernel/intc-compact.c",
+      "sha256": "70434637999489ec220937320ad52a1218e11aeb1feb1b3e690ae1131fd787b2",
+      "bytes": 6620,
+      "upstream_sha256": "2ed424907ca14f2cb65c9fdb0666797dfb12052bb3c1f258d34e8f743cdca765"
+    },
+    {
+      "path": "arch/arc/boot/dts/topaz_mitrastar_basic73.dts",
+      "sha256": "836341f0bde5b4544191683c5843d983b5d30aacab63d1f8210e06e35b3c38b8",
+      "bytes": 2831,
+      "upstream_sha256": null
+    },
+    {
+      "path": "arch/arc/plat-topaz-basic/platform.c",
+      "sha256": "fa98974daf7be61ffa9666597021b0b8e8bb4145b8f7fd276710f35f6cf04bbd",
+      "bytes": 385,
+      "upstream_sha256": null
+    },
+    {
+      "path": "arch/arc/plat-topaz-basic/Kconfig",
+      "sha256": "91950284254572e8ea48e9e30a9eead146f1e399e37446d463490f55a7ba928e",
+      "bytes": 415,
+      "upstream_sha256": null
+    },
+    {
+      "path": "arch/arc/plat-topaz-basic/Makefile",
+      "sha256": "888fe3732d3ab1d604cc7253de830072456b874ce68832057979b875571a4c24",
+      "bytes": 20,
+      "upstream_sha256": null
+    },
+    {
+      "path": "drivers/irqchip/Kconfig",
+      "sha256": "ad2317196b341aa5a010b4a991e7045b2aeacb30d3798924e3a9af8b120e375b",
+      "bytes": 20897,
+      "upstream_sha256": "b30db8d42247d9d425c6c97ab5438125a44f7e5dc97f6e89197f3194d6ffb33c"
+    },
+    {
+      "path": "drivers/irqchip/Makefile",
+      "sha256": "c989a9223082c85a775b52d85a8b1666aa411de100581201daa03936b66d3c7c",
+      "bytes": 6946,
+      "upstream_sha256": "741ed9664b12f96660d22bbe2aeec4089cea2a71ece5d7113907099c40eda126"
+    },
+    {
+      "path": "drivers/irqchip/irq-qtn-topaz-uart-basic.c",
+      "sha256": "9095bbbb1eba53a92e9406c39ab5fba1d69ecc604130c46312abb2bf172f9260",
+      "bytes": 5326,
+      "upstream_sha256": null
+    }
+  ],
+  "hardware_accessed": false
+}

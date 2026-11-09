@@ -1,0 +1,954 @@
+{
+  "schema": "openmitrastar.f6-certification-matrix/v1",
+  "as_of_date": "2026-08-20",
+  "device": "MitraStar HGW-500BNA-QCv2 A2",
+  "target": "Linux 5.10.260 / OpenMitraStar",
+  "goal_source": "/workspace/user-home/.codex/attachments/805563e0-8c09-481d-9cf5-71d81f8a1ace/goal-objective.md",
+  "status_definitions": {
+    "PROVEN": "The complete stated requirement is demonstrated at matching scope.",
+    "PARTIAL": "Real implementation or proof exists, but at least one required dimension is unproven.",
+    "PENDING": "The required implementation or discriminating test has not been completed.",
+    "BLOCKED": "A concrete, evidenced blocker prevents completion of the requirement."
+  },
+  "scope_rules": [
+    "Offline build, emulation or static evidence never proves hardware runtime.",
+    "RAM boot never proves persistent cold boot after flash.",
+    "Control-plane readiness never proves client association or traffic.",
+    "Bridge Internet does not prove NAT, DNS service or firewall policy.",
+    "OEM NOT_APPLICABLE classifications do not silently remove explicit prime-objective requirements."
+  ],
+  "summary": {
+    "total": 49,
+    "PROVEN": 13,
+    "PARTIAL": 21,
+    "PENDING": 10,
+    "BLOCKED": 5
+  },
+  "evidence_catalog": {
+    "state": {
+      "path": "work/mission-state/MISSION_STATE.md",
+      "sha256": "3b1f5878ce4c942890f91a20f7ed2a8d3a95e4634a82b81f4d55a302a33c1d01",
+      "kind": "current-state",
+      "scope": "Current blocker and latest accepted milestones"
+    },
+    "hardware": {
+      "path": "work/mission-state/HARDWARE_STATE.json",
+      "sha256": "16ea08a3fb57f3527883f5952fcee4ad5c851a7fdecfc17aff41d28c433d2e95",
+      "kind": "structured-current-state",
+      "scope": "Boot, network, radio, controls and flash state"
+    },
+    "ledger": {
+      "path": "work/mission-state/EVIDENCE_LEDGER.md",
+      "sha256": "00ba5b24afb4b00d7fb4a3467beb5048f6b6b4758a97b7a71d6183ca7bf0f4c7",
+      "kind": "evidence-ledger",
+      "scope": "Hardware and offline claims through 2026-08-19"
+    },
+    "master_checklist": {
+      "path": "work/mission-state/FULL_MIGRATION_TO_ENHANCEMENTS_CHECKLIST.md",
+      "sha256": "d52c539d43fa8d1aff48d9a9d7dc86f997234f57cf529238e5ba2917cebd1caf",
+      "kind": "requirements-checklist",
+      "scope": "Migration-complete gate and explicit remaining work"
+    },
+    "kernel_uart": {
+      "path": "outputs/uart-live/ramssh-cycle-20260817-204324.log",
+      "sha256": "890066841b70c383295bf78e135d11cf23b5fb8be80044d0f77666bf2659fe23",
+      "kind": "uart-log",
+      "scope": "Linux 5.10 boot, PCIe enumeration, Ethernet and SSH"
+    },
+    "emac_soak": {
+      "path": "outputs/kernel-port/emac-management-soak/20260818-123340/summary.json",
+      "sha256": "cf8349a345cb7228ba379206341d2c99f3393f2533eba7a7c2fce75c9a816fab",
+      "kind": "hardware-soak-summary",
+      "scope": "600 s, 47/47 ping and SSH, RX/TX/IRQ20 progress"
+    },
+    "switch_uart": {
+      "path": "outputs/uart-live/w3-switch-emac-handoff-20260819-164256/topaz-20260819-164256.log",
+      "sha256": "63ef3a6e55ddcf979422f0033026db6b860a87b6b3a4a7bddce2cd5063f89d86",
+      "kind": "uart-log",
+      "scope": "TQE/FWT/HBM, dual switch EMAC and fresh SSH commit"
+    },
+    "qdrv_control_uart": {
+      "path": "outputs/uart-live/qdrv-control-20260819-164432/topaz-20260819-164433.log",
+      "sha256": "5df8536a76f8f984471bcb9d90632c35ce70d3c1a111b74cedd91c6c234c200a",
+      "kind": "uart-log",
+      "scope": "qdrv control-ready with RF blocked"
+    },
+    "qdrv_vap_failure_uart": {
+      "path": "outputs/uart-live/w3-qdrv-sequential-20260819-234234/topaz-20260819-234235.log",
+      "sha256": "fefaf9938a62b7bd67a04fd3f6266df3088cb1e851447267cefef94fbe9d551f",
+      "kind": "uart-log",
+      "scope": "MuC/AuC/DSP and IRQ8/9/10 start, then VAP-path MuC exception and wifi0 absent"
+    },
+    "controls_uart": {
+      "path": "outputs/uart-live/ramssh-cycle-20260818-145252.log",
+      "sha256": "4e34a66056724577f3cf165ea8914da582ffcd20d09f4cd3953d279e461eb9d7",
+      "kind": "uart-log",
+      "scope": "Integrated LED class and Wi-Fi button registration"
+    },
+    "product_uart": {
+      "path": "outputs/uart-live/ramssh-cycle-20260818-181532.log",
+      "sha256": "bc9a9d8abd35dc65dcab891d8305418ec89421be2fc78d78eb817799e45a65d9",
+      "kind": "uart-log",
+      "scope": "Product userspace, key-only SSH and API hardware boot"
+    },
+    "product_cold_uart": {
+      "path": "outputs/uart-live/ramssh-cycle-20260818-193430.log",
+      "sha256": "504c0edddfaa2e3fabe4549517ba8aaf3e6416766f84ccae53ec41003e94dd88",
+      "kind": "uart-log",
+      "scope": "Cold RAM boot and 2.4 GHz product AP"
+    },
+    "product_soak": {
+      "path": "outputs/kernel-port/product-ap-soak/20260818-1936/run/summary.json",
+      "sha256": "d773310b02fecc0b84c006b6e13f0c1d21c9d3f019391f468bed76a4c27db82e",
+      "kind": "hardware-soak-summary",
+      "scope": "615.843 s product AP management soak"
+    },
+    "realtek_ap": {
+      "path": "outputs/kernel-port/realtek-ap-runtime/detached-20260818-142808/orchestrator.log",
+      "sha256": "b2e20b37ea31e2914666a81cf24634df5a1a238d587c5b9cb6b6ceb9a04510c6",
+      "kind": "runtime-log",
+      "scope": "WPA2-PSK/CCMP control plane ENABLED"
+    },
+    "stage0_contract": {
+      "path": "work/mission-state/W1_GPIO7_STAGE0_READY_CONTRACT.md",
+      "sha256": "fbed3d83dfe50b2f735e598aeddbaa464ec6f7c44c4125beb9b71b954bc6fa74",
+      "kind": "hardware-contract",
+      "scope": "Boot LED asserted until userspace ready"
+    },
+    "recovery_runbook": {
+      "path": "recovery/HARDWARE_RECOVERY_RUNBOOK.md",
+      "sha256": "20e0c4fb0d2dbe3d247dacb43cab4fbd0f7c4f687f7ce8c073b78c9e15010cfb",
+      "kind": "recovery-runbook",
+      "scope": "UART, Bootbase, TFTP and RAM boot recovery"
+    },
+    "backup_cert": {
+      "path": "work/mission-state/F2_FLASH_BACKUP_CERTIFICATION.md",
+      "sha256": "ac0fc49a56d30281e82ab6ae1c5d3efddb04fa67c8725484914d4efff6a17c3e",
+      "kind": "backup-certification",
+      "scope": "Physical flash backup and checksum gates"
+    },
+    "parity_doc": {
+      "path": "docs/HGW500BNA_QCV2_OEM_MOVISTAR_PARITY_MATRIX.md",
+      "sha256": "4ed870958a79ddb7f5e71a4425444883a19fb93af40a7f85e6e5f6bc0f347fd2",
+      "kind": "oem-parity-matrix",
+      "scope": "30 source-backed OEM capabilities"
+    },
+    "parity_manifest": {
+      "path": "outputs/kernel-port/movistar-parity/manifest.json",
+      "sha256": "f5b912984db14da84d784a8bd969d95cb6b2339741fa682b385b0d4e58b75c0e",
+      "kind": "offline-manifest",
+      "scope": "Parity matrix verifier output"
+    },
+    "w4_ui_manifest": {
+      "path": "work/mission-state/w4-ui-parity/manifest.json",
+      "sha256": "347d522691832734f519001deb4893d53034a965dc721f7ea3a0ef457a219697",
+      "kind": "offline-manifest",
+      "scope": "Integrated CGI/product tests and isolated HTTP contract"
+    },
+    "product_manifest": {
+      "path": "work/mission-state/w4-rootfs-product/build/manifest.json",
+      "sha256": "eebd7ca1759aea1e693890fbe29d274ce1681be3329bb88d636e0043f07d2799",
+      "kind": "offline-manifest",
+      "scope": "Reproducible integrated product rootfs"
+    },
+    "product_validation": {
+      "path": "work/mission-state/w4-rootfs-product/build/validation.log",
+      "sha256": "0b8a0d449dd08e8fb6e2b8ff83085572b17f623c60d9527238f8ad5825286275",
+      "kind": "offline-validation-log",
+      "scope": "Product rootfs, API, config and policy tests"
+    },
+    "w5_package": {
+      "path": "work/mission-state/w5-cgi-product-ram-candidate/build/packaging-manifest.json",
+      "sha256": "47bf30b75cb76810c0c4a51c554d8b4b7a34f3ea2b3ff73fd26d5e710211ce00",
+      "kind": "offline-package-manifest",
+      "scope": "Two-build CGI-integrated RAM package"
+    },
+    "w5_bootbase": {
+      "path": "work/mission-state/w5-cgi-product-ram-candidate/build/bootbase-contract.json",
+      "sha256": "391c3f53f0d88dfdc612d265483d3a4e3e5059d19d5d55e1343d9338391460b8",
+      "kind": "bootbase-contract",
+      "scope": "ARC uImage, OEM RAS CRC and slot envelope"
+    },
+    "w5_validation": {
+      "path": "work/mission-state/w5-cgi-product-ram-candidate/build/validation.log",
+      "sha256": "b587cf949ee2a5ee9bc8175dd1ff37451501d4a84c1081bca254fca468c65bfd",
+      "kind": "offline-validation-log",
+      "scope": "W5 package, parity and fail-closed tests"
+    },
+    "cgi_ram_image": {
+      "path": "work/tftp/omvl/linux510-product-cgi-ram-v1-RAM-ONLY.bin",
+      "sha256": "f8285f5d760bbe71a7c4cc4a1ad92421304a60b76efc002e8225656a1e78e89c",
+      "kind": "ram-only-image",
+      "scope": "Candidate image; no hardware boot yet"
+    },
+    "watchdog_image": {
+      "path": "work/tftp/omvl/linux510-product-watchdog-canary-v1-RAM-ONLY.bin",
+      "sha256": "5e6dd1b4a7f19e29219287f5a53b9be37722666690f019cfd75daef3e9d96358",
+      "kind": "protected-ram-image",
+      "scope": "Known watchdog image preserved by W5 packaging"
+    },
+    "ap5_offline": {
+      "path": "outputs/kernel-port/qcsapi-5g-ap36-bw80-ram-only-20260819/abi-report.json",
+      "sha256": "a38cca2548ab86abc2caf580dc629e5596aa3ba21ea6b48f39cdf630a0bbac91",
+      "kind": "offline-abi-report",
+      "scope": "5 GHz channel-36/BW80/ES runtime bundle"
+    },
+    "f3_client_cert": {
+      "path": "work/mission-state/w3-offline/W3_QTN_5G_F3_CLIENT_CERT_CONTRACT.md",
+      "sha256": "3f936b86dc1cab9229cf5badb287b08815a559f6240693e725cbbf7c10a4473b",
+      "kind": "offline-certification-contract",
+      "scope": "Read-only 600-second 5 GHz association/traffic certificate; hardware execution pending"
+    },
+    "controls_postbaseline": {
+      "path": "outputs/kernel-port/hgw500-controls-5g-postbaseline-20260819/manifest.json",
+      "sha256": "1c3502644fef18e3e85900c8f0c5c8bc87ac66197e0b97cd0a61f26c4aa28bc4",
+      "kind": "offline-postbaseline-manifest",
+      "scope": "Reproducible 5 GHz LED/carrier controls layered after the immutable qdrv baseline; hardware not executed"
+    },
+    "dfs_contract": {
+      "path": "work/mission-state/w3-offline/W3_DFS_ES_80_CONTRACT.md",
+      "sha256": "0d9ac444a1229e851ee6220e8cd9e461d69558d661dc0031fa1efbdc363a3edf",
+      "kind": "fail-closed-contract",
+      "scope": "DFS ES gate and missing native radar backend"
+    }
+  },
+  "entries": [
+    {
+      "id": "F0-01",
+      "phase": "F0",
+      "system": "Mission state",
+      "requirement": "Handoff, workspace, blocker and evidence ledger reconstructed",
+      "status": "PROVEN",
+      "evidence_ids": [
+        "state",
+        "hardware",
+        "ledger"
+      ],
+      "proof_scope": "Current state is externally recorded and hash-pinned.",
+      "missing_gate": "",
+      "blocker": ""
+    },
+    {
+      "id": "F0-02",
+      "phase": "F0/F4",
+      "system": "Subsystem inventory",
+      "requirement": "Every relevant OEM subsystem identified and classified",
+      "status": "PARTIAL",
+      "evidence_ids": [
+        "parity_doc",
+        "parity_manifest",
+        "master_checklist"
+      ],
+      "proof_scope": "Thirty OEM capabilities are source-backed; master checklist still contains unclassified or incomplete runtime surfaces.",
+      "missing_gate": "Close the complete PORTED/REIMPLEMENTED/REPLACED/REMOVED/NOT_APPLICABLE/BLOCKED inventory.",
+      "blocker": ""
+    },
+    {
+      "id": "F1-01",
+      "phase": "F1",
+      "system": "Kernel 5.10",
+      "requirement": "Stable Linux 5.10 hardware boot",
+      "status": "PROVEN",
+      "evidence_ids": [
+        "kernel_uart",
+        "product_uart",
+        "product_cold_uart"
+      ],
+      "proof_scope": "Multiple RAM boots reached Linux 5.10 and userspace.",
+      "missing_gate": "",
+      "blocker": ""
+    },
+    {
+      "id": "F1-02",
+      "phase": "F1/F6",
+      "system": "UART and RAM recovery",
+      "requirement": "UART, Bootbase, TFTP and bootm recovery path demonstrated",
+      "status": "PROVEN",
+      "evidence_ids": [
+        "kernel_uart",
+        "recovery_runbook",
+        "ledger"
+      ],
+      "proof_scope": "Physical cold recovery and exact-image RAM boot are demonstrated.",
+      "missing_gate": "",
+      "blocker": ""
+    },
+    {
+      "id": "F1-03",
+      "phase": "F1",
+      "system": "CPU/MMU/IRQ/timers/DMA",
+      "requirement": "Core ARC700 platform execution and interrupt/DMA paths stable",
+      "status": "PROVEN",
+      "evidence_ids": [
+        "kernel_uart",
+        "emac_soak",
+        "switch_uart"
+      ],
+      "proof_scope": "Kernel, IRQ20/28, TQE/FWT/HBM IRQs and DMA-backed traffic crossed hardware gates.",
+      "missing_gate": "",
+      "blocker": ""
+    },
+    {
+      "id": "F1-04",
+      "phase": "F1/F6",
+      "system": "Ethernet",
+      "requirement": "Real Ethernet traffic remains stable",
+      "status": "PROVEN",
+      "evidence_ids": [
+        "emac_soak",
+        "switch_uart",
+        "hardware"
+      ],
+      "proof_scope": "600 seconds, 47/47 ping and SSH with strict RX/TX/IRQ progress.",
+      "missing_gate": "",
+      "blocker": ""
+    },
+    {
+      "id": "F1-05",
+      "phase": "F1/F6",
+      "system": "PCIe",
+      "requirement": "PCIe host and endpoint enumeration/function",
+      "status": "PROVEN",
+      "evidence_ids": [
+        "kernel_uart",
+        "ledger"
+      ],
+      "proof_scope": "10ec:818b enumerated with INTx IRQ28 and later sustained radio traffic.",
+      "missing_gate": "",
+      "blocker": ""
+    },
+    {
+      "id": "F1-06",
+      "phase": "F1/F2",
+      "system": "TQE/HBM/switch EMAC",
+      "requirement": "Native switch datapath and management handoff",
+      "status": "PROVEN",
+      "evidence_ids": [
+        "switch_uart",
+        "hardware",
+        "ledger"
+      ],
+      "proof_scope": "TQE/FWT/HBM, dual EMAC VLAN DMA and fresh SSH commit passed on hardware.",
+      "missing_gate": "",
+      "blocker": ""
+    },
+    {
+      "id": "F1-07",
+      "phase": "F1",
+      "system": "LED/button platform controls",
+      "requirement": "All relevant platform controls and GPIO policy",
+      "status": "PARTIAL",
+      "evidence_ids": [
+        "controls_uart",
+        "stage0_contract",
+        "controls_postbaseline",
+        "hardware"
+      ],
+      "proof_scope": "Stage-0 and WLAN 2.4 LED logic plus button registration are hardware-proven; a separate 5 GHz GPIO1/carrier artifact is reproducible offline but unexecuted.",
+      "missing_gate": "Hardware-test the postbaseline 5 GHz control artifact, map remaining LEDs and test physical button/reset behavior.",
+      "blocker": ""
+    },
+    {
+      "id": "F1-08",
+      "phase": "F1/F5",
+      "system": "Watchdog/reboot/power-cycle",
+      "requirement": "Repeatable reboot, panic watchdog and autonomous recovery",
+      "status": "PARTIAL",
+      "evidence_ids": [
+        "state",
+        "watchdog_image",
+        "ledger"
+      ],
+      "proof_scope": "RAM watchdog and cold recovery are demonstrated; autonomous persistent recovery is not.",
+      "missing_gate": "Demonstrate panic/hang recovery and repeated autonomous boot on the installed candidate.",
+      "blocker": ""
+    },
+    {
+      "id": "F1-09",
+      "phase": "F1/F5",
+      "system": "Storage and filesystems",
+      "requirement": "Required SquashFS/JFFS2/MTD storage works safely on hardware",
+      "status": "PARTIAL",
+      "evidence_ids": [
+        "product_manifest",
+        "product_validation",
+        "backup_cert"
+      ],
+      "proof_scope": "Build/config and fail-closed simulations pass; product storage persistence is not hardware-proven.",
+      "missing_gate": "Boot the exact SquashFS/storage candidate and validate read-only mtd5/data before transactional writes.",
+      "blocker": ""
+    },
+    {
+      "id": "F1-10",
+      "phase": "F1",
+      "system": "Physical ports/platform devices",
+      "requirement": "All relevant EMACs, ports, GPIO/I2C/sensors and platform devices enumerated and tested",
+      "status": "PARTIAL",
+      "evidence_ids": [
+        "switch_uart",
+        "hardware",
+        "master_checklist"
+      ],
+      "proof_scope": "Dual switch EMAC and selected controls are proven; complete board inventory is not certified.",
+      "missing_gate": "Test every physical port and finish GPIO/I2C/sensor/platform-device coverage.",
+      "blocker": ""
+    },
+    {
+      "id": "F2-01",
+      "phase": "F2/F6",
+      "system": "Bridge/LAN Internet",
+      "requirement": "Switch/bridge and physical client Internet traffic",
+      "status": "PROVEN",
+      "evidence_ids": [
+        "ledger",
+        "hardware",
+        "product_cold_uart"
+      ],
+      "proof_scope": "br0 client association and real Internet Speedtest are recorded.",
+      "missing_gate": "",
+      "blocker": ""
+    },
+    {
+      "id": "F2-02",
+      "phase": "F2",
+      "system": "WAN/uplink/ISP configuration",
+      "requirement": "WAN and real Movistar ISP configuration operate at final scope",
+      "status": "PARTIAL",
+      "evidence_ids": [
+        "parity_doc",
+        "ledger",
+        "hardware"
+      ],
+      "proof_scope": "Transparent videobridge uplink provides Internet; a final explicit WAN/ISP profile is not certified. OEM matrix labels routed WAN N/A, but prime objective still names WAN.",
+      "missing_gate": "Resolve objective scope explicitly and certify the actual Movistar uplink configuration end-to-end.",
+      "blocker": ""
+    },
+    {
+      "id": "F2-03",
+      "phase": "F2/F6",
+      "system": "DHCP/LAN addressing",
+      "requirement": "DHCP behavior and LAN addressing are reproducible",
+      "status": "PARTIAL",
+      "evidence_ids": [
+        "ledger",
+        "hardware"
+      ],
+      "proof_scope": "A physical Wi-Fi client received upstream configuration through the bridge; no final DHCP service/client matrix exists.",
+      "missing_gate": "Capture lease acquisition, renewal, reconnect and fallback behavior for the final profile.",
+      "blocker": ""
+    },
+    {
+      "id": "F2-04",
+      "phase": "F2/F6",
+      "system": "DNS",
+      "requirement": "DNS query path is directly tested",
+      "status": "PENDING",
+      "evidence_ids": [
+        "master_checklist",
+        "ledger"
+      ],
+      "proof_scope": "Internet use is indirect evidence only; no named DNS query test is recorded.",
+      "missing_gate": "Run and capture client and router DNS queries, failure handling and reconnect.",
+      "blocker": ""
+    },
+    {
+      "id": "F2-05",
+      "phase": "F2/F6",
+      "system": "Routing and NAT",
+      "requirement": "Routing and NAT policy are functional where required by the objective",
+      "status": "PENDING",
+      "evidence_ids": [
+        "parity_doc",
+        "master_checklist"
+      ],
+      "proof_scope": "Current Internet proof is transparent L2 without NAT; routed profile is not implemented/certified.",
+      "missing_gate": "Either certify a routed/NAT profile or formally amend the prime objective using the OEM N/A evidence.",
+      "blocker": ""
+    },
+    {
+      "id": "F2-06",
+      "phase": "F2/F6",
+      "system": "Firewall",
+      "requirement": "Firewall policy and management isolation tests pass",
+      "status": "PENDING",
+      "evidence_ids": [
+        "master_checklist",
+        "parity_doc"
+      ],
+      "proof_scope": "No direct firewall policy test is present.",
+      "missing_gate": "Define and test ingress, management, bridge and failure policies.",
+      "blocker": ""
+    },
+    {
+      "id": "F2-07",
+      "phase": "F2",
+      "system": "IPv4 and IPv6",
+      "requirement": "Required IPv4 and IPv6 behavior",
+      "status": "PARTIAL",
+      "evidence_ids": [
+        "kernel_uart",
+        "ledger",
+        "master_checklist"
+      ],
+      "proof_scope": "IPv4 management and client Internet are proven; IPv6 applicability and traffic are not certified.",
+      "missing_gate": "Classify IPv6 applicability and run the corresponding address/connectivity tests.",
+      "blocker": ""
+    },
+    {
+      "id": "F2-08",
+      "phase": "F2/F4",
+      "system": "Multicast/VLAN/QoS",
+      "requirement": "IGMP, multicast, VLAN and traffic-class behavior match the OEM",
+      "status": "PARTIAL",
+      "evidence_ids": [
+        "ledger",
+        "parity_doc",
+        "master_checklist"
+      ],
+      "proof_scope": "IGMP code is built and switch VLAN DMA runs; end-to-end multicast, VLAN policy and DSCP/802.1p are untested.",
+      "missing_gate": "Run IGMP join/leave, IPTV/multicast, VLAN and QoS parity tests.",
+      "blocker": ""
+    },
+    {
+      "id": "F3-01",
+      "phase": "F3",
+      "system": "Wi-Fi 2.4 driver",
+      "requirement": "PCI driver, firmware, EEPROM/config and wlan0 interface",
+      "status": "PROVEN",
+      "evidence_ids": [
+        "ledger",
+        "product_cold_uart",
+        "hardware"
+      ],
+      "proof_scope": "Native 5.10 driver probe, firmware, interface and AP initialization are hardware-proven.",
+      "missing_gate": "",
+      "blocker": ""
+    },
+    {
+      "id": "F3-02",
+      "phase": "F3/F6",
+      "system": "Wi-Fi 2.4 client traffic",
+      "requirement": "2.4 GHz AP association and real client traffic",
+      "status": "PROVEN",
+      "evidence_ids": [
+        "ledger",
+        "hardware",
+        "realtek_ap"
+      ],
+      "proof_scope": "Physical iPhone association, bidirectional traffic and Internet Speedtest passed.",
+      "missing_gate": "",
+      "blocker": ""
+    },
+    {
+      "id": "F3-03",
+      "phase": "F3",
+      "system": "Wi-Fi 2.4 feature parity",
+      "requirement": "Secure association, wrong-key rejection, rekey, scan, STA/repeater and reconnect",
+      "status": "PARTIAL",
+      "evidence_ids": [
+        "realtek_ap",
+        "product_soak",
+        "master_checklist"
+      ],
+      "proof_scope": "WPA2 control plane and AP management soak pass; the remaining client/security/mode matrix does not.",
+      "missing_gate": "Complete secure-client, negative-auth, rekey, scan, STA/repeater and reconnect tests.",
+      "blocker": ""
+    },
+    {
+      "id": "F3-04",
+      "phase": "F3/F6",
+      "system": "Wi-Fi 2.4 release stability",
+      "requirement": "Long-duration 2.4 GHz stability under load",
+      "status": "PENDING",
+      "evidence_ids": [
+        "product_soak",
+        "master_checklist"
+      ],
+      "proof_scope": "615.843 seconds is proven, below the mandatory 24-hour F6 soak.",
+      "missing_gate": "Run at least 24 hours with load, reconnects and error recovery; release target is 72 hours.",
+      "blocker": ""
+    },
+    {
+      "id": "F3-05",
+      "phase": "F3",
+      "system": "Wi-Fi 5 platform/core",
+      "requirement": "qdrv/wlan and MuC/AuC/DSP platform stack operates",
+      "status": "PARTIAL",
+      "evidence_ids": [
+        "qdrv_control_uart",
+        "qdrv_vap_failure_uart",
+        "state"
+      ],
+      "proof_scope": "Control, firmware, shared memory, descriptor DMA, IRQ8/9/10 and core start pass; a fatal MuC event still occurs before usable VAP.",
+      "missing_gate": "Validate the HRFLAGS deferral fix on a cold run without MuC fatal markers.",
+      "blocker": ""
+    },
+    {
+      "id": "F3-06",
+      "phase": "F3",
+      "system": "Wi-Fi 5 interface",
+      "requirement": "Create and retain a healthy wifi0 interface",
+      "status": "BLOCKED",
+      "evidence_ids": [
+        "qdrv_vap_failure_uart",
+        "state",
+        "ledger"
+      ],
+      "proof_scope": "The current run ends with wifi0 absent after a MuC exception.",
+      "missing_gate": "Cold-run the pinned HRFLAGS deferral artifact and require vap-pass plus wifi0 DOWN.",
+      "blocker": "HRFLAGS was sent before the first VAP; MuC faults at uc_hostif_pullioctl+0x98 with EFA 0x3c."
+    },
+    {
+      "id": "F3-07",
+      "phase": "F3/F6",
+      "system": "Wi-Fi 5 AP/client traffic",
+      "requirement": "5 GHz AP, association, bidirectional traffic and stability",
+      "status": "BLOCKED",
+      "evidence_ids": [
+        "qdrv_vap_failure_uart",
+        "ap5_offline",
+        "f3_client_cert",
+        "state"
+      ],
+      "proof_scope": "The AP36 bundle and a fail-closed 600-second real-client certificate are offline-ready, but no healthy wifi0 exists and neither has executed on hardware.",
+      "missing_gate": "Pass wifi0 creation and AP control, then execute the F3 client certificate with association, counters, IRQ bounds and fatal-marker checks.",
+      "blocker": "Blocked by F3-06 wifi0/VAP failure."
+    },
+    {
+      "id": "F3-08",
+      "phase": "F3",
+      "system": "Wi-Fi 5 regulation/calibration",
+      "requirement": "ES region, power tables and calibration are preserved and runtime-validated",
+      "status": "PARTIAL",
+      "evidence_ids": [
+        "ap5_offline",
+        "state",
+        "hardware"
+      ],
+      "proof_scope": "Regdb, firmware, power-table inputs and production calstate are pinned; RF runtime and EIRP behavior are not validated.",
+      "missing_gate": "Run ES channel-36 first RF test, verify calibration/power readbacks and then bounded channel coverage.",
+      "blocker": ""
+    },
+    {
+      "id": "F3-09",
+      "phase": "F3/F6",
+      "system": "DFS/radar/CAC",
+      "requirement": "Native radar, DFS, CAC and non-occupancy behavior",
+      "status": "BLOCKED",
+      "evidence_ids": [
+        "dfs_contract",
+        "state",
+        "master_checklist"
+      ],
+      "proof_scope": "The fail-closed gate correctly denies DFS; no native Linux 5.10 detector or CAC proof exists.",
+      "missing_gate": "Implement/port native radar, prove ES/EU regdb, continuous detection, CAC and NOP behavior.",
+      "blocker": "qdrv_radar_compat returns false/EOPNOTSUPP and the OEM proprietary 2.6 radar binary is not a valid 5.10 backend."
+    },
+    {
+      "id": "F4-01",
+      "phase": "F4",
+      "system": "Administrative access",
+      "requirement": "Explicit secure administrative access",
+      "status": "PROVEN",
+      "evidence_ids": [
+        "product_uart",
+        "kernel_uart",
+        "ledger"
+      ],
+      "proof_scope": "Key-only SSH authentication and live status API are hardware-proven.",
+      "missing_gate": "",
+      "blocker": ""
+    },
+    {
+      "id": "F4-02",
+      "phase": "F4/F6",
+      "system": "CGI/UI runtime",
+      "requirement": "Movistar-compatible management UI runs on the exact current product image",
+      "status": "PARTIAL",
+      "evidence_ids": [
+        "w4_ui_manifest",
+        "product_manifest",
+        "w5_package",
+        "cgi_ram_image"
+      ],
+      "proof_scope": "Routes, login, sessions, CSRF, read APIs and volatile staging pass offline and are embedded; the exact CGI image has not booted on hardware.",
+      "missing_gate": "RAM-boot f8285f5d...e89c and run the live read-only HTTP smoke.",
+      "blocker": ""
+    },
+    {
+      "id": "F4-03",
+      "phase": "F4",
+      "system": "UI functional parity",
+      "requirement": "Required OEM controls are functional, not merely displayed",
+      "status": "PARTIAL",
+      "evidence_ids": [
+        "parity_doc",
+        "w4_ui_manifest",
+        "master_checklist"
+      ],
+      "proof_scope": "Ten routes and safe staging exist; password change, applied LAN/radio settings, firmware, reset and full client views remain closed.",
+      "missing_gate": "Implement transactional handlers and live tests for every required OEM control.",
+      "blocker": ""
+    },
+    {
+      "id": "F4-04",
+      "phase": "F4",
+      "system": "Movistar services/config",
+      "requirement": "Relevant OEM services and observable Movistar behavior are ported/replaced/classified",
+      "status": "PARTIAL",
+      "evidence_ids": [
+        "parity_doc",
+        "parity_manifest",
+        "master_checklist"
+      ],
+      "proof_scope": "Source-backed role and 30 capabilities are documented; full runtime parity and service disposition are incomplete.",
+      "missing_gate": "Complete the OEM component disposition matrix and execute each applicable runtime test.",
+      "blocker": ""
+    },
+    {
+      "id": "F4-05",
+      "phase": "F4",
+      "system": "LED parity",
+      "requirement": "Power, Ethernet, 2.4, 5, WPS and fault LED behavior matches policy",
+      "status": "PARTIAL",
+      "evidence_ids": [
+        "controls_uart",
+        "stage0_contract",
+        "controls_postbaseline",
+        "hardware"
+      ],
+      "proof_scope": "Stage-0 and 2.4 WLAN LED behavior pass on hardware; the 5 GHz HOSTAP+RUN/carrier GPIO1 artifact passes offline only; remaining front-panel states are absent.",
+      "missing_gate": "Hardware-validate the postbaseline 5 GHz LED and map/test Ethernet, WPS and fault states.",
+      "blocker": ""
+    },
+    {
+      "id": "F4-06",
+      "phase": "F4",
+      "system": "Buttons/reset",
+      "requirement": "Wi-Fi/WPS/reset button behavior is physically verified",
+      "status": "PARTIAL",
+      "evidence_ids": [
+        "controls_uart",
+        "hardware",
+        "master_checklist"
+      ],
+      "proof_scope": "GPIO2 input event registration and compiled short/long policy exist; physical press, WPS and reset are unverified.",
+      "missing_gate": "Perform physical short/long/WPS/reset tests with rollback-safe behavior.",
+      "blocker": ""
+    },
+    {
+      "id": "F4-07",
+      "phase": "F4/F5",
+      "system": "Backup/restore/factory reset",
+      "requirement": "Configuration backup, restore and reset are transactional and safe",
+      "status": "PENDING",
+      "evidence_ids": [
+        "backup_cert",
+        "master_checklist",
+        "parity_doc"
+      ],
+      "proof_scope": "Raw flash backup is certified, but user configuration backup/restore/reset is not implemented or tested.",
+      "missing_gate": "Implement model/version validation, atomic restore and calibration-preserving factory reset.",
+      "blocker": ""
+    },
+    {
+      "id": "F4-08",
+      "phase": "F4",
+      "system": "Observability/diagnostics",
+      "requirement": "System, ports, radios, clients, bridge, logs and recovery are observable",
+      "status": "PARTIAL",
+      "evidence_ids": [
+        "product_validation",
+        "w4_ui_manifest",
+        "product_uart"
+      ],
+      "proof_scope": "Status API and logging foundations exist; complete live dual-radio/client/recovery observability is not certified.",
+      "missing_gate": "Boot the current image and validate every field against proc/sysfs/FDB/runtime truth.",
+      "blocker": ""
+    },
+    {
+      "id": "F4-09",
+      "phase": "F4",
+      "system": "Secret hygiene",
+      "requirement": "No management endpoint or diagnostic artifact returns secrets",
+      "status": "PARTIAL",
+      "evidence_ids": [
+        "w4_ui_manifest",
+        "parity_manifest",
+        "product_validation"
+      ],
+      "proof_scope": "Current implemented CGI/API surfaces pass secret scans; unfinished endpoints and final release bundle do not yet exist.",
+      "missing_gate": "Repeat secret scanning over the complete endpoint set, backups and release image.",
+      "blocker": ""
+    },
+    {
+      "id": "F5-01",
+      "phase": "F5",
+      "system": "Reproducible product build",
+      "requirement": "Rootfs and firmware-shaped RAM artifact build reproducibly with exact hashes",
+      "status": "PROVEN",
+      "evidence_ids": [
+        "product_manifest",
+        "w5_package",
+        "w5_bootbase",
+        "w5_validation",
+        "cgi_ram_image"
+      ],
+      "proof_scope": "Rootfs and initramfs/vmlinux/uImage/DTB/webformat are identical across isolated builds; Bootbase/RAS and slot envelope pass.",
+      "missing_gate": "",
+      "blocker": ""
+    },
+    {
+      "id": "F5-02",
+      "phase": "F5",
+      "system": "Exact candidate RAM boot",
+      "requirement": "The exact current CGI-integrated image passes hardware RAM smoke before flash",
+      "status": "PENDING",
+      "evidence_ids": [
+        "w5_package",
+        "cgi_ram_image",
+        "state"
+      ],
+      "proof_scope": "Packaging and runner dry-run pass; hardware_ram_boot remains pending in the manifest.",
+      "missing_gate": "RAM-boot SHA f8285f5d...e89c and run kernel, SSH, Ethernet, radio and UI smoke.",
+      "blocker": ""
+    },
+    {
+      "id": "F5-03",
+      "phase": "F5",
+      "system": "Flash backup/preflight",
+      "requirement": "Immutable regions, calibration and rollback inputs are backed up and verified",
+      "status": "PROVEN",
+      "evidence_ids": [
+        "backup_cert",
+        "hardware",
+        "recovery_runbook"
+      ],
+      "proof_scope": "Physical flash backup gates are 32/32 PASS and no write occurred.",
+      "missing_gate": "",
+      "blocker": ""
+    },
+    {
+      "id": "F5-04",
+      "phase": "F5",
+      "system": "Persistent installation/cold boot",
+      "requirement": "Flash target slot and cold-boot autonomously into OpenMitraStar",
+      "status": "BLOCKED",
+      "evidence_ids": [
+        "state",
+        "hardware",
+        "master_checklist",
+        "w5_package"
+      ],
+      "proof_scope": "All current candidates are RAM-only and candidate_eligible=false; the existing persistent slot is known defective.",
+      "missing_gate": "Earn flash eligibility after full RAM smoke, then write only the selected slot and prove autonomous cold boot.",
+      "blocker": "No flash-eligible candidate exists; persistent slot can enter EV_TLBProtV and is not a reliable recovery image."
+    },
+    {
+      "id": "F5-05",
+      "phase": "F5/F6",
+      "system": "Configuration persistence",
+      "requirement": "Configuration survives reboot and controlled power loss",
+      "status": "PENDING",
+      "evidence_ids": [
+        "product_validation",
+        "master_checklist",
+        "hardware"
+      ],
+      "proof_scope": "Schema and fail-closed simulations pass; no hardware persistence/power-cut test exists.",
+      "missing_gate": "Implement atomic persistence and test reboot plus interrupted-write recovery.",
+      "blocker": ""
+    },
+    {
+      "id": "F5-06",
+      "phase": "F5",
+      "system": "Post-flash rollback",
+      "requirement": "Rollback restores a known-good system after candidate failure",
+      "status": "PENDING",
+      "evidence_ids": [
+        "recovery_runbook",
+        "backup_cert",
+        "master_checklist"
+      ],
+      "proof_scope": "RAM recovery is proven, but rollback after an actual candidate flash is not.",
+      "missing_gate": "Flash an eligible candidate, induce/observe rollback and verify restored services and immutable regions.",
+      "blocker": ""
+    },
+    {
+      "id": "F5-07",
+      "phase": "F5/F6",
+      "system": "Recovery after installation",
+      "requirement": "UART/Bootbase/TFTP recovery remains demonstrated after flash",
+      "status": "PENDING",
+      "evidence_ids": [
+        "recovery_runbook",
+        "kernel_uart",
+        "master_checklist"
+      ],
+      "proof_scope": "The pre-flash RAM recovery path is proven only.",
+      "missing_gate": "Repeat the complete recovery demonstration after persistent installation.",
+      "blocker": ""
+    },
+    {
+      "id": "F5-08",
+      "phase": "F5/F6",
+      "system": "Release soak",
+      "requirement": "Minimum 24-hour soak; release target 72 hours under load and reconnects",
+      "status": "PENDING",
+      "evidence_ids": [
+        "product_soak",
+        "emac_soak",
+        "master_checklist"
+      ],
+      "proof_scope": "Current accepted soaks are roughly 10 minutes, far below the release gate.",
+      "missing_gate": "Complete 24/72-hour dual-radio, multicast, management, reconnect and failure-injection soaks.",
+      "blocker": ""
+    },
+    {
+      "id": "F5-09",
+      "phase": "F5",
+      "system": "Installable/distributable firmware",
+      "requirement": "Package is installable, maintainable and releasable without secrets or unredistributable content",
+      "status": "PARTIAL",
+      "evidence_ids": [
+        "w5_package",
+        "parity_doc",
+        "master_checklist"
+      ],
+      "proof_scope": "A firmware-shaped RAM image and manifests exist; flash eligibility, installer, licensing/SBOM and public blob strategy do not.",
+      "missing_gate": "Close licensing/SBOM/importer, installer, signature and persistent recovery requirements.",
+      "blocker": ""
+    },
+    {
+      "id": "F6-01",
+      "phase": "F6",
+      "system": "Certification matrix",
+      "requirement": "Every final subsystem has a reproducible status and exact evidence",
+      "status": "PARTIAL",
+      "evidence_ids": [
+        "state",
+        "ledger",
+        "master_checklist"
+      ],
+      "proof_scope": "This matrix and verifier cover the current state, but many rows remain non-PROVEN.",
+      "missing_gate": "Refresh evidence after each gate and reach zero PARTIAL/PENDING/BLOCKED rows.",
+      "blocker": ""
+    },
+    {
+      "id": "F6-02",
+      "phase": "F6",
+      "system": "Full OpenMitraStar certification",
+      "requirement": "Complete system certification and declaration of 100% migration",
+      "status": "BLOCKED",
+      "evidence_ids": [
+        "master_checklist",
+        "state",
+        "qdrv_vap_failure_uart",
+        "w5_package"
+      ],
+      "proof_scope": "Core subsystems are proven, but the final system has not met F3/F4/F5/F6 completion gates.",
+      "missing_gate": "Close 5 GHz/DFS, network services, complete UI/controls, persistence/flash/rollback and release-soak gates.",
+      "blocker": "F3-06/F3-07/F3-09 and F5-04 remain concrete blockers; numerous final tests remain pending."
+    }
+  ]
+}

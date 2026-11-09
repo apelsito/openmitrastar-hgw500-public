@@ -1,0 +1,540 @@
+{
+  "schema": "openmitrastar.radio2g73-source-merge/v1",
+  "hardware_accessed": false,
+  "upstream_commit": "c03c1a14507dfaf8b856c2608f9ac216021fc222",
+  "records": [
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/base.c",
+      "upstream73_sha256": "c2d69759a369228069d473d48e008d02e48741765b1e8c416091c59ef57c5c47",
+      "hgw510_sha256": "3d2360ebea772e195f2bfdb39273ac4ec1cf88919e088c37b429bc36732a2b1e",
+      "changed": true,
+      "merge_conflicts": 0,
+      "candidate_sha256": "4bf04b2a10c223eefd31f6d8e1752eb6ee7502d7fcc30fa8f13fdb6cb34a0391"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/base.h",
+      "upstream73_sha256": "a93a99824119ced34c27e7c8ca889b842d2c2198c3a857c9c3a57121edf569f1",
+      "hgw510_sha256": "a93a99824119ced34c27e7c8ca889b842d2c2198c3a857c9c3a57121edf569f1",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "a93a99824119ced34c27e7c8ca889b842d2c2198c3a857c9c3a57121edf569f1"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/btcoexist/halbt_precomp.h",
+      "upstream73_sha256": "6ced4495c41ed2195d403d4a1951bef9ec555b48f09904ae8ec1632bc6887bb0",
+      "hgw510_sha256": "6ced4495c41ed2195d403d4a1951bef9ec555b48f09904ae8ec1632bc6887bb0",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "6ced4495c41ed2195d403d4a1951bef9ec555b48f09904ae8ec1632bc6887bb0"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8192e2ant.c",
+      "upstream73_sha256": "53f7f140182c79bb05b14e9f8eb6bac8585b1cd8372d3d2166c07db7e97f89b2",
+      "hgw510_sha256": "53f7f140182c79bb05b14e9f8eb6bac8585b1cd8372d3d2166c07db7e97f89b2",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "53f7f140182c79bb05b14e9f8eb6bac8585b1cd8372d3d2166c07db7e97f89b2"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8192e2ant.h",
+      "upstream73_sha256": "217555a47e25cd18277c514b97936282a6a210eda4899c240afb8f281cd5d27f",
+      "hgw510_sha256": "217555a47e25cd18277c514b97936282a6a210eda4899c240afb8f281cd5d27f",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "217555a47e25cd18277c514b97936282a6a210eda4899c240afb8f281cd5d27f"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8723b1ant.c",
+      "upstream73_sha256": "6e5911d4e1a291cbf0efb2eba0dace1952e977c72fb3ef96ce93803289de4e77",
+      "hgw510_sha256": "576262f80dfb737c6aaadc54a0d7a89cdf54c59915b008ca46ae92386f295c9a",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "6e5911d4e1a291cbf0efb2eba0dace1952e977c72fb3ef96ce93803289de4e77"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8723b1ant.h",
+      "upstream73_sha256": "c4af1f5658959ece64d0298ab1ff2752789057400d99d6f938d391c6361de8a7",
+      "hgw510_sha256": "30d5bb288d163fa65d4abf6b20a6750cbd5ec2cccaf52c1add46e7e0cda3e11b",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "c4af1f5658959ece64d0298ab1ff2752789057400d99d6f938d391c6361de8a7"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8723b2ant.c",
+      "upstream73_sha256": "3536ad85f1150bdbe31aaccb08df52c0f52d115c5152a1712cdb76343d0caeab",
+      "hgw510_sha256": "b9ecd4e2465fc220f235c6d12384c92eb4145002fcf8f34fd4698ed975af7681",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "3536ad85f1150bdbe31aaccb08df52c0f52d115c5152a1712cdb76343d0caeab"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8723b2ant.h",
+      "upstream73_sha256": "1223d00de6d6b321e5ce0095b0ad8493d103bb1d2debf301745cc988f62aea0a",
+      "hgw510_sha256": "1223d00de6d6b321e5ce0095b0ad8493d103bb1d2debf301745cc988f62aea0a",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "1223d00de6d6b321e5ce0095b0ad8493d103bb1d2debf301745cc988f62aea0a"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8821a1ant.c",
+      "upstream73_sha256": "23c8404d08aa96913e722205362a5925fb2ba1d2d0812051365901782fda23d8",
+      "hgw510_sha256": "79e269f5d286c6a57521a69a7345de680f31f099d85fa6886e2e3b4de0ed0109",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "23c8404d08aa96913e722205362a5925fb2ba1d2d0812051365901782fda23d8"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8821a1ant.h",
+      "upstream73_sha256": "0626a9a0b0dbe8f38fa218c6076460695133615aa61d322583328d0245b3b1dd",
+      "hgw510_sha256": "0626a9a0b0dbe8f38fa218c6076460695133615aa61d322583328d0245b3b1dd",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "0626a9a0b0dbe8f38fa218c6076460695133615aa61d322583328d0245b3b1dd"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8821a2ant.c",
+      "upstream73_sha256": "ffbdd27e82137e67073afbdd2218d2f89de0c3628d24ec5701b94d0920611390",
+      "hgw510_sha256": "ccaaf479502342eb01dd67958eefd21829f2b9a52e36ff336bdff85c668cbd43",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "ffbdd27e82137e67073afbdd2218d2f89de0c3628d24ec5701b94d0920611390"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8821a2ant.h",
+      "upstream73_sha256": "1fb4358c5c31931dcd7ce52473ae54e8c85477a043afd77329b196dd7b1433c7",
+      "hgw510_sha256": "1fb4358c5c31931dcd7ce52473ae54e8c85477a043afd77329b196dd7b1433c7",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "1fb4358c5c31931dcd7ce52473ae54e8c85477a043afd77329b196dd7b1433c7"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8822bwifionly.c",
+      "upstream73_sha256": "15b4640ac6bc895abee33220e0eb58f615c2b6721ac2eb7eb703e5ffdd414bbc",
+      "hgw510_sha256": "15b4640ac6bc895abee33220e0eb58f615c2b6721ac2eb7eb703e5ffdd414bbc",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "15b4640ac6bc895abee33220e0eb58f615c2b6721ac2eb7eb703e5ffdd414bbc"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8822bwifionly.h",
+      "upstream73_sha256": "e1bc0204409af6cb62ab53243bf358c2507f637ccc5cebf55c6d95335c8a5f64",
+      "hgw510_sha256": "e1bc0204409af6cb62ab53243bf358c2507f637ccc5cebf55c6d95335c8a5f64",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "e1bc0204409af6cb62ab53243bf358c2507f637ccc5cebf55c6d95335c8a5f64"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c",
+      "upstream73_sha256": "5f672eeccfd1593505d853c01ac45cd727433f4ab2732caac0861793845d8100",
+      "hgw510_sha256": "fdd0cdb1dd538e4ec30ade5ccbeda33100acce6f7f987814b7e2234c2a30c951",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "5f672eeccfd1593505d853c01ac45cd727433f4ab2732caac0861793845d8100"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.h",
+      "upstream73_sha256": "4fdb3a6af02cff337bd3e6af204c8da5b8b495cef2af072edd95a6744a77e659",
+      "hgw510_sha256": "f11677cc6a2113bf61416397d2d16abce0f038f5b6f23b80e43363ec0b1f12ee",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "4fdb3a6af02cff337bd3e6af204c8da5b8b495cef2af072edd95a6744a77e659"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/btcoexist/Makefile",
+      "upstream73_sha256": "54b6889132576ff2ab9fa39f2cecb68be571c363b6d46842b1920e59add1c740",
+      "hgw510_sha256": "54b6889132576ff2ab9fa39f2cecb68be571c363b6d46842b1920e59add1c740",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "54b6889132576ff2ab9fa39f2cecb68be571c363b6d46842b1920e59add1c740"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/btcoexist/rtl_btc.c",
+      "upstream73_sha256": "eec05a0cf0c38d4d61ed745c4bdd175f1b4451c4b5384dd6af80563597479c0d",
+      "hgw510_sha256": "702ad0ff75cfc39301d79b6a6294560b3f77c636ce0cfb45af0fe01b24dd29ba",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "eec05a0cf0c38d4d61ed745c4bdd175f1b4451c4b5384dd6af80563597479c0d"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/btcoexist/rtl_btc.h",
+      "upstream73_sha256": "a031e3ca2ecd31ac2e9d797216f3b4715a43b367e128000971d9ffa4963f4b96",
+      "hgw510_sha256": "a031e3ca2ecd31ac2e9d797216f3b4715a43b367e128000971d9ffa4963f4b96",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "a031e3ca2ecd31ac2e9d797216f3b4715a43b367e128000971d9ffa4963f4b96"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/cam.c",
+      "upstream73_sha256": "bf06e64763d6ab66f25ba05d0be4fdfbe5dbcd3c43fd6181f02f6fdf41b4c63a",
+      "hgw510_sha256": "571849f77c23ca2a041451bc90ed0104517c9573dcb25c173f887359a828f3d3",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "bf06e64763d6ab66f25ba05d0be4fdfbe5dbcd3c43fd6181f02f6fdf41b4c63a"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/cam.h",
+      "upstream73_sha256": "f731b81bcd3bb70e53b62ac771fa438a7e157652e4754a6f7011c9791f8757a4",
+      "hgw510_sha256": "9e50026dbd391897a49feb7a95197c93baf218875a636ac7546ee8ea8c124a38",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "f731b81bcd3bb70e53b62ac771fa438a7e157652e4754a6f7011c9791f8757a4"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/core.c",
+      "upstream73_sha256": "6d8b88812ac80491a04bb5cc11c62d3bea409ca4bdf3435c02e833fce7ec6320",
+      "hgw510_sha256": "c9cbcfd6f059fa3c3a752b3aa48778607c32ddcf16e2e437870b0c19dc115a39",
+      "changed": true,
+      "merge_conflicts": 0,
+      "candidate_sha256": "d44b01118813562d6b6bebe844a83df2b227eb976d26814df19df52b72df0531"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/core.h",
+      "upstream73_sha256": "8f90b28c589ddf4ddffdf8e15f65c5715fda4c17267ecf81655f4ee14abc744c",
+      "hgw510_sha256": "e424ca5e77c5c54c812e78c6827ba4899898a6682e82b4187981eed8e4dad9ba",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "8f90b28c589ddf4ddffdf8e15f65c5715fda4c17267ecf81655f4ee14abc744c"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/debug.c",
+      "upstream73_sha256": "e6abce26c0490976666155e6a92730bc59d7eb4a03d865d592f2f278276d1f78",
+      "hgw510_sha256": "e6abce26c0490976666155e6a92730bc59d7eb4a03d865d592f2f278276d1f78",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "e6abce26c0490976666155e6a92730bc59d7eb4a03d865d592f2f278276d1f78"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/debug.h",
+      "upstream73_sha256": "3cbe5ada12af9b7668064096a5391eb31eb9742fdba16c4a00cffd1cdca23b5a",
+      "hgw510_sha256": "3cbe5ada12af9b7668064096a5391eb31eb9742fdba16c4a00cffd1cdca23b5a",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "3cbe5ada12af9b7668064096a5391eb31eb9742fdba16c4a00cffd1cdca23b5a"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/efuse.c",
+      "upstream73_sha256": "2d04d7f1b9948cec50356956818cfbd2116dd41e4c8b2b291eb1bc38443ca690",
+      "hgw510_sha256": "f6900eeaf8cfbd271383bf218cca33bf2f2c497a5a4ee5b524d9cb639186926f",
+      "changed": true,
+      "merge_conflicts": 0,
+      "candidate_sha256": "3eb5f83cd3cea18bd59169bda079e01369a4501fb8ba14fd944c53c943d75beb"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/efuse.h",
+      "upstream73_sha256": "056406fb6361c3a79323c7fe768a853b654d79c0462055635b194b47b91abe30",
+      "hgw510_sha256": "5dff2dd6349affff832a3df00f914647527580407d8d5f065e2f4eca58a7f3e5",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "056406fb6361c3a79323c7fe768a853b654d79c0462055635b194b47b91abe30"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/Kconfig",
+      "upstream73_sha256": "ea3d4559990775b340d478a4f3aad2621ff2999c280c3122db47025120d13d84",
+      "hgw510_sha256": "534bd4039ec32a26f15a974613b7fd70137f80d4a7e56b8bdfa5992a003a1c7a",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "ea3d4559990775b340d478a4f3aad2621ff2999c280c3122db47025120d13d84"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/Makefile",
+      "upstream73_sha256": "baee5caae830e36814b1483e7dbbd86e0fca77e65281bb71d482f4b8007246dc",
+      "hgw510_sha256": "b0bf45a44dbaff9a1a61e99e9f0f65954ac38f840f4233a0baa4243f167d9bac",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "baee5caae830e36814b1483e7dbbd86e0fca77e65281bb71d482f4b8007246dc"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/pci.c",
+      "upstream73_sha256": "56c7e3d16085509965c833c9a0db9640ceb6573c709c4f01a5e68924977012f7",
+      "hgw510_sha256": "5155d5bb5aae02152d00b22c22f62e350dd477f0e4cceb0e284c2a501537b7c1",
+      "changed": true,
+      "merge_conflicts": 4,
+      "candidate_sha256": "458c7fb8e63d58972c01d1ce3c1472808962245bd1d398a56accaed55ba6874d"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/pci.h",
+      "upstream73_sha256": "e3815e4160932ab434dc87211cc1487ac9ad786234126a28df5ac49372b10b2f",
+      "hgw510_sha256": "8dfc580e673b41987c8c0ce1521cf621177b6c0e354e70673f71d2ff87a6d061",
+      "changed": true,
+      "merge_conflicts": 0,
+      "candidate_sha256": "e3b4f26767f931cbed8a0d5a57b052406a299edb275ed22d715bc7afff8dbca4"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/ps.c",
+      "upstream73_sha256": "4f87bdf409fa7c82918282a760016a0af62353300e036b91d2412e780e6c817b",
+      "hgw510_sha256": "b59eb280622e323cef739d2704c3194fc6bd82588f3bd76d07375268bf941dcc",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "4f87bdf409fa7c82918282a760016a0af62353300e036b91d2412e780e6c817b"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/ps.h",
+      "upstream73_sha256": "7575b003c5a4645b57aa5ed051f5fd5fa43c214ef43eed57c1afbd1ef9172d52",
+      "hgw510_sha256": "7575b003c5a4645b57aa5ed051f5fd5fa43c214ef43eed57c1afbd1ef9172d52",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "7575b003c5a4645b57aa5ed051f5fd5fa43c214ef43eed57c1afbd1ef9172d52"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/pwrseqcmd.h",
+      "upstream73_sha256": "c06de061fa086832d941e6c3fb63c03baebd5a63bb0176c855dcc92b66ed7a5d",
+      "hgw510_sha256": "c06de061fa086832d941e6c3fb63c03baebd5a63bb0176c855dcc92b66ed7a5d",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "c06de061fa086832d941e6c3fb63c03baebd5a63bb0176c855dcc92b66ed7a5d"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/rc.c",
+      "upstream73_sha256": "d3319ff8c9b89a27a760e4bb5b9e08a597da631bea52aba8ffc59a0f2515aa93",
+      "hgw510_sha256": "f965ece7aa32d9632b964a28b2ca4d331f78c24136f444ac5f14b9607396d6ca",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "d3319ff8c9b89a27a760e4bb5b9e08a597da631bea52aba8ffc59a0f2515aa93"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/rc.h",
+      "upstream73_sha256": "efde1b2426b3181733cbd1312a72b55e105562a10dcec44c71b350a74a8fe9bb",
+      "hgw510_sha256": "efde1b2426b3181733cbd1312a72b55e105562a10dcec44c71b350a74a8fe9bb",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "efde1b2426b3181733cbd1312a72b55e105562a10dcec44c71b350a74a8fe9bb"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/regd.c",
+      "upstream73_sha256": "6e35f686cb0dffc19c264d02ff08bede61b01389064630184f2f9bf767025288",
+      "hgw510_sha256": "270e9e17f277a0f455867edc1c6f8754f554128e9e354cec2514e096600a03bc",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "6e35f686cb0dffc19c264d02ff08bede61b01389064630184f2f9bf767025288"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/regd.h",
+      "upstream73_sha256": "d460a3a2ed81a22b845c60988d7c0306b22cd98a4ffa32c67793af1665e7cd3b",
+      "hgw510_sha256": "d460a3a2ed81a22b845c60988d7c0306b22cd98a4ffa32c67793af1665e7cd3b",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "d460a3a2ed81a22b845c60988d7c0306b22cd98a4ffa32c67793af1665e7cd3b"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/rtl8192ee/def.h",
+      "upstream73_sha256": "cdea0f1f9991101f7e53efdbcae6f783dda469f7550b970243b10b6ff11544d5",
+      "hgw510_sha256": "cdea0f1f9991101f7e53efdbcae6f783dda469f7550b970243b10b6ff11544d5",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "cdea0f1f9991101f7e53efdbcae6f783dda469f7550b970243b10b6ff11544d5"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c",
+      "upstream73_sha256": "f0a83a843ed1283efa05ace051fb2dbdc00b33034a8601d62d85bbbeb0bb70fd",
+      "hgw510_sha256": "9f686b2ff1610205a99d8c1f4a70f40b98ff13159b7b12563242c565c6978bdc",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "f0a83a843ed1283efa05ace051fb2dbdc00b33034a8601d62d85bbbeb0bb70fd"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.h",
+      "upstream73_sha256": "b4fe5f0db88b910c0fe2977fcd698884312772d0704adb856f7ee549cf00669b",
+      "hgw510_sha256": "b4fe5f0db88b910c0fe2977fcd698884312772d0704adb856f7ee549cf00669b",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "b4fe5f0db88b910c0fe2977fcd698884312772d0704adb856f7ee549cf00669b"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/rtl8192ee/fw.c",
+      "upstream73_sha256": "176f5441b12c5b59def7850b7507a4209dac071f36a768467cd6d5f03298da45",
+      "hgw510_sha256": "1aa6b5b3a0a6a7a7f4d56f044e66b11109d47d02c670dbdd9aefce8a061eb803",
+      "changed": true,
+      "merge_conflicts": 0,
+      "candidate_sha256": "1aa6b5b3a0a6a7a7f4d56f044e66b11109d47d02c670dbdd9aefce8a061eb803"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/rtl8192ee/fw.h",
+      "upstream73_sha256": "647edbcfa7a6e34e52ce599cd8ffa14263928e62602887c412e6863b3a94947d",
+      "hgw510_sha256": "647edbcfa7a6e34e52ce599cd8ffa14263928e62602887c412e6863b3a94947d",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "647edbcfa7a6e34e52ce599cd8ffa14263928e62602887c412e6863b3a94947d"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/rtl8192ee/hw.c",
+      "upstream73_sha256": "a2289b53e2c148b08c619f7ac5dcde85620582a865f292f24906fc8a6e1bbc9f",
+      "hgw510_sha256": "27faec04a9d0853a5e789f7e5687de8a7e3122c94657730e4d01e77bdca08ae4",
+      "changed": true,
+      "merge_conflicts": 0,
+      "candidate_sha256": "c3100ef01e35f440051c13330dea1758870d3d845f25a61f41104d8820005131"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/rtl8192ee/hw.h",
+      "upstream73_sha256": "11bcab275a3b22bfa518b0f97a22783363877029e9b1165ffaa93154152bc9e0",
+      "hgw510_sha256": "11bcab275a3b22bfa518b0f97a22783363877029e9b1165ffaa93154152bc9e0",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "11bcab275a3b22bfa518b0f97a22783363877029e9b1165ffaa93154152bc9e0"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/rtl8192ee/led.c",
+      "upstream73_sha256": "934c7356c38febb7c873d6d360e91e0ef6d5405654875cb11981845901f0a740",
+      "hgw510_sha256": "0d30dbd1ab527a7f8b612407fa8e16733277a83bb6921e7bdacf3184748f8de4",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "934c7356c38febb7c873d6d360e91e0ef6d5405654875cb11981845901f0a740"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/rtl8192ee/led.h",
+      "upstream73_sha256": "e8086a725adecbb6330339f5207de4bbffd345de0c53848629648958b777db56",
+      "hgw510_sha256": "d344387ad505cb2d3e4c1821c43be7313d0e1ec508f5ece3597f4071401ea03a",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "e8086a725adecbb6330339f5207de4bbffd345de0c53848629648958b777db56"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/rtl8192ee/Makefile",
+      "upstream73_sha256": "00edaa55e749f24f13ecb3a3962b429fcb8ae9fdb60adc0cb3c4ecb746ec6479",
+      "hgw510_sha256": "00edaa55e749f24f13ecb3a3962b429fcb8ae9fdb60adc0cb3c4ecb746ec6479",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "00edaa55e749f24f13ecb3a3962b429fcb8ae9fdb60adc0cb3c4ecb746ec6479"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c",
+      "upstream73_sha256": "bad3cfc0fe5fbf0d2f9fae6f96f2cc4a0f912a39c5ac5c103955ef6fc524b4ff",
+      "hgw510_sha256": "2307e9c9f541297c4560d970f8d0318caa444424d2422716b9ad5c7996252a06",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "bad3cfc0fe5fbf0d2f9fae6f96f2cc4a0f912a39c5ac5c103955ef6fc524b4ff"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.h",
+      "upstream73_sha256": "509243ccfbaa046d6ac26358f35ad3aa470a06f54c829c09b403cf6db36f4741",
+      "hgw510_sha256": "33569323f9fa1d5058e9ea81800c69919271bad9d9c2852eaa3b7946a042de9f",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "509243ccfbaa046d6ac26358f35ad3aa470a06f54c829c09b403cf6db36f4741"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/rtl8192ee/pwrseq.c",
+      "upstream73_sha256": "045c1b77d4f2bcfd26426f70842fcd78d0d2e35d87ca0ff181f955b466e59fe2",
+      "hgw510_sha256": "045c1b77d4f2bcfd26426f70842fcd78d0d2e35d87ca0ff181f955b466e59fe2",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "045c1b77d4f2bcfd26426f70842fcd78d0d2e35d87ca0ff181f955b466e59fe2"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/rtl8192ee/pwrseq.h",
+      "upstream73_sha256": "ae6be07839cd6b7a015502964472ef75608f859192969d8eaa667cb415f287b9",
+      "hgw510_sha256": "ae6be07839cd6b7a015502964472ef75608f859192969d8eaa667cb415f287b9",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "ae6be07839cd6b7a015502964472ef75608f859192969d8eaa667cb415f287b9"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/rtl8192ee/reg.h",
+      "upstream73_sha256": "f2f6a7d38627a821735f6cf980afc15052d29dd2e8b39dc1002bf915b539e7cf",
+      "hgw510_sha256": "f2f6a7d38627a821735f6cf980afc15052d29dd2e8b39dc1002bf915b539e7cf",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "f2f6a7d38627a821735f6cf980afc15052d29dd2e8b39dc1002bf915b539e7cf"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/rtl8192ee/rf.c",
+      "upstream73_sha256": "00bd83917db564fdf1bcaef3a66099a2bdd8912b32b2fe1553e70bebfc1a934e",
+      "hgw510_sha256": "00bd83917db564fdf1bcaef3a66099a2bdd8912b32b2fe1553e70bebfc1a934e",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "00bd83917db564fdf1bcaef3a66099a2bdd8912b32b2fe1553e70bebfc1a934e"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/rtl8192ee/rf.h",
+      "upstream73_sha256": "e6946339762cd05be5157a0c3e5634f2619c3129f1f80eb94a29b146a6895614",
+      "hgw510_sha256": "e6946339762cd05be5157a0c3e5634f2619c3129f1f80eb94a29b146a6895614",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "e6946339762cd05be5157a0c3e5634f2619c3129f1f80eb94a29b146a6895614"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/rtl8192ee/sw.c",
+      "upstream73_sha256": "91f5b557c21c4f479a41116595ff4b22ebc692f949d136e445e90b9b13eb2a54",
+      "hgw510_sha256": "f5f20166e370d06102a43309da84a91500187cce26b8297dd232e3383b252d7c",
+      "changed": true,
+      "merge_conflicts": 0,
+      "candidate_sha256": "63e30807c1d421a0d4b5b2d8c4c8e947b8bf6b8911aa2bb07557ba2892b09b29"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/rtl8192ee/table.c",
+      "upstream73_sha256": "d3bc9536614b71b471b440e0f770e2651f906f224d2f1f0b70488e3e4807937e",
+      "hgw510_sha256": "d3bc9536614b71b471b440e0f770e2651f906f224d2f1f0b70488e3e4807937e",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "d3bc9536614b71b471b440e0f770e2651f906f224d2f1f0b70488e3e4807937e"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/rtl8192ee/table.h",
+      "upstream73_sha256": "06ca6754d62427016e3f08e17a534bf7c5d76353f75beb6247a6968b85208fa4",
+      "hgw510_sha256": "06ca6754d62427016e3f08e17a534bf7c5d76353f75beb6247a6968b85208fa4",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "06ca6754d62427016e3f08e17a534bf7c5d76353f75beb6247a6968b85208fa4"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/rtl8192ee/trx.c",
+      "upstream73_sha256": "b48e1d8b8c3d13af90762a900a02418f368cb4ca71adce4e92c66aab8c0e0925",
+      "hgw510_sha256": "47b2d7956e0881745b91033814799ecb60573a47e075e723471a49f07a530b57",
+      "changed": true,
+      "merge_conflicts": 2,
+      "candidate_sha256": "9b30e9101fa8ec477b1dba320c90d7ddfd504c622c3cc399b4bafcad21e9aa75"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/rtl8192ee/trx.h",
+      "upstream73_sha256": "fa0c1335958f0c345c32005935f7be6dd6c89cf2ee539887330a0b5ea1d769d7",
+      "hgw510_sha256": "913ec61faf4c507db83a2070a134ef7f0d53ea30e304ea934fa2c439344c2ac3",
+      "changed": true,
+      "merge_conflicts": 0,
+      "candidate_sha256": "d503f281ff213fb189fa02312c204462c377214fe1e4d8abe422a06bafcaa82e"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/stats.c",
+      "upstream73_sha256": "d2f64c4ac4e9e7f26fda14836c9019d5435f049c5781d8f8f12824a281b5a3ed",
+      "hgw510_sha256": "d2f64c4ac4e9e7f26fda14836c9019d5435f049c5781d8f8f12824a281b5a3ed",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "d2f64c4ac4e9e7f26fda14836c9019d5435f049c5781d8f8f12824a281b5a3ed"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/stats.h",
+      "upstream73_sha256": "a4d2cf10f00794f85c0481587974738ad79bbe863cdf1b8d7851741c34ea99c2",
+      "hgw510_sha256": "a4d2cf10f00794f85c0481587974738ad79bbe863cdf1b8d7851741c34ea99c2",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "a4d2cf10f00794f85c0481587974738ad79bbe863cdf1b8d7851741c34ea99c2"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/usb.c",
+      "upstream73_sha256": "b7ddc13b676581d4078c0bb3098839140be19da345f4885be62c3c3a0a4ea718",
+      "hgw510_sha256": "46067daae6a0399d88450bfc0da33e27b47362f1b3ddaaff1b45d3efda8e2fe1",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "b7ddc13b676581d4078c0bb3098839140be19da345f4885be62c3c3a0a4ea718"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/usb.h",
+      "upstream73_sha256": "1153d1f7170118de9e6f6aa599027b5cb86be491dc7d3f2467119c6aecc81342",
+      "hgw510_sha256": "057b61085636001c77add6ba0d29f6ad6d03af5e75649a94ab0836ca215c7a14",
+      "changed": false,
+      "merge_conflicts": 0,
+      "candidate_sha256": "1153d1f7170118de9e6f6aa599027b5cb86be491dc7d3f2467119c6aecc81342"
+    },
+    {
+      "path": "drivers/net/wireless/realtek/rtlwifi/wifi.h",
+      "upstream73_sha256": "e7aa5187eee1b1e6329e507014e5e4a730870d48218dac8f0b4b5ba031438513",
+      "hgw510_sha256": "7095a8ce959958bc0cb525a654eab1462a01ac70ae9873f86976c310f2d9b419",
+      "changed": true,
+      "merge_conflicts": 0,
+      "candidate_sha256": "3f9bc9a00265cd133c06965ec677ed6fbceb5dccfcbc0537388c7412efb7f139"
+    }
+  ],
+  "conflicted_files": [
+    "drivers/net/wireless/realtek/rtlwifi/pci.c",
+    "drivers/net/wireless/realtek/rtlwifi/rtl8192ee/trx.c"
+  ],
+  "status": "SOURCE_CONFLICTS_REQUIRE_REVIEW"
+}

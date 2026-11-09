@@ -1,0 +1,26 @@
+{
+  "schema": "openmitrastar.f367-aelita-client-config/v1",
+  "image": null,
+  "installed_proof": null,
+  "ap_ready_proof": null,
+  "controller": {"computer": "APPLESITO", "ipv4": "192.168.1.49"},
+  "client": {
+    "computer": "APELSITO", "user": "aelita", "control_ipv4": "192.168.1.63",
+    "control_interface_index": 6, "wifi_interface_index": 17, "wifi_interface": "Wi-Fi",
+    "known_hosts": "outputs/kernel-port/realtek-loop/wifi-oracle-control/known_hosts",
+    "key": "outputs/kernel-port/realtek-loop/wifi-oracle-control/oracle_rsa_unencrypted",
+    "ssh_host_key_mode": "pinned", "control_dhcp": "Disabled",
+    "control_alias_scope": "ActiveStore; reverify before every campaign"
+  },
+  "router": {"ipv4": "192.168.1.90", "interface": "wifi0", "channel": 52, "bandwidth_mhz": 20},
+  "traffic": {
+    "download_url": "http://192.168.1.49:8081/speed.bin",
+    "upload_url": "http://192.168.1.49:8081/upload.bin",
+    "bytes_each_direction": 4194304,
+    "internet_url": "https://www.microsoft.com/",
+    "internet_scope": "source-bound HTTPS HEAD; does not certify DNS over Wi-Fi",
+    "timeout_seconds": 30
+  },
+  "restore": {"capture_current_profile": true, "profile_backup": "DPAPI LocalMachine; SYSTEM/Admin ACL", "watchdog_seconds": 240},
+  "reference": "outputs/handoff-live/aelita-wired-and-internet-reference-20260922T112644Z/result.json"
+}

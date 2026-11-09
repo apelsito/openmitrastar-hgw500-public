@@ -1,0 +1,189 @@
+:root {
+  --f313-blue: #0066ff;
+  --f313-cyan: #00a9ce;
+  --f313-green: #16864b;
+  --f313-yellow: #f2b705;
+  --f313-red: #c7352b;
+  --f313-ink: #17171b;
+  --f313-soft: #f4f6f9;
+  --f313-line: #d9dde5;
+  --f313-shadow: 0 3px 0 rgba(23, 23, 27, .12);
+}
+
+* { letter-spacing: 0; }
+body.developer-only { background: #eef1f5; color: var(--f313-ink); }
+body.developer-only .topbar { border-bottom: 3px solid var(--f313-blue); }
+body.developer-only .mode-pill { background: #17171b; border-color: #17171b; color: #fff; }
+body.developer-only .sidebar { background: #17171b; }
+body.developer-only .section-link { border-radius: 6px; }
+body.developer-only .section-link.active { background: var(--f313-blue); color: #fff; }
+body.developer-only .section-link:hover:not(.active) { background: #2a2a31; }
+
+.console-identity {
+  margin-top: auto;
+  padding: 14px 10px;
+  border-top: 1px solid #38383f;
+  border-bottom: 1px solid #38383f;
+}
+.console-identity strong,
+.console-identity small { display: block; }
+.console-identity strong { color: #fff; font-size: 13px; }
+.console-identity small { margin-top: 5px; color: #aeb2bb; line-height: 1.4; }
+
+.profile-console {
+  margin-bottom: 12px;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid var(--f313-line);
+  border-top: 5px solid var(--f313-blue);
+  border-radius: 6px;
+  box-shadow: var(--f313-shadow);
+}
+.profile-heading,
+.profile-result { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.profile-heading > div,
+.profile-result > div { min-width: 0; }
+.profile-heading span { color: var(--f313-blue); font-size: 10px; font-weight: 900; text-transform: uppercase; }
+.profile-heading h2 { margin: 3px 0 0; font-size: 18px; line-height: 1.25; }
+.profile-switcher {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 7px;
+  margin-top: 14px;
+}
+.profile-button {
+  min-height: 64px;
+  padding: 9px 10px;
+  border: 1px solid #b9bec8;
+  border-bottom-width: 3px;
+  border-radius: 6px;
+  background: #f8f9fb;
+  color: var(--f313-ink);
+  text-align: left;
+  transition: transform .12s ease, border-color .12s ease, background .12s ease;
+}
+.profile-button:hover { transform: translateY(-1px); border-color: var(--f313-blue); }
+.profile-button:active { transform: translateY(2px); border-bottom-width: 1px; }
+.profile-button.active { border-color: var(--f313-blue); background: #eaf2ff; box-shadow: inset 0 0 0 1px var(--f313-blue); }
+.profile-button strong,
+.profile-button small { display: block; }
+.profile-button strong { font-size: 13px; }
+.profile-button small { margin-top: 3px; color: #666b75; font-size: 10px; }
+.profile-result { align-items: center; margin-top: 13px; padding-top: 12px; border-top: 1px solid var(--f313-line); }
+.profile-result strong { font-size: 15px; }
+.profile-result p { margin: 3px 0 0; color: #626872; font-size: 12px; }
+#profile-apply {
+  flex: 0 0 auto;
+  min-height: 42px;
+  padding: 0 15px;
+  border: 1px solid #004ebf;
+  border-bottom: 3px solid #004099;
+  border-radius: 6px;
+  background: var(--f313-blue);
+  color: #fff;
+  font-weight: 850;
+}
+#profile-apply:active { transform: translateY(2px); border-bottom-width: 1px; }
+#profile-apply:disabled { background: #d8dbe1; border-color: #b8bdc7; color: #6d727c; }
+.profile-impact { margin: 9px 0 0; color: #5e6470; font-size: 11px; }
+
+body.developer-only .wifi-workbench { grid-template-columns: 112px minmax(420px, 1fr) minmax(300px, 350px); gap: 14px; }
+body.developer-only .band-button {
+  border-radius: 6px;
+  border-bottom-width: 3px;
+  box-shadow: var(--f313-shadow);
+}
+body.developer-only .band-button.active { background: #eaf2ff; }
+body.developer-only .radio-form,
+body.developer-only .setting-inspector,
+body.developer-only .coverage-panel > .coverage-heading,
+body.developer-only .coverage-radar,
+body.developer-only .coverage-facts,
+body.developer-only .coverage-panel > p,
+body.developer-only .content-band,
+body.developer-only .transaction-strip { border-radius: 6px; }
+
+body.developer-only .config-field {
+  grid-template-columns: minmax(190px, 1.25fr) minmax(130px, .7fr) minmax(150px, .58fr);
+  min-height: 88px;
+  padding: 13px 12px;
+}
+body.developer-only .config-field[data-writable="true"] { background: #fbfdff; }
+body.developer-only .config-field[data-writable="true"]:hover,
+body.developer-only .config-field[data-writable="true"].setting-selected { border-left-color: var(--f313-blue); }
+body.developer-only .config-field[data-writable="false"] { background: #fff; }
+body.developer-only .config-field[data-writable="false"]:hover,
+body.developer-only .config-field[data-writable="false"].setting-selected { border-left-color: var(--f313-cyan); }
+body.developer-only .config-field input,
+body.developer-only .config-field select,
+body.developer-only .readonly-value,
+body.developer-only .inline-action { border-radius: 6px; }
+
+.field-state-stack { display: grid; gap: 5px; min-width: 0; max-width: none; }
+.field-state-stack .support-badge { width: 100%; justify-content: center; white-space: normal; text-align: center; line-height: 1.2; }
+.support-badge.operational { color: var(--f313-green); border-color: #90cfae; background: #eef9f3; }
+.support-badge.hardware { color: #09667c; border-color: #8dd0df; background: #edf9fc; }
+.support-badge.pending { color: #765300; border-color: #dec16f; background: #fff8df; }
+.support-badge.firmware { color: #514888; border-color: #bab4da; background: #f5f3ff; }
+.support-badge.unavailable { color: #686d76; border-color: #c7cad1; background: #f3f4f6; }
+
+.setting-inspector { border-top-color: var(--f313-cyan); }
+.setting-inspector dl { grid-template-columns: 1fr 1fr; }
+.setting-inspector dl div { min-width: 0; }
+.setting-inspector dd { overflow-wrap: anywhere; }
+#setting-operational[data-state="operational"] { color: var(--f313-green); }
+#setting-operational[data-state="hardware"] { color: #09667c; }
+#setting-support[data-state="available"] { color: var(--f313-green); }
+#setting-support[data-state="pending"],
+#setting-support[data-state="planned"] { color: #765300; }
+#setting-support[data-state="firmware"] { color: #514888; }
+.inspector-note { border-left-color: var(--f313-yellow); }
+
+body.developer-only .support-badge.blocked {
+  color: #765300;
+  border-color: #dec16f;
+  background: #fff8df;
+}
+body.developer-only .transaction-strip { border-top: 4px solid var(--f313-green); }
+body.developer-only .form-footer button,
+body.developer-only #apply,
+body.developer-only #rollback,
+body.developer-only #commit {
+  border-radius: 6px;
+  border-bottom-width: 3px;
+}
+
+@media (max-width: 1180px) {
+  body.developer-only .wifi-workbench { grid-template-columns: 104px minmax(0, 1fr); }
+  body.developer-only .coverage-panel { grid-column: 1 / -1; position: static; grid-template-columns: minmax(280px, .8fr) minmax(0, 1.2fr); }
+  body.developer-only .setting-inspector { grid-row: span 4; }
+}
+
+@media (max-width: 820px) {
+  .profile-switcher { grid-template-columns: 1fr 1fr; }
+  body.developer-only .wifi-workbench { grid-template-columns: 1fr; }
+  body.developer-only .band-rail { grid-template-columns: 1fr 1fr; }
+  body.developer-only .band-button { min-height: 96px; }
+  body.developer-only .coverage-panel { grid-template-columns: 1fr; }
+  body.developer-only .setting-inspector { grid-row: auto; }
+  body.developer-only .config-field { grid-template-columns: minmax(0, 1fr) minmax(120px, .7fr); }
+  body.developer-only .field-state-stack { grid-column: 1 / -1; grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 560px) {
+  .profile-heading,
+  .profile-result { display: grid; }
+  .profile-switcher { grid-template-columns: 1fr; }
+  #profile-apply { width: 100%; }
+  body.developer-only .config-field { grid-template-columns: 1fr; }
+  body.developer-only .config-field > :nth-child(2) { width: 100%; }
+  body.developer-only .field-state-stack { grid-template-columns: 1fr; }
+  .setting-inspector dl { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-button,
+  .band-button,
+  .page { transition: none; animation: none; }
+  .radar-sweep { animation: none; }
+}

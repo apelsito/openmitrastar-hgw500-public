@@ -1,0 +1,8 @@
+#!/bin/ash
+
+printf 'platform=HGW-500BNA-QCv2\n'
+printf 'kernel='; uname -r
+printf 'rootfs='; awk '$2=="/" {print $3; exit}' /proc/mounts
+printf 'boot_state='; cat /run/openmitrastar/boot-state 2>/dev/null || printf 'unknown\n'
+printf 'radio2g='; /usr/sbin/hostapd_cli -p /run/openmitrastar/radio2g/ctrl -i wlan0 status 2>/dev/null | awk -F= '$1=="state" {print $2; found=1; exit} END {if(!found) print "unavailable"}'
+printf 'radio5g='; cat /run/openmitrastar/radio5g/state 2>/dev/null || printf 'unavailable\n'

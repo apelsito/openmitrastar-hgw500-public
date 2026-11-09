@@ -1,0 +1,25 @@
+{
+  "schema": "openmitrastar.hgw500-oem-controls/v1",
+  "date": "2026-08-21",
+  "boot_led_observation": {
+    "visible_sequence": "lower indicator green during startup, off when startup completes",
+    "red_or_amber_observed_in_normal_oem_operation": false,
+    "openmitrastar_diagnostic_observed_2026_08_22": "lower red, green, and orange observed; orange is GPIO7+GPIO9 in current product mapping",
+    "evidence": "USER_OBSERVED_OEM_2026-08-21",
+    "exact_gpio_rgb_channel": "OEM_NORMAL_RUNTIME_UNKNOWN; OPENMITRASTAR_DIAGNOSTIC_GPIO7_RED_GPIO9_GREEN_GPIO7_PLUS_GPIO9_ORANGE",
+    "openmitrastar_policy": "current product direction: GPIO9 green active-low on until userspace ready, then off; older candidates used GPIO7"
+  },
+  "buttons": {
+    "gpio2": {"role": "wifi2g", "active": "low", "sample_ms": 500, "short": "none", "long_ms": 5000, "long": "toggle-persist-rdm-0xda90", "status": "PROVEN"},
+    "gpio4": {"role": "wifi5g-plus-qdrv-wps", "active": "low", "sample_ms": 500, "short": "qdrv-wps-on-release-under-10s", "long_ms": 5000, "long": "toggle-persist-rdm-0x12ed0", "ten_second_release": "qdrv-debug-dump", "currents_overlap": true, "status": "PROVEN_CURRENT_UNIT"},
+    "gpio5": {"role": "reset", "active": "low", "sample_ms": 1000, "short": "none-under-one-sample", "medium": "reboot", "long_ms": 5000, "long": "factory-reset-then-reboot", "status": "PROVEN"},
+    "gpio12": {"role": "rf-enable", "active": "high", "behavior": "state-following-no-persistence", "status": "PROVEN_CURRENT_UNIT_NON_AMBER"}
+  },
+  "leds": {
+    "gpio11": {"name": "wlan2.4GB", "physical_active": "low", "role": "wifi2g", "status": "PROVEN_PHYSICAL"},
+    "gpio1": {"name": "wlan5GB", "role": "shared-wlan-wps", "status": "PROVEN_LOGICAL"},
+    "gpio10": {"name": "signalB", "role": "mode-table-entry-runtime-writer-not-proven", "status": "PARTIAL_NO_USEFUL_INDEPENDENT_VISIBLE_COLOUR_CONFIRMED"},
+    "gpio9": {"name": "signalG", "role": "wps-error-20s", "status": "PROVEN_LOGICAL_PHYSICAL_GREEN_CONFIRMED_OPENMITRASTAR_DIAGNOSTIC"},
+    "gpio7": {"name": "signalR", "role": "link-quality", "status": "PROVEN_LOGICAL_PHYSICAL_RED_CONFIRMED_OPENMITRASTAR_DIAGNOSTIC"}
+  }
+}

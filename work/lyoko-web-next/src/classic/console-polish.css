@@ -1,0 +1,248 @@
+/* Additive finish for the preserved F314 console. Brand assets and the four
+   original stylesheets remain byte-identical to their firmware source. */
+:root {
+  --console-focus: #0055c8;
+  --console-header: 64px;
+}
+
+body { line-height: 1.5; }
+button, input, select { touch-action: manipulation; }
+button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
+.topbar { min-height: var(--console-header); }
+.top-actions { flex-wrap: wrap; justify-content: flex-end; }
+.top-actions .status-pill { max-width: 100%; white-space: normal; }
+.brand { flex-shrink: 0; }
+.icon-button { flex: 0 0 40px; width: 40px; height: 40px; }
+.page-heading h1 { letter-spacing: -.025em; line-height: 1.2; }
+.page-heading p { max-width: 76ch; line-height: 1.6; }
+.page-heading > .status-pill { flex-shrink: 0; }
+.heading-actions { flex-wrap: wrap; justify-content: flex-end; }
+.heading-actions .mono { overflow-wrap: anywhere; }
+.section-heading p { max-width: 76ch; }
+.summary-grid strong, .datum strong, .coverage-facts dd { font-variant-numeric: tabular-nums; }
+.summary-grid strong { line-height: 1.25; overflow-wrap: anywhere; }
+.summary-grid article > span { font-weight: 700; }
+.summary-grid article:hover { transform: none; box-shadow: var(--shadow); }
+.sidebar-product-name span, .sidebar-label, .sidebar-footer { color: #b1b5bf; }
+body.developer-only .section-link.active .nav-mark { color: #fff; }
+.section-link:focus-visible { outline-color: #ffcf4a; outline-offset: -2px; }
+.console-nav-close { display: none; }
+
+/* Let the form respond to its own available width, including desktop editors
+   alongside the inspector. Fixed minimum columns used to clip real controls. */
+.radio-editor { container: radio-editor / inline-size; }
+body.developer-only .wifi-workbench { grid-template-columns: 112px minmax(0, 1fr) minmax(280px, 320px); }
+body.developer-only .config-field {
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, .9fr) minmax(100px, .6fr);
+  gap: 12px;
+}
+.config-field > * { min-width: 0; }
+.config-field small { font-size: 12px; line-height: 1.55; }
+.config-field:hover, .config-field.setting-selected { transform: none; }
+.config-field:focus-within { border-left-color: var(--blue); background: #f5f8ff; }
+.config-field input, .config-field select { max-width: 100%; }
+.readonly-value { min-height: 44px; height: auto; padding-block: 9px; overflow-wrap: anywhere; }
+.field-state-stack .support-badge { min-height: 28px; font-size: 11px; line-height: 1.4; }
+.config-tabs { scrollbar-width: thin; scroll-padding-inline: 12px; }
+.config-tab { scroll-margin-inline: 12px; }
+.config-tab:focus-visible { outline-offset: -4px; }
+.config-field input:focus-visible, .config-field select:focus-visible {
+  outline: 2px solid var(--console-focus);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+.config-field .switch { width: 46px; min-width: 46px; }
+.switch input:focus-visible + span { outline: 3px solid var(--console-focus); outline-offset: 4px; }
+.switch:has(input:disabled) { cursor: not-allowed; }
+.switch input:disabled + span { opacity: .65; }
+.config-field input:disabled, .config-field select:disabled { color: #626772; -webkit-text-fill-color: #626772; }
+.button-row { flex-wrap: wrap; }
+.button-row > button, .package-actions > button {
+  min-height: 44px;
+  padding: 9px 14px;
+  border: 1px solid var(--blue);
+  border-radius: 6px;
+  background: var(--blue);
+  color: #fff;
+  font-weight: 750;
+  line-height: 1.35;
+}
+.button-row > button.secondary, .package-actions > button.secondary { background: #fff; border-color: #adb3bd; color: var(--ink); }
+.button-row > button:disabled, .form-footer button:disabled, #profile-apply:disabled,
+#rollback:disabled, #commit:disabled, #apply:disabled {
+  opacity: 1;
+  border-color: #cbd0d8;
+  background: #edf0f4;
+  color: #69717c;
+  box-shadow: none;
+}
+.form-footer { flex-wrap: wrap; }
+.form-footer > span { max-width: 46ch; line-height: 1.6; }
+.form-footer > .button-row { margin-left: auto; }
+.profile-button { min-height: 72px; }
+.profile-button small { font-size: 11px; line-height: 1.4; }
+.profile-heading p, .profile-impact { line-height: 1.6; }
+.profile-result { flex-wrap: wrap; }
+.profile-impact { margin-top: 12px; }
+.coverage-panel { position: static; }
+.setting-inspector dt { font-size: 11px; }
+.setting-inspector dd { line-height: 1.45; }
+.coverage-heading { flex-wrap: wrap; }
+.coverage-facts > div { min-width: 0; }
+.coverage-facts dd { overflow-wrap: anywhere; }
+.coverage-facts dt { font-size: 10px; }
+.transaction-strip { align-items: flex-start; }
+.transaction-strip > .button-row { padding-top: 6px; }
+.transaction-change > * { min-width: 0; overflow-wrap: anywhere; }
+.transaction-meta { font-size: 12px; overflow-wrap: anywhere; }
+.transaction-error { overflow-wrap: anywhere; }
+.channel-table span, .channel-table p, .policy-footnote { line-height: 1.55; }
+.capability-row > *, .package-item > *, .hardware-row > * { min-width: 0; overflow-wrap: anywhere; }
+.capability-row { grid-template-columns: minmax(0, 1.3fr) minmax(0, .7fr) minmax(0, .9fr); }
+.package-actions { flex-wrap: wrap; }
+.package-toolbar input { min-height: 44px; padding: 9px 12px; border: 1px solid #b9bbc2; border-radius: 6px; background: #fff; }
+.package-item { grid-template-columns: minmax(0, 1fr); }
+.package-meta div { grid-template-columns: minmax(0, .7fr) minmax(0, 1fr); }
+details > summary { min-height: 44px; padding: 10px 0; }
+pre { scrollbar-width: thin; }
+.risk-dialog { max-height: calc(100dvh - 32px); overflow-y: auto; overscroll-behavior: contain; }
+.risk-dialog .button-row > button { min-width: 0; }
+.risk-dialog h2 { line-height: 1.25; }
+.risk-check { line-height: 1.6; }
+#toast { max-width: min(420px, calc(100vw - 32px)); overflow-wrap: anywhere; }
+[id$="-panel"], #network-local, #network-services, #network-clients, .config-pane { scroll-margin-top: 88px; }
+
+@container radio-editor (max-width: 620px) {
+  body.developer-only .config-field { grid-template-columns: minmax(0, 1fr) minmax(120px, .85fr); }
+  body.developer-only .field-state-stack { grid-column: 1 / -1; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .profile-switcher { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .profile-heading { flex-wrap: wrap; }
+}
+
+@container radio-editor (max-width: 390px) {
+  body.developer-only .config-field { grid-template-columns: minmax(0, 1fr); gap: 9px; }
+  body.developer-only .field-state-stack { grid-template-columns: minmax(0, 1fr); }
+  .config-tabs { padding-inline: 6px; }
+  .config-tab { padding-inline: 10px; }
+  .editor-heading { padding: 18px 16px 14px; flex-wrap: wrap; }
+  .config-pane { padding: 5px 8px; }
+  .form-footer { padding: 14px 16px; }
+  .form-footer > .button-row { width: 100%; }
+  .form-footer > .button-row > button { flex: 1 1 130px; }
+}
+
+@media (max-width: 1360px) and (min-width: 901px) {
+  body.developer-only .wifi-workbench { grid-template-columns: 100px minmax(0, 1fr); }
+  body.developer-only .coverage-panel { grid-column: 1 / -1; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  body.developer-only .setting-inspector { grid-row: span 4; }
+  .transaction-strip { flex-wrap: wrap; }
+  .transaction-strip > .button-row { margin-left: auto; }
+}
+
+@media (max-width: 900px) {
+  .topbar { height: auto; padding-block: 10px; gap: 12px; }
+  .topbar-start { flex-shrink: 0; }
+  .nav-toggle { display: inline-grid; }
+  .workspace-shell { display: block; }
+  .sidebar {
+    position: fixed;
+    z-index: 45;
+    inset: 0 auto 0 0;
+    width: min(320px, calc(100vw - 44px));
+    height: 100dvh;
+    min-height: 0;
+    padding-top: 58px;
+    transform: translateX(-110%);
+    transition: transform .18s ease;
+    overscroll-behavior: contain;
+    box-shadow: 12px 0 30px rgba(0, 0, 0, .25);
+  }
+  body.nav-open { overflow: hidden; }
+  body.nav-open .sidebar { transform: none; }
+  .sidebar-product-name, .section-nav, .console-identity, .sidebar-footer { order: 0; }
+  .sidebar-footer { margin-top: 24px; padding-bottom: max(8px, env(safe-area-inset-bottom)); }
+  .console-identity { margin-top: 24px; }
+  .console-nav-close {
+    display: inline-flex;
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 36px;
+    padding: 6px 10px;
+    border: 1px solid #656b76;
+    border-radius: 6px;
+    background: transparent;
+    color: #fff;
+    font-weight: 700;
+  }
+  .console-nav-close:focus-visible { outline-color: #ffcf4a; }
+  .nav-scrim { position: fixed; z-index: 40; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 0; background: rgba(20,20,25,.58); }
+  body.nav-open .nav-scrim { display: block; }
+  main { width: calc(100% - 36px); padding-top: 24px; }
+  body.developer-only .wifi-workbench { grid-template-columns: minmax(0, 1fr); }
+  body.developer-only .band-rail { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  body.developer-only .band-button { transform: none; min-height: 106px; }
+  body.developer-only .coverage-panel { grid-template-columns: minmax(0, 1fr); }
+  body.developer-only .setting-inspector { grid-row: auto; }
+  .transaction-strip { flex-wrap: wrap; }
+  .transaction-strip > .button-row { margin-left: auto; }
+}
+
+@media (max-width: 600px) {
+  .topbar { display: grid; grid-template-columns: minmax(0, 1fr); gap: 9px; padding: 10px 14px; }
+  .topbar-start { gap: 12px; }
+  .brand { gap: 12px; }
+  .movistar-wordmark { width: 106px; }
+  .product-name strong { font-size: 16px; }
+  .top-actions { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-start; }
+  .top-actions > .status-pill { display: inline-flex; font-size: 10px; min-height: 26px; padding: 3px 7px; }
+  .top-actions > #mode-state { display: none; }
+  .top-actions > .icon-button { width: 34px; height: 34px; flex-basis: 34px; }
+  #refresh { margin-left: auto; }
+  main { width: calc(100% - 24px); padding-top: 20px; }
+  .page-heading { gap: 12px; }
+  .page-heading > .status-pill { flex-shrink: 1; white-space: normal; }
+  .page-heading h1 { font-size: 25px; }
+  .heading-actions { justify-content: flex-start; }
+  .summary-grid { gap: 10px; }
+  .summary-grid article { min-height: 104px; }
+  .content-band, .channel-policy { padding: 16px; }
+  .band-button small { font-size: 11px; }
+  body.developer-only .band-button { min-height: 105px; }
+  body.developer-only .config-field > .switch { width: 46px; }
+  .profile-switcher { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .profile-button { padding: 10px; }
+  .profile-button strong { font-size: 12px; }
+  .profile-button small { font-size: 11px; }
+  .profile-result > .support-badge { white-space: normal; }
+  .transaction-strip { padding: 14px; }
+  .transaction-strip > .button-row { width: 100%; }
+  .transaction-strip > .button-row > button { flex: 1 1 110px; }
+  .capability-row { grid-template-columns: minmax(0, 1fr); gap: 8px; padding-block: 14px; }
+  .capability-row small { grid-column: auto; }
+  .package-item { gap: 10px; }
+  .package-actions > button { flex: 1 1 auto; }
+  .package-inspector { padding-inline: 0; }
+  .risk-dialog { width: calc(100vw - 24px); max-height: calc(100dvh - 24px); }
+  .risk-dialog form { padding: 18px; }
+  .risk-dialog h2 { font-size: 21px; }
+  .risk-dialog .button-row { flex-wrap: wrap; }
+  .risk-dialog .button-row > button { flex: 1 1 130px; }
+  .risk-check { padding: 12px; }
+  #toast { right: 12px; bottom: max(12px, env(safe-area-inset-bottom)); max-width: calc(100vw - 24px); }
+  [id$="-panel"], #network-local, #network-services, #network-clients, .config-pane { scroll-margin-top: 150px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+@media (forced-colors: active) {
+  .switch span { border: 1px solid ButtonText; }
+  .switch input:checked + span { background: Highlight; }
+  .section-link.active, .config-tab.active, .profile-button.active { border-color: Highlight; }
+  .config-field input:focus-visible, .config-field select:focus-visible, .switch input:focus-visible + span { outline-color: Highlight; }
+}

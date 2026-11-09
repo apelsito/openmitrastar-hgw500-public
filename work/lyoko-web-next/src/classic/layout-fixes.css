@@ -1,0 +1,11 @@
+.developer-grid,
+.developer-grid .content-section,
+pre {
+  min-width: 0;
+}
+
+pre {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}

@@ -1,0 +1,316 @@
+{
+  "schema_version": "lyoko.board-profile/v1",
+  "profile_id": "mitrastar-hgw500bna-qcv2-a2",
+  "identity": {
+    "vendor": "MitraStar",
+    "model": "HGW-500BNA-QCv2",
+    "hardware_revisions": ["A2"],
+    "board_family": "quantenna-topaz",
+    "architecture_id": "arc700-topaz-hgw500"
+  },
+  "cpu": {
+    "architecture": "arc",
+    "core": "ARC700",
+    "instruction_set": "ARCompact",
+    "endianness": "little",
+    "clock_hz": 500000000,
+    "fpu": false,
+    "mmu": {
+      "version": "v2",
+      "page_size_bytes": 8192,
+      "tlb_entries": 128
+    },
+    "evidence_refs": ["platform-dossier", "ramssh-gate"]
+  },
+  "ram": {
+    "physical_bytes": 134217728,
+    "linux_regions": [
+      {
+        "id": "linux-high-ddr",
+        "start_address": 2224267264,
+        "end_address": 2281701376,
+        "size_bytes": 57434112,
+        "purpose": "linux-managed",
+        "status": "proven"
+      }
+    ],
+    "reserved_purposes": [
+      "pcie-bda",
+      "dsp",
+      "muc",
+      "auc",
+      "hbm",
+      "fwt-tqe",
+      "radio-firmware"
+    ],
+    "evidence_refs": ["platform-dossier"]
+  },
+  "flash": {
+    "technology": "spi-nor",
+    "capacity_bytes": 16777216,
+    "erase_block_bytes": 65536,
+    "device": {
+      "manufacturer": "Macronix",
+      "model": "MX25L12836E",
+      "jedec_id": "0xc22018"
+    },
+    "controller": {
+      "driver_family": "qtn-topaz-spi",
+      "mmio_base": "0xe4030000"
+    },
+    "physical_partitions": [
+      {
+        "id": "mtd0",
+        "linux_name": "uboot",
+        "offset_bytes": 0,
+        "size_bytes": 131072,
+        "role": "bootloader",
+        "write_policy": "immutable",
+        "sensitive": false
+      },
+      {
+        "id": "mtd1",
+        "linux_name": "uboot_env",
+        "offset_bytes": 131072,
+        "size_bytes": 65536,
+        "role": "boot-environment",
+        "write_policy": "recovery-only",
+        "sensitive": true
+      },
+      {
+        "id": "mtd2",
+        "linux_name": "uboot_env_bak",
+        "offset_bytes": 196608,
+        "size_bytes": 65536,
+        "role": "boot-environment",
+        "write_policy": "recovery-only",
+        "sensitive": true
+      },
+      {
+        "id": "mtd3",
+        "linux_name": "linux_safety",
+        "offset_bytes": 262144,
+        "size_bytes": 7995392,
+        "role": "firmware-slot",
+        "write_policy": "recovery-only",
+        "sensitive": false
+      },
+      {
+        "id": "mtd4",
+        "linux_name": "linux_live",
+        "offset_bytes": 8257536,
+        "size_bytes": 7995392,
+        "role": "firmware-slot",
+        "write_policy": "normal-firmware",
+        "sensitive": false
+      },
+      {
+        "id": "mtd5",
+        "linux_name": "data",
+        "offset_bytes": 16252928,
+        "size_bytes": 524288,
+        "role": "factory-data",
+        "write_policy": "immutable",
+        "sensitive": true
+      }
+    ],
+    "logical_views": [
+      {
+        "id": "mtd6-rootfs-live",
+        "linux_name": "rootfs_live",
+        "source_partition": "mtd4",
+        "offset_bytes": 1572864,
+        "size_bytes": 4587520,
+        "role": "rootfs",
+        "write_policy": "read-only"
+      },
+      {
+        "id": "mtd7-lyoko-store",
+        "linux_name": "lyoko_store",
+        "source_partition": "mtd4",
+        "offset_bytes": 6160384,
+        "size_bytes": 1835008,
+        "role": "store",
+        "write_policy": "read-only"
+      }
+    ],
+    "assembly_excludes": ["mtd6-rootfs-live"],
+    "evidence_refs": ["platform-dossier", "f181-spi", "f314-state"]
+  },
+  "boot": {
+    "loader": {
+      "name": "Bootbase",
+      "family": "u-boot-compatible",
+      "version": "36.7.0.30"
+    },
+    "console": {
+      "kind": "uart",
+      "mmio_base": "0xf0000000",
+      "baud": 115200,
+      "data_bits": 8,
+      "parity": "none",
+      "stop_bits": 1
+    },
+    "transports": [
+      {"id": "uart-console", "kind": "uart", "purpose": "console", "status": "proven"},
+      {"id": "ethernet-tftp", "kind": "tftp", "purpose": "firmware-transfer", "status": "partial"},
+      {"id": "uart-ymodem", "kind": "ymodem", "purpose": "firmware-transfer", "status": "proven"},
+      {"id": "linux-local-flash", "kind": "local-flash", "purpose": "normal-update", "status": "proven"},
+      {"id": "external-spi", "kind": "spi-programmer", "purpose": "last-resort-recovery", "status": "proven"}
+    ],
+    "slots": [
+      {"id": "safety", "partition": "mtd3", "role": "safety", "selector": "bootselect=1", "normal_iteration": false},
+      {"id": "live", "partition": "mtd4", "role": "live", "selector": "bootselect=0", "normal_iteration": true}
+    ],
+    "active_slot": "live",
+    "normal_flash_targets": ["mtd4"],
+    "image_formats": ["quantenna-webformat", "uimage", "squashfs-xz"],
+    "evidence_refs": ["bootbase-audit", "f314-state", "ops-manual"]
+  },
+  "network": {
+    "management": {
+      "interface": "eth0",
+      "addressing": "runtime-configured",
+      "default_bridge": "br0"
+    },
+    "ethernet": [
+      {
+        "id": "emac1",
+        "interface": "eth0",
+        "driver": "qtn-topaz-emac",
+        "mmio_base": "0xe8000000",
+        "irq": 20,
+        "link": "fixed-1000-full",
+        "status": "proven"
+      }
+    ],
+    "bridges": [
+      {"id": "lan", "interface": "br0", "member_policy": "runtime-configured"}
+    ],
+    "evidence_refs": ["platform-dossier", "f314-state"]
+  },
+  "radios": [
+    {
+      "id": "realtek-2g",
+      "band": "2.4ghz",
+      "hardware": "Realtek RTL8192EE PCIe radio",
+      "bus": "pcie",
+      "interface": "wlan0",
+      "drivers": ["cfg80211", "mac80211", "rtlwifi", "rtl-pci", "rtl8192ee"],
+      "firmware": ["rtlwifi/rtl8192eefw.bin"],
+      "calibration": {
+        "source_partition": "mtd5",
+        "handling": "preserve-and-import",
+        "export_allowed": false
+      },
+      "control_plane": "nl80211-hostapd",
+      "irqs": [28],
+      "status": "proven",
+      "evidence_refs": ["f314-state", "platform-dossier"]
+    },
+    {
+      "id": "quantenna-5g",
+      "band": "5ghz",
+      "hardware": "Quantenna QT4 Topaz integrated FullMAC radio",
+      "bus": "integrated",
+      "interface": "wifi0",
+      "drivers": ["qdrv", "wlan", "auc-fw", "qtn-debug"],
+      "firmware": ["qtn_driver.qtn_ruby.0.bin", "muc", "auc", "dsp"],
+      "calibration": {
+        "source_partition": "mtd5",
+        "handling": "preserve-and-import",
+        "export_allowed": false
+      },
+      "control_plane": "qdrv-hostapd-qtn",
+      "irqs": [8, 9, 10],
+      "status": "proven",
+      "evidence_refs": ["f314-state", "platform-dossier"]
+    }
+  ],
+  "hardware_io": {
+    "gpio": {
+      "controller": "qtn-topaz-gpio",
+      "numbering": "soc-global"
+    },
+    "leds": [
+      {"id": "wifi2g", "gpio": 11, "polarity": "active-low", "linux_name": "openmitrastar:green:wlan2g", "role": "wifi2g", "status": "proven"},
+      {"id": "wifi5g", "gpio": 1, "polarity": "active-high", "linux_name": "openmitrastar:green:wlan5g", "role": "wifi5g-wps", "status": "partial"},
+      {"id": "panel-blue", "gpio": 10, "polarity": "active-low", "linux_name": "openmitrastar:panel:signalb", "role": "panel-mode", "status": "partial"},
+      {"id": "panel-green", "gpio": 9, "polarity": "unknown", "linux_name": "openmitrastar:panel:signalg", "role": "boot-wps-error", "status": "proven"},
+      {"id": "panel-red", "gpio": 7, "polarity": "unknown", "linux_name": "openmitrastar:panel:signalr", "role": "link-quality", "status": "proven"}
+    ],
+    "buttons": [
+      {"id": "wifi2g", "gpio": 2, "polarity": "active-low", "role": "wifi2g-toggle", "status": "proven"},
+      {"id": "wifi5g-wps", "gpio": 4, "polarity": "active-low", "role": "wifi5g-wps", "status": "proven"},
+      {"id": "reset", "gpio": 5, "polarity": "active-low", "role": "reset", "status": "proven"},
+      {"id": "rf-enable", "gpio": 12, "polarity": "active-high", "role": "rf-enable", "status": "proven"}
+    ],
+    "thermal": {
+      "status": "unavailable",
+      "interfaces": []
+    },
+    "watchdog": {
+      "status": "unavailable",
+      "interfaces": []
+    },
+    "evidence_refs": ["hardware-inventory", "led-contract"]
+  },
+  "writable_store": {
+    "status": "read-only",
+    "source_partition": "mtd4",
+    "offset_bytes": 6160384,
+    "size_bytes": 1835008,
+    "erase_block_bytes": 65536,
+    "filesystem": "jffs2",
+    "mountpoint": "/var/lib/lyoko",
+    "write_policy": "read-only",
+    "preserve_on_firmware_update": true,
+    "requires_layout_change": false,
+    "evidence_refs": ["f211-store", "f279-store"]
+  },
+  "recovery": {
+    "preferred_method": "uart-safety-slot",
+    "methods": [
+      {"id": "uart-safety-slot", "transport": "uart", "scope": "slot-select", "status": "proven", "priority": 1},
+      {"id": "bootbase-slot-rewrite", "transport": "tftp", "scope": "slot-rewrite", "status": "partial", "priority": 2},
+      {"id": "external-spi-restore", "transport": "spi-programmer", "scope": "full-chip", "status": "proven", "priority": 3}
+    ],
+    "rollback_slot": "safety",
+    "immutable_partitions": ["mtd0", "mtd1", "mtd2", "mtd3", "mtd5"],
+    "evidence_refs": ["ops-manual", "bootbase-audit"]
+  },
+  "capabilities": [
+    {"id": "linux-5.10-persistent", "category": "platform", "status": "proven", "scope": "Persistent Linux 5.10 boots from the live slot.", "evidence_refs": ["f314-state"]},
+    {"id": "squashfs-root", "category": "storage", "status": "proven", "scope": "Read-only SquashFS-XZ root filesystem with volatile runtime filesystems.", "evidence_refs": ["f314-state"]},
+    {"id": "ethernet-management", "category": "network", "status": "proven", "scope": "Direct EMAC management and SSH survive normal persistent boot.", "evidence_refs": ["f314-state"]},
+    {"id": "wifi-2g-ap", "category": "radio", "status": "proven", "scope": "WPA2 association and bidirectional physical traffic are proven.", "evidence_refs": ["f314-state"]},
+    {"id": "wifi-5g-ap", "category": "radio", "status": "proven", "scope": "WPA2 association, bidirectional traffic and 120 second soak are proven on channel 36.", "evidence_refs": ["f314-state"]},
+    {"id": "wifi-5g-dfs", "category": "radio", "status": "blocked", "scope": "DFS remains fail-closed until the Linux 5.10 radar provider is physically proven.", "evidence_refs": ["f314-state"]},
+    {"id": "front-panel-leds", "category": "hardware", "status": "partial", "scope": "Five GPIO LED channels are mapped; one channel lacks useful independent visible-color proof.", "evidence_refs": ["led-contract"]},
+    {"id": "front-panel-buttons", "category": "hardware", "status": "proven", "scope": "Wi-Fi, WPS, reset and RF-enable GPIO inputs are mapped.", "evidence_refs": ["led-contract"]},
+    {"id": "thermal-sensor", "category": "hardware", "status": "unavailable", "scope": "No Linux thermal or qdrv temperature provider is currently exposed.", "evidence_refs": ["hardware-inventory"]},
+    {"id": "hardware-watchdog", "category": "hardware", "status": "unavailable", "scope": "No watchdog device or watchdog class registration is currently exposed.", "evidence_refs": ["hardware-inventory"]},
+    {"id": "persistent-package-store", "category": "storage", "status": "partial", "scope": "The non-overlapping lyoko_store window is exposed read-only; hardware writes remain disabled pending SPI protection validation.", "evidence_refs": ["f211-store", "f279-store", "f314-state"]}
+  ],
+  "constraints": [
+    {"id": "normal-write-mtd4-only", "severity": "hard", "statement": "Normal firmware updates may write only physical mtd4/linux_live.", "enforcement": "semantic-validator"},
+    {"id": "mtd6-is-logical", "severity": "hard", "statement": "mtd6/rootfs_live is a logical overlapping view and must not be assembled as physical flash.", "enforcement": "semantic-validator"},
+    {"id": "preserve-factory-data", "severity": "hard", "statement": "Factory identity, radio calibration and regulatory data in mtd5 remain opaque and immutable.", "enforcement": "process"},
+    {"id": "preserve-low-ddr", "severity": "hard", "statement": "Linux must not claim DDR reserved for radio firmware, HBM, TQE, DSP, MuC, AuC or PCIe state.", "enforcement": "runtime"},
+    {"id": "arc700-uclibc-abi", "severity": "hard", "statement": "Target binaries must match little-endian ARC700 and the selected Lyoko userspace ABI.", "enforcement": "process"},
+    {"id": "dfs-fail-closed", "severity": "hard", "statement": "DFS channels remain unavailable unless the radar provider and CAC state are ready.", "enforcement": "runtime"},
+    {"id": "no-device-identity", "severity": "hard", "statement": "Profiles never contain MAC addresses, credentials, serial numbers, keys or calibration payloads.", "enforcement": "semantic-validator"}
+  ],
+  "evidence": [
+    {"id": "platform-dossier", "kind": "document", "path": "docs/OPENMITRASTAR_PLATFORM_DOSSIER.md", "claim": "CPU, memory, flash, Ethernet, radio and calibration architecture.", "status": "authoritative"},
+    {"id": "ramssh-gate", "kind": "document", "path": "docs/RAMSSH_RESCUE_GATE_20260813.md", "claim": "ARC700, MMU v2, 8 KiB pages and little-endian execution.", "status": "supporting"},
+    {"id": "f314-state", "kind": "physical-test", "path": "docs/OPENMITRASTAR_F314_CURRENT_STATE.md", "claim": "Current persistent Linux 5.10, Ethernet and dual-radio physical baseline.", "status": "authoritative"},
+    {"id": "hardware-inventory", "kind": "document", "path": "docs/OPENMITRASTAR_F173_HARDWARE_INVENTORY.md", "claim": "Buttons, LED devices and absent thermal/watchdog interfaces.", "status": "supporting"},
+    {"id": "led-contract", "kind": "document", "path": "docs/HGW500_OEM_BUTTON_LED_CONTRACT_20260821.md", "claim": "GPIO button and LED mappings with evidence status.", "status": "authoritative"},
+    {"id": "f181-spi", "kind": "binary-audit", "path": "docs/OPENMITRASTAR_F181_SPI_READONLY_PROBE.md", "claim": "SPI NOR identity, JEDEC ID and controller base.", "status": "supporting"},
+    {"id": "f211-store", "kind": "document", "path": "docs/OPENMITRASTAR_F211_STORE_FORMAT.md", "claim": "Offline JFFS2 store geometry and page size.", "status": "supporting"},
+    {"id": "f279-store", "kind": "document", "path": "docs/OPENMITRASTAR_F279_STORE_WRITE_FOUNDATION.md", "claim": "Store boundaries, erase size and disabled hardware write path.", "status": "supporting"},
+    {"id": "bootbase-audit", "kind": "binary-audit", "path": "docs/BOOTBASE_ONESHOT_AUDIT.md", "claim": "Bootbase version, slot selection and recovery transports.", "status": "authoritative"},
+    {"id": "ops-manual", "kind": "document", "path": "docs/OPENMITRASTAR_HGW500_OPS.md", "claim": "Normal update and recovery operational boundaries.", "status": "authoritative"}
+  ]
+}

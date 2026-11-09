@@ -1,0 +1,7 @@
+{
+  "original_header": "/workspace/user-home\\Desktop\\MitraStar\\work\\sources\\Quantenna-GPL\\drivers\\include\\kernel\\net80211\\ieee80211_var.h",
+  "original_sha256": "dcbb6ccf7d3d7362c5996d680723bd34f2da2556ed07f424bbeaa9936ec81462",
+  "host_only_field": true,
+  "requires_coherent_26_module_rebuild": true,
+  "hardware": false
+}

@@ -1,0 +1,93 @@
+{
+  "schema": "openmitrastar.eth73-source/v1",
+  "created_utc": "2026-10-22T15:48:06.166735+00:00",
+  "classification": "OFFLINE_DIAGNOSTIC_NO_GO_HARDWARE",
+  "hardware_accessed": false,
+  "base_kernel_commit": "c03c1a14507dfaf8b856c2608f9ac216021fc222",
+  "basic_patch_sha256": "d36ed090cdcb9470eb301933c066b2c7cde12de3af5c1cf3d02d9a7509088192",
+  "inputs": [
+    {
+      "path": "work\\kernel-port\\f374r3-ethernet-rx-quiesce\\qtn-topaz-emac-f352.c",
+      "sha256": "33a3eb4a25469f39927c4b429dfb40b7afd3f54a8cf319c4c1e727bcab21b82c",
+      "bytes": 49392
+    },
+    {
+      "path": "work\\kernel-port\\f374r3-ethernet-rx-quiesce\\f352_pair.inc",
+      "sha256": "1a02218b41e6769f0a3ce92e2e3705fa50a947f5337a79fa9737413ddbf2f18e",
+      "bytes": 6809
+    },
+    {
+      "path": "work\\kernel-port\\f374r3-ethernet-rx-quiesce\\f352_contract.h",
+      "sha256": "86ce6864caa11d06c127c36fdb8e9e5999c23cf61a7a07ede705b0f51d47b2a2",
+      "bytes": 2082
+    },
+    {
+      "path": "work\\kernel-port\\linux-5.10\\include\\linux\\soc\\qtn\\topaz-ethernet.h",
+      "sha256": "59e06f782d8afa0eb0da5db7a9723d28c82678fe422dd51f34d7914b8a9f18c9",
+      "bytes": 8526
+    },
+    {
+      "path": "work\\kernel-port\\linux-7.3-basic\\overlay\\arch\\arc\\kernel\\intc-compact.c",
+      "sha256": "70434637999489ec220937320ad52a1218e11aeb1feb1b3e690ae1131fd787b2",
+      "bytes": 6620
+    },
+    {
+      "path": "work\\kernel-port\\linux-7.3-basic\\overlay\\arch\\arc\\boot\\dts\\topaz_mitrastar_basic73.dts",
+      "sha256": "836341f0bde5b4544191683c5843d983b5d30aacab63d1f8210e06e35b3c38b8",
+      "bytes": 2831
+    },
+    {
+      "path": "work\\kernel-port\\linux-7.3-basic\\basic73.config.template",
+      "sha256": "df6f6d19602ac667e7f4d4505e9be9e31704109df887a27ea8475caef8e86dec",
+      "bytes": 24442
+    }
+  ],
+  "outputs": [
+    {
+      "path": "driver\\f352_contract.h",
+      "sha256": "86ce6864caa11d06c127c36fdb8e9e5999c23cf61a7a07ede705b0f51d47b2a2",
+      "bytes": 2082
+    },
+    {
+      "path": "driver\\f352_pair.inc",
+      "sha256": "b73f474d8211544514c83cf9f2a8b6aa5166814eff57c247b0af6c16434b9a4c",
+      "bytes": 6989
+    },
+    {
+      "path": "driver\\Makefile",
+      "sha256": "5d9861a9b0791efba1d918a9b54e4038ffb1d405f3b992d928c6f775a96df9ca",
+      "bytes": 32
+    },
+    {
+      "path": "driver\\qtn-topaz-emac-eth73.c",
+      "sha256": "cf9441d47c168a050d6df9fefb834bfd5697e7340a33739d33b56b1ccbe9220a",
+      "bytes": 51004
+    },
+    {
+      "path": "driver\\topaz-ethernet.h",
+      "sha256": "59e06f782d8afa0eb0da5db7a9723d28c82678fe422dd51f34d7914b8a9f18c9",
+      "bytes": 8526
+    },
+    {
+      "path": "eth73.config.template",
+      "sha256": "2af09b502f455516ca4e3e33809a12b31a4e51fddddd952a9b951da975179a8c",
+      "bytes": 24634
+    },
+    {
+      "path": "overlay\\arch\\arc\\boot\\dts\\topaz_mitrastar_eth73.dts",
+      "sha256": "33d8dab216adcd62d0f24d65cf4cae31747e8c148029a4beffe9242fb4dc37b5",
+      "bytes": 3454
+    },
+    {
+      "path": "overlay\\arch\\arc\\kernel\\intc-compact.c",
+      "sha256": "2571db3b9d4d0d8b76727cdc1cb7ff5aa1ec9b48f9733b6e40481e61bd5e303e",
+      "bytes": 6680
+    }
+  ],
+  "limits": [
+    "DT Ethernet disabled and no unit MAC supplied.",
+    "DMA timeout latches quarantine: memory retained even on netdev removal.",
+    "No reset recovery on timeout; reopening refused until external hardware reset.",
+    "No hardware, traffic, reset, runtime or release acceptance."
+  ]
+}

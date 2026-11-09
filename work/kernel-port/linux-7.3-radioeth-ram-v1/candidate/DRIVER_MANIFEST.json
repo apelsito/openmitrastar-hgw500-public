@@ -1,0 +1,33 @@
+{
+  "schema": "openmitrastar.radioeth73-driver/v1",
+  "hardware_accessed": false,
+  "base": "MAC-init-v3 plus passive TX diagnostics",
+  "physical": "UNRUN",
+  "files": [
+    {
+      "path": "driver/f352_contract.h",
+      "sha256": "86ce6864caa11d06c127c36fdb8e9e5999c23cf61a7a07ede705b0f51d47b2a2",
+      "bytes": 2082
+    },
+    {
+      "path": "driver/f352_pair.inc",
+      "sha256": "027ebd5da0cdc98499e58fbb79e8d883089ca49ae36ebe298140e1df69bbcbf3",
+      "bytes": 7390
+    },
+    {
+      "path": "driver/Makefile",
+      "sha256": "5d9861a9b0791efba1d918a9b54e4038ffb1d405f3b992d928c6f775a96df9ca",
+      "bytes": 32
+    },
+    {
+      "path": "driver/qtn-topaz-emac-eth73.c",
+      "sha256": "9c72b137d60806fd1345e1410416a86688cdca813435b383f02f1999c425a8d1",
+      "bytes": 56463
+    },
+    {
+      "path": "driver/topaz-ethernet.h",
+      "sha256": "b76ed50ef43801e20d91b5889445f19c54eb0758a445356133116a0d22f835d4",
+      "bytes": 9066
+    }
+  ]
+}

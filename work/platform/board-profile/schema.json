@@ -1,0 +1,559 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openmitrastar.local/schema/lyoko-board-profile-v1.json",
+  "title": "Lyoko portable board profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "profile_id",
+    "identity",
+    "cpu",
+    "ram",
+    "flash",
+    "boot",
+    "network",
+    "radios",
+    "hardware_io",
+    "writable_store",
+    "recovery",
+    "capabilities",
+    "constraints",
+    "evidence"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "lyoko.board-profile/v1"
+    },
+    "profile_id": {
+      "$ref": "#/$defs/id"
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["vendor", "model", "hardware_revisions", "board_family", "architecture_id"],
+      "properties": {
+        "vendor": {"$ref": "#/$defs/text"},
+        "model": {"$ref": "#/$defs/text"},
+        "hardware_revisions": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/token"}
+        },
+        "board_family": {"$ref": "#/$defs/id"},
+        "architecture_id": {"$ref": "#/$defs/id"}
+      }
+    },
+    "cpu": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["architecture", "core", "instruction_set", "endianness", "clock_hz", "fpu", "mmu", "evidence_refs"],
+      "properties": {
+        "architecture": {"enum": ["arc", "arm", "arm64", "mips", "riscv32", "riscv64", "x86_64"]},
+        "core": {"$ref": "#/$defs/token"},
+        "instruction_set": {"$ref": "#/$defs/token"},
+        "endianness": {"enum": ["little", "big"]},
+        "clock_hz": {"type": "integer", "minimum": 1000000},
+        "fpu": {"type": "boolean"},
+        "mmu": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["version", "page_size_bytes", "tlb_entries"],
+          "properties": {
+            "version": {"$ref": "#/$defs/token"},
+            "page_size_bytes": {"type": "integer", "minimum": 1024, "multipleOf": 1024},
+            "tlb_entries": {"type": "integer", "minimum": 1}
+          }
+        },
+        "evidence_refs": {"$ref": "#/$defs/evidenceRefs"}
+      }
+    },
+    "ram": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["physical_bytes", "linux_regions", "reserved_purposes", "evidence_refs"],
+      "properties": {
+        "physical_bytes": {"type": "integer", "minimum": 1048576},
+        "linux_regions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/memoryRegion"}
+        },
+        "reserved_purposes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/id"}
+        },
+        "evidence_refs": {"$ref": "#/$defs/evidenceRefs"}
+      }
+    },
+    "flash": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["technology", "capacity_bytes", "erase_block_bytes", "device", "controller", "physical_partitions", "logical_views", "assembly_excludes", "evidence_refs"],
+      "properties": {
+        "technology": {"enum": ["spi-nor", "parallel-nor", "nand", "emmc", "nvme", "none"]},
+        "capacity_bytes": {"type": "integer", "minimum": 0},
+        "erase_block_bytes": {"type": "integer", "minimum": 1},
+        "device": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["manufacturer", "model", "jedec_id"],
+          "properties": {
+            "manufacturer": {"$ref": "#/$defs/text"},
+            "model": {"$ref": "#/$defs/token"},
+            "jedec_id": {"pattern": "^0x[0-9a-f]{6}$", "type": "string"}
+          }
+        },
+        "controller": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["driver_family", "mmio_base"],
+          "properties": {
+            "driver_family": {"$ref": "#/$defs/id"},
+            "mmio_base": {"$ref": "#/$defs/hexAddress"}
+          }
+        },
+        "physical_partitions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/physicalPartition"}
+        },
+        "logical_views": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/logicalView"}
+        },
+        "assembly_excludes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/id"}
+        },
+        "evidence_refs": {"$ref": "#/$defs/evidenceRefs"}
+      }
+    },
+    "boot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["loader", "console", "transports", "slots", "active_slot", "normal_flash_targets", "image_formats", "evidence_refs"],
+      "properties": {
+        "loader": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "family", "version"],
+          "properties": {
+            "name": {"$ref": "#/$defs/text"},
+            "family": {"$ref": "#/$defs/id"},
+            "version": {"$ref": "#/$defs/token"}
+          }
+        },
+        "console": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "mmio_base", "baud", "data_bits", "parity", "stop_bits"],
+          "properties": {
+            "kind": {"enum": ["uart", "usb-serial", "none"]},
+            "mmio_base": {"$ref": "#/$defs/hexAddress"},
+            "baud": {"type": "integer", "minimum": 1200},
+            "data_bits": {"enum": [7, 8]},
+            "parity": {"enum": ["none", "even", "odd"]},
+            "stop_bits": {"enum": [1, 2]}
+          }
+        },
+        "transports": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/bootTransport"}
+        },
+        "slots": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/bootSlot"}
+        },
+        "active_slot": {"$ref": "#/$defs/id"},
+        "normal_flash_targets": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/id"}
+        },
+        "image_formats": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/id"}
+        },
+        "evidence_refs": {"$ref": "#/$defs/evidenceRefs"}
+      }
+    },
+    "network": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["management", "ethernet", "bridges", "evidence_refs"],
+      "properties": {
+        "management": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["interface", "addressing", "default_bridge"],
+          "properties": {
+            "interface": {"$ref": "#/$defs/interfaceName"},
+            "addressing": {"enum": ["runtime-configured", "dhcp", "static-profile"]},
+            "default_bridge": {"$ref": "#/$defs/interfaceName"}
+          }
+        },
+        "ethernet": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/ethernetInterface"}
+        },
+        "bridges": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/bridge"}
+        },
+        "evidence_refs": {"$ref": "#/$defs/evidenceRefs"}
+      }
+    },
+    "radios": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/radio"}
+    },
+    "hardware_io": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gpio", "leds", "buttons", "thermal", "watchdog", "evidence_refs"],
+      "properties": {
+        "gpio": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["controller", "numbering"],
+          "properties": {
+            "controller": {"$ref": "#/$defs/id"},
+            "numbering": {"enum": ["soc-global", "controller-relative"]}
+          }
+        },
+        "leds": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/led"}
+        },
+        "buttons": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/button"}
+        },
+        "thermal": {"$ref": "#/$defs/optionalSubsystem"},
+        "watchdog": {"$ref": "#/$defs/optionalSubsystem"},
+        "evidence_refs": {"$ref": "#/$defs/evidenceRefs"}
+      }
+    },
+    "writable_store": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "source_partition", "offset_bytes", "size_bytes", "erase_block_bytes", "filesystem", "mountpoint", "write_policy", "preserve_on_firmware_update", "requires_layout_change", "evidence_refs"],
+      "properties": {
+        "status": {"enum": ["unavailable", "planned", "read-only", "experimental", "proven"]},
+        "source_partition": {"$ref": "#/$defs/id"},
+        "offset_bytes": {"type": "integer", "minimum": 0},
+        "size_bytes": {"type": "integer", "minimum": 1},
+        "erase_block_bytes": {"type": "integer", "minimum": 1},
+        "filesystem": {"enum": ["none", "jffs2", "ubifs", "ext4", "littlefs", "raw-journal"]},
+        "mountpoint": {"pattern": "^/[A-Za-z0-9._/-]+$", "type": "string"},
+        "write_policy": {"enum": ["disabled", "transactional", "read-only", "external-only"]},
+        "preserve_on_firmware_update": {"type": "boolean"},
+        "requires_layout_change": {"type": "boolean"},
+        "evidence_refs": {"$ref": "#/$defs/evidenceRefs"}
+      }
+    },
+    "recovery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["preferred_method", "methods", "rollback_slot", "immutable_partitions", "evidence_refs"],
+      "properties": {
+        "preferred_method": {"$ref": "#/$defs/id"},
+        "methods": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/recoveryMethod"}
+        },
+        "rollback_slot": {"$ref": "#/$defs/id"},
+        "immutable_partitions": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/id"}
+        },
+        "evidence_refs": {"$ref": "#/$defs/evidenceRefs"}
+      }
+    },
+    "capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/capability"}
+    },
+    "constraints": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/constraint"}
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/evidence"}
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[a-z0-9][a-z0-9._-]*$"
+    },
+    "token": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 96,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._+:/-]*$"
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 240,
+      "pattern": "^[ -~]+$"
+    },
+    "interfaceName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 15,
+      "pattern": "^[A-Za-z0-9_.-]+$"
+    },
+    "hexAddress": {
+      "type": "string",
+      "pattern": "^0x[0-9a-f]{8}$"
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/id"}
+    },
+    "memoryRegion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "start_address", "end_address", "size_bytes", "purpose", "status"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "start_address": {"type": "integer", "minimum": 0},
+        "end_address": {"type": "integer", "minimum": 1},
+        "size_bytes": {"type": "integer", "minimum": 1},
+        "purpose": {"$ref": "#/$defs/id"},
+        "status": {"enum": ["proven", "partial", "inferred"]}
+      }
+    },
+    "physicalPartition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "linux_name", "offset_bytes", "size_bytes", "role", "write_policy", "sensitive"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "linux_name": {"$ref": "#/$defs/id"},
+        "offset_bytes": {"type": "integer", "minimum": 0},
+        "size_bytes": {"type": "integer", "minimum": 1},
+        "role": {"enum": ["bootloader", "boot-environment", "firmware-slot", "factory-data", "general-store", "reserved"]},
+        "write_policy": {"enum": ["immutable", "recovery-only", "normal-firmware", "transactional-store", "read-only"]},
+        "sensitive": {"type": "boolean"}
+      }
+    },
+    "logicalView": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "linux_name", "source_partition", "offset_bytes", "size_bytes", "role", "write_policy"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "linux_name": {"$ref": "#/$defs/id"},
+        "source_partition": {"$ref": "#/$defs/id"},
+        "offset_bytes": {"type": "integer", "minimum": 0},
+        "size_bytes": {"type": "integer", "minimum": 1},
+        "role": {"enum": ["rootfs", "kernel", "store", "diagnostic"]},
+        "write_policy": {"enum": ["immutable", "read-only", "transactional-store"]}
+      }
+    },
+    "bootTransport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "purpose", "status"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "kind": {"enum": ["uart", "tftp", "ymodem", "spi-programmer", "local-flash"]},
+        "purpose": {"enum": ["console", "ram-boot", "firmware-transfer", "normal-update", "last-resort-recovery"]},
+        "status": {"enum": ["proven", "partial", "unavailable"]}
+      }
+    },
+    "bootSlot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "partition", "role", "selector", "normal_iteration"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "partition": {"$ref": "#/$defs/id"},
+        "role": {"enum": ["live", "safety", "recovery"]},
+        "selector": {"$ref": "#/$defs/text"},
+        "normal_iteration": {"type": "boolean"}
+      }
+    },
+    "ethernetInterface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "interface", "driver", "mmio_base", "irq", "link", "status"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "interface": {"$ref": "#/$defs/interfaceName"},
+        "driver": {"$ref": "#/$defs/id"},
+        "mmio_base": {"$ref": "#/$defs/hexAddress"},
+        "irq": {"type": "integer", "minimum": 0},
+        "link": {"enum": ["fixed-1000-full", "phy-managed", "switch-managed", "unknown"]},
+        "status": {"enum": ["proven", "partial", "unavailable"]}
+      }
+    },
+    "bridge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "interface", "member_policy"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "interface": {"$ref": "#/$defs/interfaceName"},
+        "member_policy": {"enum": ["runtime-configured", "fixed-profile"]}
+      }
+    },
+    "radio": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "band", "hardware", "bus", "interface", "drivers", "firmware", "calibration", "control_plane", "irqs", "status", "evidence_refs"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "band": {"enum": ["2.4ghz", "5ghz", "6ghz", "sub-ghz"]},
+        "hardware": {"$ref": "#/$defs/text"},
+        "bus": {"enum": ["integrated", "pcie", "pci", "usb", "sdio", "platform"]},
+        "interface": {"$ref": "#/$defs/interfaceName"},
+        "drivers": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/id"}
+        },
+        "firmware": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/token"}
+        },
+        "calibration": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["source_partition", "handling", "export_allowed"],
+          "properties": {
+            "source_partition": {"$ref": "#/$defs/id"},
+            "handling": {"enum": ["preserve-and-import", "driver-managed", "not-required", "unknown"]},
+            "export_allowed": {"const": false}
+          }
+        },
+        "control_plane": {"$ref": "#/$defs/id"},
+        "irqs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "integer", "minimum": 0}
+        },
+        "status": {"enum": ["proven", "partial", "experimental", "unavailable"]},
+        "evidence_refs": {"$ref": "#/$defs/evidenceRefs"}
+      }
+    },
+    "led": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "gpio", "polarity", "linux_name", "role", "status"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "gpio": {"type": "integer", "minimum": 0},
+        "polarity": {"enum": ["active-low", "active-high", "unknown"]},
+        "linux_name": {"$ref": "#/$defs/token"},
+        "role": {"$ref": "#/$defs/id"},
+        "status": {"enum": ["proven", "partial", "unknown"]}
+      }
+    },
+    "button": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "gpio", "polarity", "role", "status"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "gpio": {"type": "integer", "minimum": 0},
+        "polarity": {"enum": ["active-low", "active-high"]},
+        "role": {"$ref": "#/$defs/id"},
+        "status": {"enum": ["proven", "partial", "unknown"]}
+      }
+    },
+    "optionalSubsystem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "interfaces"],
+      "properties": {
+        "status": {"enum": ["proven", "partial", "unavailable", "unknown"]},
+        "interfaces": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/token"}
+        }
+      }
+    },
+    "recoveryMethod": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "transport", "scope", "status", "priority"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "transport": {"enum": ["uart", "tftp", "spi-programmer", "software"]},
+        "scope": {"enum": ["slot-select", "slot-rewrite", "full-chip", "runtime-rollback"]},
+        "status": {"enum": ["proven", "partial", "unavailable"]},
+        "priority": {"type": "integer", "minimum": 1}
+      }
+    },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "category", "status", "scope", "evidence_refs"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "category": {"enum": ["boot", "network", "radio", "storage", "hardware", "platform", "security", "packages"]},
+        "status": {"enum": ["proven", "partial", "planned", "experimental", "blocked", "unavailable"]},
+        "scope": {"$ref": "#/$defs/text"},
+        "evidence_refs": {"$ref": "#/$defs/evidenceRefs"}
+      }
+    },
+    "constraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "severity", "statement", "enforcement"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "severity": {"enum": ["hard", "warning", "informational"]},
+        "statement": {"$ref": "#/$defs/text"},
+        "enforcement": {"enum": ["schema", "semantic-validator", "runtime", "process"]}
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "path", "claim", "status"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "kind": {"enum": ["document", "manifest", "source", "physical-test", "binary-audit"]},
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240,
+          "pattern": "^(docs|work|outputs|recovery)/[A-Za-z0-9._/-]+$"
+        },
+        "claim": {"$ref": "#/$defs/text"},
+        "status": {"enum": ["authoritative", "supporting", "historical"]}
+      }
+    }
+  }
+}

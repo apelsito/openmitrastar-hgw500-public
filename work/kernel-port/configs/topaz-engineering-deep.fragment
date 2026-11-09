@@ -1,0 +1,4 @@
+# Use only for a directed investigation; never deploy as the normal image.
+CONFIG_KALLSYMS_ALL=y
+CONFIG_SLUB_DEBUG_ON=y
+

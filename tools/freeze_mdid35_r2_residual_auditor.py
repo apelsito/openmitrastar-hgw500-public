@@ -1,0 +1,13 @@
+"""Frozen r2 residual scope for prequalification probe-order seed only."""
+import argparse,hashlib,json
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[1]
+def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def main():
+ p=argparse.ArgumentParser();p.add_argument('--skeleton',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args();assert not a.output.exists();a.output.mkdir(parents=True);text=a.skeleton.read_text();text=text.replace('mdid494-ft495-source35-20261022T232500Z-r3','mdid494-ft495-source35-20261022T230700Z-r2');start=text.index('RENAME={}');end=start+len('RENAME={}');text=text[:start]+"RENAME={'CSWTCH.990':'CSWTCH.993','CSWTCH.993':'CSWTCH.996','CSWTCH.1119':'CSWTCH.1121','CSWTCH.1108':'CSWTCH.1110','CSWTCH.1175':'CSWTCH.1177','CSWTCH.1158':'CSWTCH.1160','CSWTCH.1121':'CSWTCH.1123','CSWTCH.1173':'CSWTCH.1175'}"+text[end:]
+ text=text.replace('DIAG={}',"DIAG={'ieee80211_beacon_update':[(566,'480f','8900')],'ieee80211_delete_wlanunit':[(44,'96','a8'),(116,'97','a9')],'ieee80211_ioctl_giwfreq':[(76,'18','58')],'ieee80211_param_from_qdrv':[(92,'97','98')],'ieee80211_mgmt_output':[(64,'84','c4')],'ieee80211_tdls_mgmt_output':[(72,'c502','0503')],'ieee80211_add_wpa':[(76,'92','d2'),(504,'92','d2'),(854,'90','d0')],'ieee80211_compile_action_measurement_11h':[(300,'ed','ee')],'ieee80211_compile_action_measurement_11k':[(314,'42','43')]}")
+ text=text.replace("x[pos:pos+2]==bytes.fromhex(a)and y[pos:pos+2]==bytes.fromhex(b)","x[pos:pos+len(bytes.fromhex(a))]==bytes.fromhex(a)and y[pos:pos+len(bytes.fromhex(b))]==bytes.fromhex(b)").replace("z[pos:pos+2]=x[pos:pos+2]","z[pos:pos+len(bytes.fromhex(b))]=x[pos:pos+len(bytes.fromhex(a))]")
+ old="added={k[0]for k in set(ns)-set(os)if k[0]};assert added==expected_new,('new named symbols',added,expected_new)";new="added={k[0]for k in set(ns)-set(os)if k[0]};removed={k[0]for k in set(os)-set(ns)if k[0]};assert added==expected_new and not removed,('new or removed named symbols',added,expected_new,removed)";assert old in text;text=text.replace(old,new)
+ text=text.replace('PASS_COMPLETE_MDID35_MATCHED_HEADER_RESIDUAL_SCOPE','PASS_COMPLETE_MDID35_R2_SEED_MATCHED_HEADER_RESIDUAL_SCOPE')
+ script=a.output/'strict-auditor.py';script.write_text(text);r={'status':'FROZEN_R2_SEED_RESIDUAL_AUDITOR_NOT_OPERATION_QUALIFICATION','hardware_accessed':False,'firmware_eligible':False,'pins':{str(x):sha(x)for x in[Path(__file__),a.skeleton,script]}};(a.output/'result.json').write_text(json.dumps(r,indent=2)+'\n');print(json.dumps(r,indent=2))
+if __name__=='__main__':main()

@@ -1,0 +1,43 @@
+"""Derive the immutable R7 composer from the static R6 image contract."""
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[1]
+def once(s,a,b):
+ if s.count(a)!=1:raise ValueError('R7 image anchor '+a[:90])
+ return s.replace(a,b,1)
+def main():
+ s=(ROOT/'tools/build_f367r6_static_image.py').read_text()
+ s=s.replace('import contextlib,copy,hashlib','import argparse,contextlib,copy,hashlib')
+ s=s.replace('from f367r6_rootfs_worker import VERSION,static_elf','from f367r7_rootfs_worker import VERSION\nfrom f367r6_rootfs_worker import static_elf')
+ s=once(s,"SOURCE=DEVICE/'firmware/f367r5-f365-regulatory-profile-device-bound'","SOURCE=DEVICE/'firmware/f367r6-f365-static-profile-device-bound'\nCLOCK=ROOT/'outputs/preflight/f367r7-clock-publication-20260922T193631Z/result.json'\nJSON_TEST=ROOT/'outputs/preflight/f367r7-clock-json-20260922T193916Z/result.json'")
+ s=once(s,"BASE='openmitrastar-linux510-f367r6-hgw500bna-qcv2-a2-primary-PRIVATE-NO-FLASH'","BASE='openmitrastar-linux510-f367r7-hgw500bna-qcv2-a2-primary-PRIVATE-NO-FLASH'")
+ s=once(s,'def main():\n', '''def main():
+ ap=argparse.ArgumentParser();ap.add_argument('--components',type=Path,required=True);args=ap.parse_args()
+ components7=json.loads(args.components.read_text());clock=json.loads(CLOCK.read_text());json_test=json.loads(JSON_TEST.read_text())
+ require(components7['status']=='PASS_F367R7_CLOCK_COMPONENTS' and components7['reproducible'],'R7 component qualification')
+ require(clock['status']=='PASS_F367R7_DUAL_CLOCK_PUBLICATION' and json_test['status']=='PASS_MAX_CLOCK_JSON_BELOW_PAGE_SIZE','affected clock/JSON proof missing')
+ require(components7['clock_test']['sha256']==sha(CLOCK),'component clock proof mismatch')
+ for proof in (clock,json_test):
+  for path,digest in proof['source_pins'].items():require(sha(path)==digest,'affected proof source drift')
+ require(clock['admission_guard_unchanged'] in (ROOT/'work/kernel-port/f367r7-clock-publication/qdrv/qdrv/qdrv_f367_control.inc').read_text(),'admission guard changed')
+ for name,digest in components7['source_pins'].items():require(sha(ROOT/'work/kernel-port/f367r7-clock-publication'/name)==digest,'R7 source drift')
+ qdrv=Path(components7['artifacts']['qdrv']['path']);require(sha(qdrv)==components7['artifacts']['qdrv']['sha256'],'R7 qdrv drift')
+''')
+ s=s.replace('b5bc8aff0c578cf505cdcb7a5308fe2665cad16dd62da05bf4598b37ae616ce3','f5c9c2ab463cb4a754db6d6db4323a5ee16ba5f3f42204eaca019429c550ff01')
+ s=s.replace('9a4364491804a3bc6cddc43a5970b39ee94efc93f30583532aebcd3ccc4753d1','dfcf24b67d4494608c0228fcf69895748309222bde9849678808872e3986a332')
+ s=once(s,"final=DEVICE/'firmware/f367r6-f365-static-profile-device-bound'","final=DEVICE/'firmware/f367r7-f365-clock-observation-device-bound'")
+ s=once(s,"('f367r6-fullimage-'","('f367r7-fullimage-'")
+ s=once(s,"ROOT/'tools/f367r6_rootfs_worker.py',STATIC,PROBE","ROOT/'tools/f367r6_rootfs_worker.py',ROOT/'tools/f367r7_rootfs_worker.py',args.components,CLOCK,JSON_TEST,qdrv,STATIC,PROBE")
+ s=once(s,"inputs.update(static['source_pins'])","inputs.update(static['source_pins'])\n inputs.update({str(ROOT/'work/kernel-port/f367r7-clock-publication'/name):digest for name,digest in components7['source_pins'].items()})")
+ s=once(s,"campaign.update(runtime_revision='F367r6',shell_runtime_reused_from='F367r5'","campaign.update(clock_observation_test=item(CLOCK),clock_json_test=item(JSON_TEST),clock_admission_unchanged=True,clock_deadlines_unchanged=True,clock_remaining_rule='max(ns_remaining_ms,tick_remaining_ms)',runtime_revision='F367r7',shell_runtime_reused_from='F367r6'")
+ s=once(s,"linux(ROOT/'tools/f367r6_rootfs_worker.py')","linux(ROOT/'tools/f367r7_rootfs_worker.py')")
+ s=once(s,"'--helper',linux(helper),'--helper-sha',sha(helper)","'--qdrv',linux(qdrv),'--qdrv-sha',sha(qdrv)")
+ s=once(s,"allowed={'/usr/sbin/om-f367-dfs-profile'","allowed={'/lib/modules/5.10.260-openmitrastar-radiohw/openmitrastar/radio5g/qdrv.ko','/usr/libexec/openmitrastar/om-radio5-start-f367-native','/usr/share/openmitrastar/radio5g/driver-contract.env'")
+ s=s.replace('openmitrastar.f367r6-static-profile-image/v1','openmitrastar.f367r7-clock-observation-image/v1').replace('PASS_OFFLINE_F367R6_STATIC_PROFILE_IMAGE','PASS_OFFLINE_F367R7_CLOCK_OBSERVATION_IMAGE')
+ s=s.replace("'firmware':'F367r5 exact'","'firmware':'F367r6 exact'")
+ s=s.replace("'only_helper_link_and_metadata':True,'qdrv_kernel_provider_engine_supervisor_shell_unchanged':True","'only_qdrv_clock_publication_and_bindings':True,'kernel_provider_engine_supervisor_static_helper_unchanged':True,'native_helper_only_hash_pin_changed':True")
+ s=s.replace("'scope':'static noatomic link of byte-identical R5 publisher source; exact target invalid-argument probe passed'","'scope':'conservative max of the same nanosecond and tick deadlines; admission/deadline producers unchanged; precise captured rejection values'")
+ s=s.replace("'all_prior_binaries_reused':True,'static_helper_built_twice':True","'other_binaries_reused':True,'qdrv_built_twice':True")
+ s=once(s,"m['layout']['firmware_prefix_crc32']=crc(prefix)","m['module_closure']['native_components']=item(args.components)\n  m['module_closure']['imports_audited']=len(components7['imports_audited'])\n  m['layout']['firmware_prefix_crc32']=crc(prefix)")
+ s=s.replace('# F367r6 static profile helper','# F367r7 clock publication').replace('Only the static helper and release/profile/catalog metadata differ from R5. Kernel, qdrv, provider, engine, supervisor and every shell helper are byte-identical.','Only qdrv clock publication and its loader hash/metadata differ from R6. Kernel, provider, engine, static publisher and supervisor are byte-identical. Admission and deadlines are unchanged.')
+ (ROOT/'tools/build_f367r7_clock_image.py').write_bytes(s.encode());print('F367R7_IMAGE_BUILDER_READY')
+if __name__=='__main__':main()

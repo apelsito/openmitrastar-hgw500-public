@@ -1,0 +1,29 @@
+# Topaz PCIe host and upstream RTL8192EE 2.4 GHz stack.
+CONFIG_LOCALVERSION="-openmitrastar-radio"
+CONFIG_MODULE_UNLOAD=y
+CONFIG_OPENMITRASTAR_QDRV_COMPAT=y
+CONFIG_IPV6=y
+CONFIG_NET_SCHED=y
+CONFIG_I2C=y
+CONFIG_GPIOLIB=y
+CONFIG_ARC_PLAT_TOPAZ=y
+CONFIG_PCI=y
+# Initial hardware validation uses the OEM INTx route on Topaz IRQ 28.
+# CONFIG_PCI_MSI is not set
+CONFIG_PCIE_QTN_TOPAZ=y
+CONFIG_WIRELESS=y
+CONFIG_CFG80211=m
+# Expose the integrator switch so Linux 5.10 permits an unsigned but
+# build-hash-pinned regulatory.db on OpenSSL builds without ENGINE support.
+CONFIG_CFG80211_CERTIFICATION_ONUS=y
+# CONFIG_CFG80211_REQUIRE_SIGNED_REGDB is not set
+# CONFIG_CFG80211_USE_KERNEL_REGDB_KEYS is not set
+CONFIG_MAC80211=m
+CONFIG_WLAN_VENDOR_REALTEK=y
+CONFIG_RTL_CARDS=m
+CONFIG_RTLWIFI=m
+CONFIG_RTLWIFI_PCI=m
+CONFIG_RTLBTCOEXIST=m
+CONFIG_RTL8192EE=m
+# Keep production noise low; dynamic debug can be enabled in engineering.
+# CONFIG_RTLWIFI_DEBUG is not set

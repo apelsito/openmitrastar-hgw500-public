@@ -1,0 +1,36 @@
+{
+  "schema": "openmitrastar.f374r3-ethernet-rx-quiesce/v1",
+  "generated_at_utc": "2026-10-22T13:47:19.332403+00:00",
+  "status": "NO_GO_INSTALL",
+  "hardware_accessed": false,
+  "firmware_created": false,
+  "baseline_pins": {
+    "qtn-topaz-emac-f352.c": "011e42eb8fda62686b9b55dd210f1104540c5c3ec65f20d7f4035812e55e64f2",
+    "f352_contract.h": "86ce6864caa11d06c127c36fdb8e9e5999c23cf61a7a07ede705b0f51d47b2a2",
+    "f352_pair.inc": "1a02218b41e6769f0a3ce92e2e3705fa50a947f5337a79fa9737413ddbf2f18e",
+    "Makefile": "101e08948c4117fd8c77150c955ee91d8a7944d7ac956398b9d0f6ab6f4b5a1c"
+  },
+  "source_pins": {
+    "f352_contract.h": "86ce6864caa11d06c127c36fdb8e9e5999c23cf61a7a07ede705b0f51d47b2a2",
+    "f352_pair.inc": "1a02218b41e6769f0a3ce92e2e3705fa50a947f5337a79fa9737413ddbf2f18e",
+    "Makefile": "101e08948c4117fd8c77150c955ee91d8a7944d7ac956398b9d0f6ab6f4b5a1c",
+    "qtn-topaz-emac-f352.c": "33a3eb4a25469f39927c4b429dfb40b7afd3f54a8cf319c4c1e727bcab21b82c"
+  },
+  "generators": {
+    "/workspace/user-home\\Desktop\\MitraStar\\tools\\prepare_f374r3_ethernet_rx_quiesce.py": "13b28e0669e17b1798015a4655869edb9f32b0e740a8163367e26290f4ad36e1",
+    "/workspace/user-home\\Desktop\\MitraStar\\tools\\prepare_f374r2_ethernet_rx_quiesce.py": "3baaed0c7ed970a96dfcf380683461cf405f22d520dabad73f010476268497a1",
+    "/workspace/user-home\\Desktop\\MitraStar\\tools\\prepare_f374_ethernet_rx_quiesce.py": "261ddda2882c48e355189ca1e0c021614602633ccac0e9e8d1bb81faaa3db759"
+  },
+  "change": "Require current RX DMA state stopped before descriptor rearm; restore exact nonzero IRQ masks and supported TX/RX/MAC mask for NAPI-masked zero snapshots.",
+  "revision": "r2 retained; zero IRQ snapshot no longer disables subsequent interrupt delivery.",
+  "required_configuration": {
+    "CONFIG_SMP": false,
+    "CONFIG_PREEMPT_NONE": true,
+    "caller": "running netdev irq_poll_work; no external/offline helper invocation"
+  },
+  "limits": [
+    "Inherited ndo_stop/remove DMA lifetime gap remains unresolved.",
+    "SMP/preemptible NAPI completion tail remains outside qualification.",
+    "No reset added; not packaged, installed or physically accepted."
+  ]
+}

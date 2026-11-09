@@ -1,0 +1,12 @@
+{
+  "source_hashes": {
+    "work\\kernel-port\\modules\\f332_dfs_provider\\engine\\f332_detector_core.c": "f5835ef8e66adfcb936bb98a45ee9062c715889fc5463ca817e96261cc6a0906",
+    "work\\kernel-port\\modules\\f332_dfs_provider\\engine\\f332_detector.h": "82355e78f435845671fa39721db1809a5b944c96a9aa3f7d8e432d8633a6ca4f",
+    "work\\kernel-port\\modules\\f332_dfs_provider\\engine\\f328_legacy_abi.c": "c232a7ac20e21e30c04ba0e07755b157eb4c12055cb7adbf2c0f43dba3617c4e",
+    "work\\kernel-port\\modules\\f332_dfs_provider\\engine\\f328_legacy_abi.h": "37b3d22835723a35fe747dd26bd277c0ab6540e7f8285b35054a06cf17668a76",
+    "work\\kernel-port\\modules\\f330_oem_preprocess\\f330_preprocess.c": "39005f979b1a112b5004cf2e1c59ac06fc758e7237275da847b0b3407fed3f54",
+    "work\\kernel-port\\modules\\f330_oem_preprocess\\f330_preprocess.h": "18a3886d097d37dfbd4ecd730e877a41adf8c668482c649d7abf217c08f9ec63"
+  },
+  "adaptation": "GP-preserving userspace entry/return; timer callbacks use the same wrapper",
+  "OEM_code_modified": false
+}

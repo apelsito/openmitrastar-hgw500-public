@@ -1,0 +1,20 @@
+#!/bin/ash
+
+printf 'bridge_members='
+first=1
+for path in /sys/class/net/br0/brif/*; do
+	[ -e "$path" ] || continue
+	[ "$first" = 1 ] || printf ','
+	first=0
+	printf '%s' "${path##*/}"
+done
+printf '\n'
+
+for interface in eth0 br0 wlan0 wifi0; do
+	base=/sys/class/net/$interface
+	[ -d "$base" ] || continue
+	printf '%s_operstate=' "$interface"; cat "$base/operstate" 2>/dev/null || printf 'unknown\n'
+	printf '%s_carrier=' "$interface"; cat "$base/carrier" 2>/dev/null || printf '0\n'
+	printf '%s_rx_errors=' "$interface"; cat "$base/statistics/rx_errors" 2>/dev/null || printf '0\n'
+	printf '%s_tx_errors=' "$interface"; cat "$base/statistics/tx_errors" 2>/dev/null || printf '0\n'
+done

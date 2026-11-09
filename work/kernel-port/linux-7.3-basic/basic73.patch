@@ -1,0 +1,767 @@
+--- a/arch/arc/Kconfig
++++ b/arch/arc/Kconfig
+@@ -90,6 +90,7 @@
+ source "arch/arc/plat-tb10x/Kconfig"
+ source "arch/arc/plat-axs10x/Kconfig"
+ source "arch/arc/plat-hsdk/Kconfig"
++source "arch/arc/plat-topaz-basic/Kconfig"
+ 
+ endmenu
+ 
+@@ -117,6 +118,16 @@
+ 	prompt "ARC Core"
+ 	default ARC_CPU_770 if ISA_ARCOMPACT
+ 	default ARC_CPU_HS if ISA_ARCV2
++
++config ARC_CPU_750D
++	bool "ARC750D (legacy ARC700 without LLSC/SWAPE)"
++	depends on ISA_ARCOMPACT
++	select ARC_CANT_LLSC
++	help
++	  Legacy ARC750D core, including the HGW-500BNA-QCv2 Topaz.
++	  The BASIC bring-up profile is uniprocessor and uses the existing
++	  interrupt-protected atomic operations and software byte swapping.
++	  Legacy MMUv2 support is a separate prerequisite.
+ 
+ config ARC_CPU_770
+ 	bool "ARC770"
+@@ -166,6 +177,7 @@
+ 
+ config SMP
+ 	bool "Symmetric Multi-Processing"
++	depends on !ARC_CPU_750D
+ 	select ARC_MCIP if ISA_ARCV2
+ 	help
+ 	  This enables support for systems with more than one CPU.
+@@ -262,8 +274,17 @@
+ 
+ choice
+ 	prompt "MMU Version"
++	default ARC_MMU_V2 if ARC_CPU_750D
+ 	default ARC_MMU_V3 if ISA_ARCOMPACT
+ 	default ARC_MMU_V4 if ISA_ARCV2
++
++config ARC_MMU_V2
++	bool "MMU v2 (legacy ARC750D)"
++	depends on ARC_CPU_750D && !SMP
++	select ARC_PAGE_SIZE_8K
++	help
++	  Software-managed MMUv2 with 8 KiB pages. Its PTE/TLB and
++	  cache maintenance layout differs from MMUv3.
+ 
+ config ARC_MMU_V3
+ 	bool "MMU v3"
+@@ -291,10 +312,12 @@
+ 	  Choose between 8k vs 16k
+ 
+ config ARC_PAGE_SIZE_16K
++	depends on !ARC_MMU_V2
+ 	select HAVE_PAGE_SIZE_16KB
+ 	bool "16KB"
+ 
+ config ARC_PAGE_SIZE_4K
++	depends on !ARC_MMU_V2
+ 	bool "4KB"
+ 	select HAVE_PAGE_SIZE_4KB
+ 
+@@ -331,9 +354,18 @@
+ 	  for floating point exceptions and rounding modes. These are
+ 	  preserved across task context switch when enabled.
+ 
++config ARC_CANT_LLSC
++	def_bool n
++
+ config ARC_HAS_LLSC
+ 	bool "Insn: LLOCK/SCOND (efficient atomic ops)"
+ 	default y
++	depends on !ARC_CANT_LLSC
++
++config ARC_HAS_SWAPE
++	bool "Insn: SWAPE (endian-swap)"
++	default y
++	depends on !ARC_CPU_750D
+ 
+ if ISA_ARCV2
+ 
+--- a/arch/arc/Makefile
++++ b/arch/arc/Makefile
+@@ -9,7 +9,7 @@
+ CROSS_COMPILE := $(call cc-cross-prefix, arc-linux- arceb-linux- arc-linux-gnu-)
+ endif
+ 
+-cflags-y	+= -fno-common -pipe -fno-builtin -mmedium-calls -mswape -D__linux__
++cflags-y	+= -fno-common -pipe -fno-builtin -mmedium-calls -D__linux__
+ 
+ tune-mcpu-def-$(CONFIG_ISA_ARCOMPACT)	:= -mcpu=arc700
+ tune-mcpu-def-$(CONFIG_ISA_ARCV2)	:= -mcpu=hs38
+@@ -41,6 +41,10 @@
+ cflags-y				+= -fsection-anchors
+ 
+ cflags-$(CONFIG_ARC_HAS_LLSC)		+= -mlock
++cflags-$(CONFIG_ARC_HAS_SWAPE)		+= -mswape
++
++# ARC750D BASIC: override toolchain extension defaults explicitly.
++cflags-$(CONFIG_ARC_CPU_750D)		+= -mno-lock -mno-atomic -mno-swape
+ 
+ ifdef CONFIG_ISA_ARCV2
+ 
+@@ -85,6 +89,7 @@
+ core-$(CONFIG_ARC_PLAT_TB10X)	+= arch/arc/plat-tb10x/
+ core-$(CONFIG_ARC_PLAT_AXS10X)	+= arch/arc/plat-axs10x/
+ core-$(CONFIG_ARC_SOC_HSDK)	+= arch/arc/plat-hsdk/
++core-$(CONFIG_ARC_PLAT_TOPAZ_BASIC) += arch/arc/plat-topaz-basic/
+ 
+ libs-y		+= arch/arc/lib/ $(LIBGCC)
+ 
+--- a/arch/arc/include/uapi/asm/swab.h
++++ b/arch/arc/include/uapi/asm/swab.h
+@@ -19,6 +19,9 @@
+ 
+ #include <linux/types.h>
+ 
++/* Compiler target feature: no kernel CONFIG symbol leaks into UAPI. */
++#ifdef __Xswape
++
+ #define __arch_swab32(x)		\
+ ({					\
+ 	unsigned int tmp = x;		\
+@@ -29,6 +32,21 @@
+ 	tmp;				\
+ })
+ 
++#else
++
++/* Legacy ARC700 software fallback, using only 32-bit shifts and ALU. */
++#define __arch_swab32(x)				\
++({							\
++	__u32 __in = (x), __tmp;			\
++	__tmp = (__in << 8) | (__in >> 24);	\
++	__in = (__in << 24) | (__in >> 8);	\
++	__tmp ^= __in;				\
++	__tmp &= 0x00ff00ffU;			\
++	__tmp ^ __in;				\
++})
++
++#endif /* __Xswape */
++
+ #if !defined(__STRICT_ANSI__) || defined(__KERNEL__)
+ #define __SWAB_64_THRU_32__
+ #endif
+--- a/arch/arc/include/asm/mmu-arcv2.h
++++ b/arch/arc/include/asm/mmu-arcv2.h
+@@ -16,7 +16,7 @@
+  */
+ #define ARC_REG_MMU_BCR		0x06f
+ 
+-#ifdef CONFIG_ARC_MMU_V3
++#if defined(CONFIG_ARC_MMU_V2) || defined(CONFIG_ARC_MMU_V3)
+ #define ARC_REG_TLBPD0		0x405
+ #define ARC_REG_TLBPD1		0x406
+ #define ARC_REG_TLBPD1HI	0	/* Dummy: allows common code */
+@@ -42,7 +42,7 @@
+ /* Bits in TLB Index reg */
+ #define TLB_LKUP_ERR		0x80000000
+ 
+-#ifdef CONFIG_ARC_MMU_V3
++#if defined(CONFIG_ARC_MMU_V2) || defined(CONFIG_ARC_MMU_V3)
+ #define TLB_DUP_ERR		(TLB_LKUP_ERR | 0x00000001)
+ #else
+ #define TLB_DUP_ERR		(TLB_LKUP_ERR | 0x40000000)
+--- a/arch/arc/include/asm/pgtable-bits-arcv2.h
++++ b/arch/arc/include/asm/pgtable-bits-arcv2.h
+@@ -11,6 +11,22 @@
+ #ifndef _ASM_ARC_PGTABLE_BITS_ARCV2_H
+ #define _ASM_ARC_PGTABLE_BITS_ARCV2_H
+ 
++#ifdef CONFIG_ARC_MMU_V2
++/* MMUv2 Linux PTE layout retained from upstream v5.14. */
++#define _PAGE_ACCESSED       (1 << 1)
++#ifdef CONFIG_ARC_CACHE_PAGES
++#define _PAGE_CACHEABLE      (1 << 2)
++#else
++#define _PAGE_CACHEABLE      0
++#endif
++#define _PAGE_EXECUTE        (1 << 3)
++#define _PAGE_WRITE          (1 << 4)
++#define _PAGE_READ           (1 << 5)
++#define _PAGE_DIRTY          (1 << 6)
++#define _PAGE_SPECIAL        (1 << 7)
++#define _PAGE_GLOBAL         (1 << 8)
++#define _PAGE_PRESENT        (1 << 10)
++#else
+ #ifdef CONFIG_ARC_CACHE_PAGES
+ #define _PAGE_CACHEABLE		(1 << 0)  /* Cached (H) */
+ #else
+@@ -26,7 +42,9 @@
+ #define _PAGE_GLOBAL		(1 << 8)  /* ASID agnostic (H) */
+ #define _PAGE_PRESENT		(1 << 9)  /* PTE/TLB Valid (H) */
+ 
+-/* We borrow bit 5 to store the exclusive marker in swap PTEs. */
++#endif /* CONFIG_ARC_MMU_V2 */
++
++/* Dirty is software-only and can store exclusive in a non-present PTE. */
+ #define _PAGE_SWP_EXCLUSIVE	_PAGE_DIRTY
+ 
+ #ifdef CONFIG_ARC_MMU_V4
+--- a/arch/arc/mm/tlb.c
++++ b/arch/arc/mm/tlb.c
+@@ -39,10 +39,17 @@
+ 
+ static void utlb_invalidate(void)
+ {
++#ifdef CONFIG_ARC_MMU_V2
++	/* MMUv2 uTLB invalidation fails if a previous probe left an invalid index. */
++	unsigned int idx = read_aux_reg(ARC_REG_TLBINDEX);
++
++	if (unlikely(idx & TLB_LKUP_ERR))
++		write_aux_reg(ARC_REG_TLBINDEX, 0xa);
++#endif
+ 	write_aux_reg(ARC_REG_TLBCOMMAND, TLBIVUTLB);
+ }
+ 
+-#ifdef CONFIG_ARC_MMU_V3
++#if defined(CONFIG_ARC_MMU_V2) || defined(CONFIG_ARC_MMU_V3)
+ 
+ static inline unsigned int tlb_entry_lkup(unsigned long vaddr_n_asid)
+ {
+@@ -572,7 +579,15 @@
+ 	bcr = read_aux_reg(ARC_REG_MMU_BCR);
+ 	mmu->ver = (bcr >> 24);
+ 
+-	if (is_isa_arcompact() && mmu->ver == 3) {
++	if (is_isa_arcompact() && mmu->ver == 2) {
++		/* MMUv2 BCR: uDTLB[7:0], uITLB[15:8], sets[19:16], ways[23:20]. */
++		mmu->pg_sz_k = 8;
++		mmu->sets = 1U << ((bcr >> 16) & 0xf);
++		mmu->ways = 1U << ((bcr >> 20) & 0xf);
++		u_dtlb = bcr & 0xff;
++		u_itlb = (bcr >> 8) & 0xff;
++		sasid = 0;
++	} else if (is_isa_arcompact() && mmu->ver == 3) {
+ 		mmu3 = (struct bcr_mmu_3 *)&bcr;
+ 		mmu->pg_sz_k = 1 << (mmu3->pg_sz - 1);
+ 		mmu->sets = 1 << mmu3->sets;
+@@ -635,7 +650,9 @@
+ 	 *  - For HS cpus, v4 was baseline and v5 is backwards compatible
+ 	 *    (will run older software).
+ 	 */
+-	if (is_isa_arcompact() && mmu->ver == 3)
++	if (is_isa_arcompact() &&
++	    ((IS_ENABLED(CONFIG_ARC_MMU_V2) && mmu->ver == 2) ||
++	     (IS_ENABLED(CONFIG_ARC_MMU_V3) && mmu->ver == 3)))
+ 		compat = 1;
+ 	else if (is_isa_arcv2() && mmu->ver >= 4)
+ 		compat = 1;
+--- a/arch/arc/mm/tlbex.S
++++ b/arch/arc/mm/tlbex.S
+@@ -254,7 +254,7 @@
+ ; Commit the TLB entry into MMU
+ 
+ .macro COMMIT_ENTRY_TO_MMU
+-#ifdef CONFIG_ARC_MMU_V3
++#if defined(CONFIG_ARC_MMU_V2) || defined(CONFIG_ARC_MMU_V3)
+ 
+ 	/* Get free TLB slot: Set = computed from vaddr, way = random */
+ 	sr  TLBGetIndex, [ARC_REG_TLBCOMMAND]
+--- a/arch/arc/mm/cache.c
++++ b/arch/arc/mm/cache.c
+@@ -134,7 +134,7 @@
+ 		BUG_ON(dbcr.config != 2);
+ 		vipt = 1;
+ 		assoc = 4;		/* Fixed to 4w set assoc */
+-		p_dc->colors = p_dc->sz_k/assoc/TO_KB(PAGE_SIZE);
++		/* Decode size before deriving the alias count below. */
+ 	} else if (is_isa_arcv2() && (dbcr.ver >= 4)) {
+ 		vipt = 0;
+ 		assoc = 1 << dbcr.config;	/* 1,2,4,8 */
+@@ -143,6 +143,8 @@
+ 
+ 	p_dc->line_len = 16 << dbcr.line_len;
+ 	p_dc->sz_k = 1 << (dbcr.sz - 1);
++	if (is_isa_arcompact())
++		p_dc->colors = p_dc->sz_k / assoc / TO_KB(PAGE_SIZE);
+ 
+ 	n += scnprintf(buf + n, len - n,
+ 			"D-Cache\t\t: %uK, %dway/set, %uB Line, %s%s\n",
+@@ -184,6 +186,46 @@
+  *    bits needs to be written into PTAG_HI
+  */
+ 
++#ifdef CONFIG_ARC_MMU_V2
++static inline
++void __cache_line_loop_v2(phys_addr_t paddr, unsigned long vaddr,
++			  unsigned long sz, const int op, const int full_page)
++{
++	unsigned int aux_cmd;
++	int num_lines;
++
++	if (op == OP_INV_IC) {
++		aux_cmd = ARC_REG_IC_IVIL;
++	} else {
++		/* d$ cmd: INV (discard or wback-n-discard) OR FLUSH (wback) */
++		aux_cmd = op & OP_INV ? ARC_REG_DC_IVDL : ARC_REG_DC_FLDL;
++	}
++
++	/* Ensure we properly floor/ceil the non-line aligned/sized requests
++	 * and have @paddr - aligned to cache line and integral @num_lines.
++	 * This however can be avoided for page sized since:
++	 *  -@paddr will be cache-line aligned already (being page aligned)
++	 *  -@sz will be integral multiple of line size (being page sized).
++	 */
++	if (!full_page) {
++		sz += paddr & ~CACHE_LINE_MASK;
++		paddr &= CACHE_LINE_MASK;
++		vaddr &= CACHE_LINE_MASK;
++	}
++
++	num_lines = DIV_ROUND_UP(sz, L1_CACHE_BYTES);
++
++	/* MMUv2 and before: paddr contains stuffed vaddrs bits */
++	paddr |= (vaddr >> PAGE_SHIFT) & 0x1F;
++
++	while (num_lines-- > 0) {
++		write_aux_reg(aux_cmd, paddr);
++		paddr += L1_CACHE_BYTES;
++	}
++}
++
++#endif
++
+ static inline
+ void __cache_line_loop_v3(phys_addr_t paddr, unsigned long vaddr,
+ 			  unsigned long sz, const int op, const int full_page)
+@@ -342,7 +384,9 @@
+ 
+ #endif
+ 
+-#ifdef CONFIG_ARC_MMU_V3
++#ifdef CONFIG_ARC_MMU_V2
++#define __cache_line_loop	__cache_line_loop_v2
++#elif defined(CONFIG_ARC_MMU_V3)
+ #define __cache_line_loop	__cache_line_loop_v3
+ #else
+ #define __cache_line_loop	__cache_line_loop_v4
+--- a/arch/arc/kernel/intc-compact.c
++++ b/arch/arc/kernel/intc-compact.c
+@@ -4,6 +4,9 @@
+  */
+ 
+ #include <linux/interrupt.h>
++#include <linux/io.h>
++#include <linux/of_address.h>
++#include <linux/spinlock.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+ #include <linux/irqdomain.h>
+@@ -12,6 +15,53 @@
+ 
+ #define NR_CPU_IRQS	32	/* number of irq lines coming in */
+ #define TIMER0_IRQ	3	/* Fixed by ISA */
++
++/* BASIC Topaz board only: UART aggregator uses LHOST gate 24 - 5.
++ * No PCIe, GPIO, network, watchdog or other direct IRQ route is touched.
++ */
++#ifdef CONFIG_ARC_PLAT_TOPAZ_BASIC
++#define TOPAZ_BASIC_LHOST_INT_EN 0x4c
++#define TOPAZ_BASIC_UART_PARENT 24
++#define TOPAZ_BASIC_GATE_BASE 5
++static void __iomem *topaz_basic_sysctl;
++static DEFINE_RAW_SPINLOCK(topaz_basic_gate_lock);
++
++static void topaz_basic_uart_gate(irq_hw_number_t hwirq, bool enable)
++{
++    unsigned long flags;
++    u32 value;
++
++    if (!topaz_basic_sysctl || hwirq != TOPAZ_BASIC_UART_PARENT)
++        return;
++    raw_spin_lock_irqsave(&topaz_basic_gate_lock, flags);
++    value = readl(topaz_basic_sysctl + TOPAZ_BASIC_LHOST_INT_EN);
++    if (enable)
++        value |= BIT(TOPAZ_BASIC_UART_PARENT - TOPAZ_BASIC_GATE_BASE);
++    else
++        value &= ~BIT(TOPAZ_BASIC_UART_PARENT - TOPAZ_BASIC_GATE_BASE);
++    writel(value, topaz_basic_sysctl + TOPAZ_BASIC_LHOST_INT_EN);
++    raw_spin_unlock_irqrestore(&topaz_basic_gate_lock, flags);
++}
++
++static void __init topaz_basic_init_uart_gate(void)
++{
++    struct device_node *node;
++
++    if (!of_machine_is_compatible("openmitrastar,hgw500-topaz-basic"))
++        return;
++    node = of_find_compatible_node(NULL, NULL, "openmitrastar,topaz-uart0-irqc");
++    if (!node)
++        panic("Topaz BASIC UART interrupt controller missing\n");
++    topaz_basic_sysctl = of_iomap(node, 0);
++    of_node_put(node);
++    if (!topaz_basic_sysctl)
++        panic("Topaz BASIC UART gate mapping failed\n");
++}
++#else
++static inline void topaz_basic_uart_gate(irq_hw_number_t hwirq, bool enable) {}
++static inline void topaz_basic_init_uart_gate(void) {}
++#endif
++
+ 
+ /*
+  * Early Hardware specific Interrupt setup
+@@ -65,6 +115,8 @@
+ {
+ 	unsigned int ienb;
+ 
++	topaz_basic_uart_gate(data->hwirq, false);
++
+ 	ienb = read_aux_reg(AUX_IENABLE);
+ 	ienb &= ~(1 << data->hwirq);
+ 	write_aux_reg(AUX_IENABLE, ienb);
+@@ -77,6 +129,7 @@
+ 	ienb = read_aux_reg(AUX_IENABLE);
+ 	ienb |= (1 << data->hwirq);
+ 	write_aux_reg(AUX_IENABLE, ienb);
++	topaz_basic_uart_gate(data->hwirq, true);
+ }
+ 
+ static struct irq_chip onchip_intc = {
+@@ -123,6 +176,7 @@
+ 	 * This is a primary irqchip, and can never have a parent
+ 	 */
+ 	irq_set_default_domain(root_domain);
++	topaz_basic_init_uart_gate();
+ 
+ 	return 0;
+ }
+--- /dev/null
++++ b/arch/arc/boot/dts/topaz_mitrastar_basic73.dts
+@@ -0,0 +1,115 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Stage-0 RAM-only bring-up for MitraStar HGW-500BNA-QCv2 / Quantenna Topaz.
++ *
++ * Deliberately absent: SPI/MTD, PCI, Ethernet, HBM/TQE and both radios.
++ * This DT is a porting artifact, not a flashable firmware description.
++ */
++/dts-v1/;
++#include <dt-bindings/interrupt-controller/irq.h>
++
++/ {
++	model = "OpenMitraStar HGW-500BNA-QCv2 (Linux 7.3 BASIC UART)";
++	compatible = "openmitrastar,hgw500-topaz-basic", "mitrastar,hgw-500bna-qcv2", "quantenna,topaz", "snps,arc";
++	#address-cells = <1>;
++	#size-cells = <1>;
++	interrupt-parent = <&core_intc>;
++
++	chosen {
++		bootargs = "earlycon=uart8250,mmio32,0xf0000000 console=ttyS0,115200n8 rdinit=/init panic=0";
++	};
++
++	aliases {
++		serial0 = &uart0;
++	};
++
++	cpus {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		cpu@0 {
++			device_type = "cpu";
++			compatible = "snps,arc750d";
++			reg = <0>;
++			clocks = <&core_clk>;
++		};
++	};
++
++	/*
++	 * The running .89 kernel's _stext is 0x8493a000 and DDR ends at
++	 * 0x88000000. Everything below is owned by Bootbase, board data,
++	 * DSP/MuC/AuC, HBM and forwarding tables. This conservative stage-0
++	 * window must be revalidated if the coprocessor firmware changes.
++	 */
++	memory@8493a000 {
++		device_type = "memory";
++		reg = <0x8493a000 0x036c6000>;
++	};
++
++	core_clk: core-clock {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <500000000>;
++	};
++
++	uart_clk: uart-clock {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		/* GPL BSP value; verify from the live divisor before RAM boot. */
++		clock-frequency = <125000000>;
++	};
++
++	core_intc: interrupt-controller {
++		compatible = "snps,arc700-intc";
++		interrupt-controller;
++		#address-cells = <0>;
++		#interrupt-cells = <1>;
++	};
++
++	/* ARC700 TIMER0 is the per-CPU clockevent source on core IRQ 3. */
++	timer0 {
++		compatible = "snps,arc-timer";
++		interrupt-parent = <&core_intc>;
++		interrupts = <3>;
++		clocks = <&core_clk>;
++	};
++
++	/* ARC700 TIMER1 is the free-running 32-bit clocksource. */
++	timer1 {
++		compatible = "snps,arc-timer";
++		clocks = <&core_clk>;
++	};
++
++	soc {
++		compatible = "simple-bus";
++		#address-cells = <1>;
++		#size-cells = <1>;
++		ranges;
++
++		topaz_irqc: interrupt-controller@e0000000 {
++			compatible = "openmitrastar,topaz-uart0-irqc";
++			reg = <0xe0000000 0x5c>;
++			reg-names = "sysctl";
++			interrupt-controller;
++			#address-cells = <0>;
++			#interrupt-cells = <2>;
++			interrupt-parent = <&core_intc>;
++			/* BASIC: UART0 aggregator only; GPIO/timer/misc absent. */
++			interrupts = <24>;
++		};
++
++		uart0: serial@f0000000 {
++			compatible = "ns16550a";
++			reg = <0xf0000000 0x20>;
++			interrupt-parent = <&topaz_irqc>;
++			interrupts = <16 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&uart_clk>;
++			clock-names = "baudclk";
++			current-speed = <115200>;
++			reg-shift = <2>;
++			reg-io-width = <4>;
++			no-loopback-test;
++			status = "okay";
++		};
++	};
++};
+--- /dev/null
++++ b/arch/arc/plat-topaz-basic/platform.c
+@@ -0,0 +1,13 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* No reset, watchdog, network, storage or radio platform callbacks. */
++#include <linux/init.h>
++#include <asm/mach_desc.h>
++
++static const char *topaz_basic_compat[] __initconst = {
++    "openmitrastar,hgw500-topaz-basic",
++    NULL,
++};
++
++MACHINE_START(TOPAZ_BASIC, "OpenMitraStar Topaz BASIC UART")
++    .dt_compat = topaz_basic_compat,
++MACHINE_END
+--- /dev/null
++++ b/arch/arc/plat-topaz-basic/Kconfig
+@@ -0,0 +1,9 @@
++# SPDX-License-Identifier: GPL-2.0-only
++config ARC_PLAT_TOPAZ_BASIC
++    bool "OpenMitraStar Topaz BASIC UART board"
++    depends on ISA_ARCOMPACT && !SMP
++    select QTN_TOPAZ_UART_BASIC_IRQCHIP
++    help
++      Source-only ARC700 board proposal: timer, RAM and UART0 only.
++      Does not select HAVE_PCI, networking, storage, radio or watchdog.
++      MMUv2 restoration and CPU/toolchain qualification remain separate.
+--- /dev/null
++++ b/arch/arc/plat-topaz-basic/Makefile
+@@ -0,0 +1 @@
++obj-y := platform.o
+--- a/drivers/irqchip/Kconfig
++++ b/drivers/irqchip/Kconfig
+@@ -840,4 +840,13 @@
+ 	  chained controller, routing all interrupt source in P-Chip to
+ 	  the primary controller on C-Chip.
+ 
++
++config QTN_TOPAZ_UART_BASIC_IRQCHIP
++    bool
++    depends on ISA_ARCOMPACT && OF
++    select IRQ_DOMAIN
++    help
++      Minimal UART0 second-level Topaz interrupt controller for BASIC.
++      Only parent core hwirq24 and child hwirq16 are exposed.
++
+ endmenu
+--- a/drivers/irqchip/Makefile
++++ b/drivers/irqchip/Makefile
+@@ -135,3 +135,5 @@
+ obj-$(CONFIG_MCHP_EIC)			+= irq-mchp-eic.o
+ obj-$(CONFIG_SOPHGO_SG2042_MSI)		+= irq-sg2042-msi.o
+ obj-$(CONFIG_SUNPLUS_SP7021_INTC)	+= irq-sp7021-intc.o
++
++obj-$(CONFIG_QTN_TOPAZ_UART_BASIC_IRQCHIP) += irq-qtn-topaz-uart-basic.o
+--- /dev/null
++++ b/drivers/irqchip/irq-qtn-topaz-uart-basic.c
+@@ -0,0 +1,156 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* Source-only Linux 7.3 Topaz BASIC UART0 demultiplexer.
++ * Core parent hwirq24; child hwirq16. No GPIO/timer/misc support.
++ * RESET_CAUSE is read for UART pending; LHOST_ORINT_EN owns UART bits only.
++ */
++#include <linux/bitops.h>
++#include <linux/errno.h>
++#include <linux/io.h>
++#include <linux/ioport.h>
++#include <linux/irq.h>
++#include <linux/irqchip.h>
++#include <linux/irqchip/chained_irq.h>
++#include <linux/irqdesc.h>
++#include <linux/irqdomain.h>
++#include <linux/of_address.h>
++#include <linux/of_irq.h>
++#include <linux/slab.h>
++#include <linux/spinlock.h>
++
++#define TOPAZ_BASIC_SYSCTL 0xe0000000
++#define TOPAZ_BASIC_SYSCTL_BYTES 0x5c
++#define TOPAZ_RESET_CAUSE 0x10
++#define TOPAZ_LHOST_ORINT_EN 0x58
++#define TOPAZ_UART_PARENT_HWIRQ 24
++#define TOPAZ_UART0_HWIRQ 16
++#define TOPAZ_UART_CHILD_MASK GENMASK(17, 16)
++
++struct topaz_uart_irqc {
++    void __iomem *sysctl;
++    struct irq_domain *domain;
++    raw_spinlock_t lock;
++};
++
++static void topaz_uart_mask(struct irq_data *data)
++{
++    struct topaz_uart_irqc *irqc = irq_data_get_irq_chip_data(data);
++    unsigned long flags;
++    u32 enabled;
++
++    raw_spin_lock_irqsave(&irqc->lock, flags);
++    enabled = readl(irqc->sysctl + TOPAZ_LHOST_ORINT_EN);
++    writel(enabled & ~BIT(TOPAZ_UART0_HWIRQ),
++           irqc->sysctl + TOPAZ_LHOST_ORINT_EN);
++    raw_spin_unlock_irqrestore(&irqc->lock, flags);
++}
++
++static void topaz_uart_unmask(struct irq_data *data)
++{
++    struct topaz_uart_irqc *irqc = irq_data_get_irq_chip_data(data);
++    unsigned long flags;
++    u32 enabled;
++
++    raw_spin_lock_irqsave(&irqc->lock, flags);
++    enabled = readl(irqc->sysctl + TOPAZ_LHOST_ORINT_EN);
++    writel(enabled | BIT(TOPAZ_UART0_HWIRQ),
++           irqc->sysctl + TOPAZ_LHOST_ORINT_EN);
++    raw_spin_unlock_irqrestore(&irqc->lock, flags);
++}
++
++static int topaz_uart_set_type(struct irq_data *data, unsigned int type)
++{
++    return type == IRQ_TYPE_NONE || type == IRQ_TYPE_LEVEL_HIGH ? 0 : -EINVAL;
++}
++
++static struct irq_chip topaz_uart_chip = {
++    .name = "topaz-basic-uart0",
++    .irq_mask = topaz_uart_mask,
++    .irq_unmask = topaz_uart_unmask,
++    .irq_set_type = topaz_uart_set_type,
++};
++
++static int topaz_uart_map(struct irq_domain *domain, unsigned int virq,
++                          irq_hw_number_t hwirq)
++{
++    if (hwirq != TOPAZ_UART0_HWIRQ)
++        return -EINVAL;
++    irq_set_chip_data(virq, domain->host_data);
++    irq_set_chip_and_handler(virq, &topaz_uart_chip, handle_level_irq);
++    irq_set_noprobe(virq);
++    return 0;
++}
++
++static const struct irq_domain_ops topaz_uart_domain_ops = {
++    .map = topaz_uart_map,
++    .xlate = irq_domain_xlate_twocell,
++};
++
++static void topaz_uart_dispatch(struct irq_desc *desc)
++{
++    struct topaz_uart_irqc *irqc = irq_desc_get_handler_data(desc);
++    struct irq_chip *parent_chip = irq_desc_get_chip(desc);
++    unsigned long flags;
++    u32 cause, enabled;
++
++    chained_irq_enter(parent_chip, desc);
++    raw_spin_lock_irqsave(&irqc->lock, flags);
++    cause = readl(irqc->sysctl + TOPAZ_RESET_CAUSE);
++    enabled = readl(irqc->sysctl + TOPAZ_LHOST_ORINT_EN);
++    raw_spin_unlock_irqrestore(&irqc->lock, flags);
++    /* One bounded snapshot; never spin while waiting for UART hardware. */
++    if ((cause & BIT(7)) && (enabled & BIT(TOPAZ_UART0_HWIRQ)))
++        generic_handle_domain_irq(irqc->domain, TOPAZ_UART0_HWIRQ);
++    chained_irq_exit(parent_chip, desc);
++}
++
++static int __init topaz_uart_init(struct device_node *node,
++                                 struct device_node *parent)
++{
++    struct topaz_uart_irqc *irqc;
++    struct resource resource, extra;
++    struct irq_data *parent_data;
++    unsigned int parent_irq;
++    u32 enabled;
++    int ret = -ENODEV;
++
++    if (!parent || !of_machine_is_compatible("openmitrastar,hgw500-topaz-basic") ||
++        of_irq_count(node) != 1 ||
++        of_address_to_resource(node, 0, &resource) ||
++        !of_address_to_resource(node, 1, &extra) ||
++        resource.start != TOPAZ_BASIC_SYSCTL ||
++        resource_size(&resource) != TOPAZ_BASIC_SYSCTL_BYTES)
++        return -EINVAL;
++    parent_irq = irq_of_parse_and_map(node, 0);
++    parent_data = irq_get_irq_data(parent_irq);
++    /* Compare hardware number, never assume the Linux virtual IRQ number. */
++    if (!parent_irq || !parent_data || parent_data->hwirq != TOPAZ_UART_PARENT_HWIRQ)
++        return -EINVAL;
++    irqc = kzalloc(sizeof(*irqc), GFP_KERNEL);
++    if (!irqc)
++        return -ENOMEM;
++    irqc->sysctl = of_iomap(node, 0);
++    if (!irqc->sysctl)
++        goto err_free;
++    raw_spin_lock_init(&irqc->lock);
++    irqc->domain = irq_domain_create_linear(of_fwnode_handle(node), 32,
++                                            &topaz_uart_domain_ops, irqc);
++    if (!irqc->domain)
++        goto err_unmap;
++    /* Keep every non-UART child unchanged. UART1 stays masked: no handler. */
++    enabled = readl(irqc->sysctl + TOPAZ_LHOST_ORINT_EN);
++    writel(enabled & ~TOPAZ_UART_CHILD_MASK,
++           irqc->sysctl + TOPAZ_LHOST_ORINT_EN);
++    irq_set_chained_handler_and_data(parent_irq, topaz_uart_dispatch, irqc);
++    pr_info("Topaz BASIC UART0 IRQ: parent hwirq24 / virq%u, child hwirq16\n",
++            parent_irq);
++    return 0;
++
++err_unmap:
++    iounmap(irqc->sysctl);
++err_free:
++    kfree(irqc);
++    return ret;
++}
++
++IRQCHIP_DECLARE(topaz_basic_uart0, "openmitrastar,topaz-uart0-irqc",
++                 topaz_uart_init);

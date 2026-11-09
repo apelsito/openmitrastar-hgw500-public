@@ -1,0 +1,15 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+import re, subprocess, unittest
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[1]; SRC=ROOT/"work/linux510-radio-port/quantenna/platform/topaz/switch_tqe.c"; REMOTE=ROOT/"tools/qtn_w3_switch_tqe_only_remote.sh"; RUNNER=ROOT/"tools/run_qtn_w3_switch_tqe_only.ps1"; GATE=ROOT/"work/mission-state/w3-offline/W3_SWITCH_TQE_ONLY_GATE.env"; APPROVED=ROOT/"work/mission-state/w3-offline/W3_SWITCH_TQE_ONLY_GATE.approved.env"
+class SwitchOnlyTests(unittest.TestCase):
+ def test_gate_closed_and_prereqs_proven(self):
+  t=GATE.read_text();self.assertIn("W3_SWITCH_TQE_ONLY_APPROVED=0",t);self.assertIn("W3_HBM_ONLY_PROVEN=1",t);self.assertIn("W3_CONGEST_ONLY_PROVEN=1",t);self.assertIn("W3_HARDWARE_ACTIVE_APPROVED=0",t);a=APPROVED.read_text();self.assertIn("W3_SWITCH_TQE_ONLY_APPROVED=1",a);self.assertIn("W3_HARDWARE_ACTIVE_APPROVED=0",a)
+ def test_target_gate_and_reversible_exit(self):
+  t=SRC.read_text();self.assertIn('of_machine_is_compatible("mitrastar,hgw-500bna-qcv2")',t);self.assertIn("module_param(tqe_sem_en, int, 0600)",t);self.assertIn("module_param(w3_switch_tqe_only_enable, int, 0400)",t);self.assertIn("w3_switch_tqe_only_enable != 1",t);self.assertIn("OMTQE stage=gate-parse enable=%d target_ok=%u",t);self.assertIn("unregister_netdev",t);self.assertIn("netif_napi_del",t);self.assertIn("topaz_tqe_cpuif_setup_ring(NULL, 0)",t);self.assertLess(t.index("topaz_congest_queue_exit(priv->congest_queue);",t.index("static void __exit tqe_netdev_exit")),t.index("free_netdev(dev);",t.index("static void __exit tqe_netdev_exit")))
+ def test_remote_single_added_variable_and_ordered_unload(self):
+  t=REMOTE.read_text(); self.assertIn('load_module switch_tqe.ko w3_switch_tqe_only_enable=1',t);self.assertIn('"$root/ram_insmod"',t);self.assertNotRegex(t,re.compile(r"load_module .*?(fwt_ctrl|qdrv|wlan|gpio|temp_sens|temp_sensor)\.ko"));self.assertLess(t.index("rmmod switch_tqe"),t.index("rmmod topaz_congest_queue"));self.assertLess(t.index("rmmod topaz_congest_queue"),t.index("rmmod hbm"))
+ def test_runner_watchdog_uart_parser_dry_run(self):
+  t=RUNNER.read_text();self.assertIn("OMWDT stage=(armed|pet first=1)",t);self.assertIn("capture_topaz_uart.ps1",t);self.assertIn("uart_sysrq_reboot.ps1",t);self.assertIn("run_product_rootfs_ram_candidate.ps1",t);self.assertIn("8eb902dcc5e1bdab1aba356aafca04102ab394352c1685434ac9a9a09c5baba6",t);self.assertNotRegex(t,re.compile(r"\b(?:flash_erase|nandwrite|mtd_debug|ubiformat)\b"));p=subprocess.run(["pwsh.exe","-NoProfile","-Command",f"[void][scriptblock]::Create((Get-Content -Raw '{RUNNER}'))"],cwd=ROOT,capture_output=True,text=True,timeout=30);self.assertEqual(p.returncode,0,p.stderr);d=subprocess.run(["pwsh.exe","-NoProfile","-ExecutionPolicy","Bypass","-File",str(RUNNER)],cwd=ROOT,capture_output=True,text=True,timeout=60);self.assertEqual(d.returncode,0,d.stderr);self.assertIn("W3_SWITCH_TQE_ONLY_DRY_RUN_PASS=1",d.stdout)
+if __name__=="__main__":unittest.main(verbosity=2)

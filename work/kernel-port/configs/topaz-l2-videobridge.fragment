@@ -1,0 +1,10 @@
+# OpenMitraStar HGW-500BNA-QCv2 videobridge/AP L2 contract.
+# Keep separate from the active Realtek probe fragment until its hardware
+# experiment is complete; merge this fragment for the first bridge candidate.
+CONFIG_BRIDGE=y
+CONFIG_BRIDGE_IGMP_SNOOPING=y
+# CONFIG_BRIDGE_VLAN_FILTERING is not set
+CONFIG_VLAN_8021Q=y
+# The first parity stage is a transparent videobridge, not a routed/NAT HGU.
+# CONFIG_NETFILTER is not set
+

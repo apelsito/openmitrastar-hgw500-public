@@ -1,0 +1,170 @@
+{
+  "schema": "openmitrastar.open-doom-programmed-release/v1",
+  "status": "PASS_OPEN_WIFI_PROGRAMMED_BOOT_LYOKO_ROOT_AND_DOOM_HTTPS",
+  "generated_utc": "2026-10-23T00:55:40.264386+00:00",
+  "device": "HGW-500BNA-QCv2 A2",
+  "kernel_release": "7.3.0-openmitrastar-radio73-v1",
+  "product_release": "lyoko-linux73-2g-doom-open-r2",
+  "image": {
+    "private_path": "/workspace/user-home/.openmitrastar/devices/hgw500bna-qcv2-a2-primary/firmware/radio73-doom-open-r2-20261023-v1/radio73-doom-open-r2.ras.bin",
+    "bytes": 6062800,
+    "sha256": "500b617b659f3b2c8ed075ed493f721ad112ef2fc6245df9422ec9462feab2b9",
+    "crc32": "e303de32",
+    "prefix_headroom_bytes": 97584
+  },
+  "network": {
+    "SSID": "wanna play Doom",
+    "security": "open",
+    "WLAN_DHCP": "192.168.73.20-40",
+    "common_endpoint": "192.168.1.90",
+    "DHCP_host_route": "192.168.1.90/32 via192.168.73.1",
+    "management_path": "/",
+    "Doom_path": "/Doom",
+    "Internet_required_for_game": false,
+    "Internet_forwarding_provided": false,
+    "HTTPS_only": true
+  },
+  "write": {
+    "target": "physicalmtd4/linux_live prefix",
+    "offset": 8257536,
+    "erase_bytes": 6160384,
+    "program_operations": 1,
+    "byte_compare": true,
+    "full_slot_crc32": "952b0ee4",
+    "store_protected_preserved": true,
+    "bootenv_writes": 0
+  },
+  "boot_checks": {
+    "kernel": true,
+    "product": true,
+    "PID1_exact": true,
+    "LYOKO_root": true,
+    "Doom_directory": true,
+    "AP_ENABLED": true,
+    "open_SSID": true,
+    "auto_DHCP": true,
+    "auto_HTTPS": true
+  },
+  "final_HTTPS_checks": {
+    "root_Movistar_LYOKO": true,
+    "Doom_directory_redirect": true,
+    "Doom_index_redirect": true,
+    "Doom_page_exact": true,
+    "unauthenticated_admin_closed": true
+  },
+  "HTTPS_rows": [
+    {
+      "path": "/",
+      "status": 200,
+      "location": null,
+      "bytes": 2196,
+      "sha256": "99246625062703c4edb364a443c6b4863807776558dedb726f0f155638ca0aed",
+      "login_form": true,
+      "game_page": false,
+      "certificate_verified": true
+    },
+    {
+      "path": "/Doom",
+      "status": 302,
+      "location": "/Doom/",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "login_form": false,
+      "game_page": false,
+      "certificate_verified": true
+    },
+    {
+      "path": "/Doom/",
+      "status": 302,
+      "location": "/Doom/index.html",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "login_form": false,
+      "game_page": false,
+      "certificate_verified": true
+    },
+    {
+      "path": "/Doom/index.html",
+      "status": 200,
+      "location": null,
+      "bytes": 8691,
+      "sha256": "614cea0010d000aec861088ea91e4091d4d3c6634558d67d64c8f5f526fe36b7",
+      "login_form": false,
+      "game_page": true,
+      "certificate_verified": true
+    },
+    {
+      "path": "/api/v1/session",
+      "status": 403,
+      "location": null,
+      "bytes": 28,
+      "sha256": "43b2ed82a00763841955b23c740002c44bd7c776460886364be000b60e9e131b",
+      "login_form": false,
+      "game_page": false,
+      "certificate_verified": true
+    }
+  ],
+  "evidence": {
+    "build": {
+      "path": "/workspace/user-home\\Desktop\\MitraStar\\outputs\\rea\\radio73-doom-open-r2-offline-20261023-v1\\BUILD_RESULT.json",
+      "bytes": 8552,
+      "sha256": "51cade6f932f90182ca3b6cd44290d4960a6c7218bc3ba858488362cfc70f2bc"
+    },
+    "offline_open_contract": {
+      "path": "/workspace/user-home\\Desktop\\MitraStar\\outputs\\rea\\radio73-doom-open-r2-offline-20261023-v1\\QUALIFICATION.json",
+      "bytes": 3927,
+      "sha256": "88d7d71d3a1612ba4479d031f67887c1d1d3aa4df3f1ae3b8cae132c0727f448"
+    },
+    "public_inventory": {
+      "path": "/workspace/user-home\\Desktop\\MitraStar\\outputs\\rea\\radio73-doom-open-r2-offline-20261023-v1\\PUBLIC_ROOT_INVENTORY.json",
+      "bytes": 23632,
+      "sha256": "35e756112563acaf9e682b734a964b6ba8e0d995690bfabf8924682a74a805f0"
+    },
+    "flash_plan": {
+      "path": "/workspace/user-home\\Desktop\\MitraStar\\outputs\\rea\\radio73-doom-open-r2-plan-20261023-v1\\plan.json",
+      "bytes": 12763,
+      "sha256": "51c7f3f4b1cf2d34a88945b3e0f65da57a639d73fff1513d9d99c98e90f989c7"
+    },
+    "writer": {
+      "path": "/workspace/user-home\\Desktop\\MitraStar\\outputs\\rea\\radio73-doom-open-r2-flash-physical-20261023-v1\\candidate-writer.json",
+      "bytes": 4137,
+      "sha256": "94ce1ebe620378f6676fc4a8bdcbc90a147d54c5c7d2710b1bd2ba57938649ef"
+    },
+    "programmed_boot": {
+      "path": "/workspace/user-home\\Desktop\\MitraStar\\outputs\\rea\\radio73-doom-open-r2-flash-physical-20261023-v1\\result.json",
+      "bytes": 8399,
+      "sha256": "ad07f813eb75b3ff84ea4e0d3e5f4c2cacebd00c625ec7dc1d1cf0a1cd4871bf"
+    },
+    "runtime_open_client_DHCP_common90": {
+      "path": "/workspace/user-home\\Desktop\\MitraStar\\outputs\\rea\\doom-open-client-common90-v3.json",
+      "bytes": 2511,
+      "sha256": "24db1484192e5ba00088e0a24e49b55596e0b736bbabb2b86bcf1c1a505b0054"
+    },
+    "parent_gameplay_audio": {
+      "path": "/workspace/user-home\\Desktop\\MitraStar\\outputs\\doom\\radio73-autostart-hgw-https-v6\\result.json",
+      "bytes": 6873,
+      "sha256": "331c33a5820d4c7044ca5701732ad3a0dc8145aa90a273dc44b3bc0223d6e089"
+    },
+    "parent_coldboot": {
+      "path": "/workspace/user-home\\Desktop\\MitraStar\\outputs\\rea\\radio73-normal-coldboot-20261023-v1\\result.json",
+      "bytes": 1567,
+      "sha256": "d28ca4bd05ac476121de79b5685783d145e6ca024e90f8e903e178d47f2cb44d"
+    }
+  },
+  "iPhone_observation": {
+    "source": "owner message in this chat",
+    "game_executes": true,
+    "touch_controls_quality": "owner reports difficult; future improvement",
+    "applies_to": "same unchanged Doom assets; observation before openR2 final flash",
+    "independent_measurement": false
+  },
+  "scope_limits": [
+    "R2 was read from programmed flash and booted with correctPID1/openAP/HTTPS/DHCP; R2 coldpowercycle not observed.",
+    "Open association and common90pages passed on runtimeprofile before finalR2program; no new association campaign afterprogram.",
+    "Doom engine/assets unchanged from physically tested parent, including owneriPhone; only extra directoryCGI.",
+    "5GHz absent; editable settings stillRAM; soak, repeatability and physicalsafetyrollback remainpending."
+  ],
+  "UART_closed": true,
+  "further_hardware_operations": false,
+  "full_port_complete": false
+}

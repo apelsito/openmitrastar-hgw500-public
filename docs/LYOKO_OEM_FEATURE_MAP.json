@@ -1,0 +1,26 @@
+{
+  "schema": "lyoko.oem-feature-map/v1",
+  "generated_at": "2026-09-01",
+  "product": "HGW-500BNA-QCv2 A2",
+  "status_vocabulary": ["available", "partial", "blocked", "certification_required", "unsupported"],
+  "items": [
+    {"id":"OEM-01","oem_route":"index.cgi","capability":"login-local","lyoko_surface":"Seguridad / Sesion","status":"partial","endpoint":"planned:/api/v1/session","risk":"high","gate":"session-hardening","notes":"La sesion OEM sigue activa; falta login Lyoko."},
+    {"id":"OEM-02","oem_route":"logout.cgi","capability":"logout","lyoko_surface":"Seguridad / Sesion","status":"partial","endpoint":"planned:DELETE /api/v1/session","risk":"medium","gate":"session-revocation","notes":"No hay control Lyoko visible."},
+    {"id":"OEM-03","oem_route":"sysinfo.cgi","capability":"system-status","lyoko_surface":"Inicio / Sistema","status":"available","endpoint":"GET /api/v1/status","risk":"low","gate":"F170-live","notes":"Estado, memoria, kernel y red sin secretos."},
+    {"id":"OEM-04","oem_route":"wifi24g.cgi","capability":"wifi-2g-basic","lyoko_surface":"Wi-Fi / 2,4 GHz","status":"partial","endpoint":"GET/PATCH /api/v1/radios/2g","risk":"high","gate":"config-apply-disabled","notes":"SSID, canal y ancho existen; faltan enable, visibilidad, seguridad, PSK write-only y QR."},
+    {"id":"OEM-05","oem_route":"wifi5g.cgi","capability":"wifi-5g-basic","lyoko_surface":"Wi-Fi / 5 GHz","status":"partial","endpoint":"GET/PATCH /api/v1/radios/5g","risk":"high","gate":"config-apply-disabled","notes":"Estado, SSID, canal, ancho y potencia visibles; faltan controles basicos completos."},
+    {"id":"OEM-06","oem_route":"wifi5g_sta.cgi","capability":"wifi-5g-station","lyoko_surface":"Wi-Fi / Uplink 5 GHz","status":"certification_required","endpoint":"planned:/api/v1/radios/5g/station","risk":"high","gate":"physical-sta-recovery","notes":"No exponer hasta probar asociacion, DHCP y recuperacion."},
+    {"id":"OEM-07","oem_route":"lan.cgi","capability":"management-network","lyoko_surface":"Mi red / Gestion","status":"partial","endpoint":"GET /api/v1/network","risk":"high","gate":"management-ip-rollback","notes":"Lectura disponible; escritura y conflicto ARP pendientes."},
+    {"id":"OEM-08","oem_route":"advanced.cgi","capability":"wifi-2g-advanced","lyoko_surface":"Wi-Fi / 2,4 GHz avanzado","status":"certification_required","endpoint":"planned:/api/v1/radios/2g/advanced","risk":"high","gate":"rtl-capability-matrix","notes":"Multi-SSID, ACL, WPS y parametros 802.11 requieren contratos reales."},
+    {"id":"OEM-09","oem_route":"wifi5g_adv.cgi","capability":"wifi-5g-advanced","lyoko_surface":"Wi-Fi / 5 GHz avanzado","status":"certification_required","endpoint":"planned:/api/v1/radios/5g/advanced","risk":"high","gate":"qdrv-dfs-qhop-matrix","notes":"DFS, OCAC y QHOP necesitan pruebas fisicas separadas."},
+    {"id":"OEM-10","oem_route":"password.cgi","capability":"admin-password","lyoko_surface":"Seguridad / Acceso","status":"blocked","endpoint":"planned:PATCH /api/v1/session/credential","risk":"high","gate":"reauth-and-secret-storage","notes":"La credencial nunca se devuelve."},
+    {"id":"OEM-11","oem_route":"firmware.cgi","capability":"firmware-management","lyoko_surface":"Sistema / Firmware","status":"partial","endpoint":"GET /api/v1/firmware","risk":"high","gate":"external-guarded-mtd4-pipeline","notes":"Lectura disponible; la web no escribe flash."},
+    {"id":"OEM-12","oem_route":"restoredef.cgi","capability":"factory-reset","lyoko_surface":"Sistema / Recuperacion","status":"blocked","endpoint":"planned:POST /api/v1/system/reset","risk":"high","gate":"protected-partition-contract","notes":"Debe preservar Bootbase, mtd3, mtd5, MAC y calibracion."},
+    {"id":"OEM-13","oem_route":"wizard_help.cgi","capability":"context-help","lyoko_surface":"Ayuda","status":"blocked","endpoint":"static-content","risk":"low","gate":"content-and-accessibility-review","notes":"Pendiente de implementar."},
+    {"id":"OEM-14","oem_route":"language.cgi","capability":"language","lyoko_surface":"Sistema / Idioma","status":"blocked","endpoint":"planned:/api/v1/preferences/language","risk":"low","gate":"i18n-catalog","notes":"Espanol completo primero; ingles opcional."},
+    {"id":"OEM-15","oem_route":"station_conn_status.cgi","capability":"associated-clients","lyoko_surface":"Mi red / Clientes","status":"partial","endpoint":"GET /api/v1/clients","risk":"medium","gate":"privacy-safe-client-telemetry","notes":"Conteos disponibles; identidades redactadas."},
+    {"id":"OEM-16","oem_route":"wps24_info.cgi","capability":"wps-2g","lyoko_surface":"Wi-Fi / WPS","status":"certification_required","endpoint":"planned:POST /api/v1/radios/2g/wps","risk":"high","gate":"physical-button-and-timeout","notes":"Opt-in y deshabilitado por defecto."},
+    {"id":"OEM-17","oem_route":"wps5g_info.cgi","capability":"wps-5g","lyoko_surface":"Wi-Fi / WPS","status":"certification_required","endpoint":"planned:POST /api/v1/radios/5g/wps","risk":"high","gate":"qdrv-wps-end-to-end","notes":"Un evento de boton no prueba WPS completo."},
+    {"id":"OEM-18","oem_route":"tcp:16667","capability":"minimal-device-info","lyoko_surface":"Diagnostico / Compatibilidad","status":"available","endpoint":"legacy-readonly-service","risk":"low","gate":"F170-live","notes":"Servicio aislado; no ampliar privilegios."}
+  ]
+}

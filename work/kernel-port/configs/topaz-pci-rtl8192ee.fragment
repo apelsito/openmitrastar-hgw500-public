@@ -1,0 +1,7 @@
+# Pending: requires the Topaz platform to select HAVE_PCI and a host driver.
+CONFIG_PCI=y
+CONFIG_CFG80211=m
+CONFIG_MAC80211=m
+CONFIG_RTL_CARDS=m
+CONFIG_RTL8192EE=m
+

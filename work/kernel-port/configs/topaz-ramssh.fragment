@@ -1,0 +1,46 @@
+CONFIG_LOCALVERSION="-openmitrastar-ramssh"
+CONFIG_ARC_BUILTIN_DTB_NAME="topaz_mitrastar_ramssh"
+CONFIG_BLK_DEV_INITRD=y
+CONFIG_BINFMT_SCRIPT=y
+CONFIG_UNIX98_PTYS=y
+CONFIG_DEVTMPFS=y
+CONFIG_DEVTMPFS_MOUNT=y
+CONFIG_PROC_FS=y
+CONFIG_SYSFS=y
+CONFIG_TMPFS=y
+CONFIG_EPOLL=y
+CONFIG_SIGNALFD=y
+CONFIG_TIMERFD=y
+CONFIG_EVENTFD=y
+# Required by normal libc alarm(2)/setitimer(2) and timer_create(2) users.
+# Without it Linux links ENOSYS stubs and emits a one-shot kernel error when
+# hostapd tears down its signal alarm path.
+CONFIG_POSIX_TIMERS=y
+CONFIG_MULTIUSER=y
+CONFIG_MAGIC_SYSRQ=y
+CONFIG_MAGIC_SYSRQ_DEFAULT_ENABLE=0x1
+CONFIG_MAGIC_SYSRQ_SERIAL=y
+CONFIG_MAGIC_SYSRQ_SERIAL_SEQUENCE=""
+CONFIG_NEW_LEDS=y
+CONFIG_LEDS_CLASS=y
+CONFIG_QTN_TOPAZ_RECOVERY=y
+CONFIG_INPUT=y
+CONFIG_INPUT_EVDEV=y
+# CONFIG_INPUT_KEYBOARD is not set
+# CONFIG_INPUT_MOUSE is not set
+# CONFIG_SERIO is not set
+# CONFIG_HID is not set
+CONFIG_OPENMITRASTAR_HGW500_CONTROLS=y
+# The warm Linux-to-Linux handoff retains a nonstandard high-DDR layout.  ARC's
+# generic usercopy classifier misidentifies unpacked initramfs bytes as kernel
+# text before /init starts; this RAM-only rescue profile has no exposed MTD.
+# CONFIG_HARDENED_USERCOPY is not set
+CONFIG_NET_VENDOR_QUANTENNA=y
+CONFIG_QTN_TOPAZ_EMAC=y
+# CONFIG_QTN_TOPAZ_HEAD_WDT_CANARY is not set
+# CONFIG_QTN_TOPAZ_EARLY_WDT_CANARY is not set
+# CONFIG_QTN_TOPAZ_EMAC_SKELETON is not set
+# CONFIG_QTN_TOPAZ_MDIO_RO_PROBE is not set
+# CONFIG_QTN_TOPAZ_PCIE_RO_PROBE is not set
+# CONFIG_MTD is not set
+# CONFIG_BLOCK is not set

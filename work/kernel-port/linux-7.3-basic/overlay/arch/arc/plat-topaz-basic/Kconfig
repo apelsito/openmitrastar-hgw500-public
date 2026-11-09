@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: GPL-2.0-only
+config ARC_PLAT_TOPAZ_BASIC
+    bool "OpenMitraStar Topaz BASIC UART board"
+    depends on ISA_ARCOMPACT && !SMP
+    select QTN_TOPAZ_UART_BASIC_IRQCHIP
+    help
+      Source-only ARC700 board proposal: timer, RAM and UART0 only.
+      Does not select HAVE_PCI, networking, storage, radio or watchdog.
+      MMUv2 restoration and CPU/toolchain qualification remain separate.

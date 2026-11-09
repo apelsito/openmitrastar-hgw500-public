@@ -1,0 +1,29 @@
+{
+  "schema": "openmitrastar.hgw500-q1-controls-parity/v1",
+  "date": "2026-08-21",
+  "hardware_executed": false,
+  "flash_executed": false,
+  "classification_values": ["PORTED", "OEM_CURRENT", "UNKNOWN", "BLOCKED"],
+  "controls": [
+    {"id": "led.boot-status-gpio7", "classification": "PORTED", "gpio": 7, "active": "high", "hardware_proven": true},
+    {"id": "led.power", "classification": "UNKNOWN", "gpio": null, "active": null, "hardware_proven": false},
+    {"id": "led.ethernet", "classification": "UNKNOWN", "gpio": null, "active": null, "hardware_proven": false},
+    {"id": "led.iptv-status", "classification": "UNKNOWN", "gpio": null, "active": null, "hardware_proven": false},
+    {"id": "led.wlan2g", "classification": "PORTED", "gpio": 11, "active": "low", "hardware_proven": true, "evidence": "2026-08-21 RAM-only physical discriminant: brightness 255 off, brightness 0 on"},
+    {"id": "led.wlan5g", "classification": "PORTED", "gpio": 1, "active": "high", "hardware_proven": false},
+    {"id": "led.wps-state-machine", "classification": "BLOCKED", "gpio": [11, 1], "active": "high", "hardware_proven": false},
+    {"id": "led.reset-indicator", "classification": "UNKNOWN", "gpio": null, "active": null, "hardware_proven": false},
+    {"id": "button.wifi2g", "classification": "PORTED", "gpio": 2, "active": "low", "hardware_proven": false, "short_action": "none", "long_action": "wifi2g-toggle"},
+    {"id": "button.rf-mode-switch", "classification": "OEM_CURRENT", "gpio": 12, "active": "high", "hardware_proven": true, "process": "monitor_rfenable 12 1"},
+    {"id": "button.gpio4-generic-5g-wps", "classification": "PORTED", "gpio": 4, "active": "low", "hardware_proven": true, "short_action": "qdrv WPS release under 10s", "long_action": "independent persistent 5G toggle at 10x500ms", "evidence": "OEM UART resolved GPIO4 polling active-low and monitor_button exact binary supplies the independent hold current"},
+    {"id": "button.reset", "classification": "PORTED", "gpio": 5, "active": "low", "hardware_proven": false},
+    {"id": "action.restart", "classification": "PORTED", "gpio": null, "active": null, "hardware_proven": false},
+    {"id": "action.factory-reset", "classification": "PORTED", "gpio": null, "active": null, "hardware_proven": false}
+  ],
+  "factory_reset": {
+    "scope": "/persist/openmitrastar/config",
+    "requires_persistence_state": "rw",
+    "requires_verified_backup": true,
+    "preserves": ["bootloader", "environment", "mac", "calibration", "radio-data", "ssh-keys", "wifi-psk"]
+  }
+}

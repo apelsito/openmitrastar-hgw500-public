@@ -1,0 +1,115 @@
+// SPDX-License-Identifier: GPL-2.0-only
+/*
+ * Stage-0 RAM-only bring-up for MitraStar HGW-500BNA-QCv2 / Quantenna Topaz.
+ *
+ * Deliberately absent: SPI/MTD, PCI, Ethernet, HBM/TQE and both radios.
+ * This DT is a porting artifact, not a flashable firmware description.
+ */
+/dts-v1/;
+#include <dt-bindings/interrupt-controller/irq.h>
+
+/ {
+	model = "OpenMitraStar HGW-500BNA-QCv2 (Linux 7.3 BASIC UART)";
+	compatible = "openmitrastar,hgw500-topaz-basic", "mitrastar,hgw-500bna-qcv2", "quantenna,topaz", "snps,arc";
+	#address-cells = <1>;
+	#size-cells = <1>;
+	interrupt-parent = <&core_intc>;
+
+	chosen {
+		bootargs = "earlycon=uart8250,mmio32,0xf0000000 console=ttyS0,115200n8 rdinit=/init panic=0";
+	};
+
+	aliases {
+		serial0 = &uart0;
+	};
+
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		cpu@0 {
+			device_type = "cpu";
+			compatible = "snps,arc750d";
+			reg = <0>;
+			clocks = <&core_clk>;
+		};
+	};
+
+	/*
+	 * The running .89 kernel's _stext is 0x8493a000 and DDR ends at
+	 * 0x88000000. Everything below is owned by Bootbase, board data,
+	 * DSP/MuC/AuC, HBM and forwarding tables. This conservative stage-0
+	 * window must be revalidated if the coprocessor firmware changes.
+	 */
+	memory@8493a000 {
+		device_type = "memory";
+		reg = <0x8493a000 0x036c6000>;
+	};
+
+	core_clk: core-clock {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <500000000>;
+	};
+
+	uart_clk: uart-clock {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		/* GPL BSP value; verify from the live divisor before RAM boot. */
+		clock-frequency = <125000000>;
+	};
+
+	core_intc: interrupt-controller {
+		compatible = "snps,arc700-intc";
+		interrupt-controller;
+		#address-cells = <0>;
+		#interrupt-cells = <1>;
+	};
+
+	/* ARC700 TIMER0 is the per-CPU clockevent source on core IRQ 3. */
+	timer0 {
+		compatible = "snps,arc-timer";
+		interrupt-parent = <&core_intc>;
+		interrupts = <3>;
+		clocks = <&core_clk>;
+	};
+
+	/* ARC700 TIMER1 is the free-running 32-bit clocksource. */
+	timer1 {
+		compatible = "snps,arc-timer";
+		clocks = <&core_clk>;
+	};
+
+	soc {
+		compatible = "simple-bus";
+		#address-cells = <1>;
+		#size-cells = <1>;
+		ranges;
+
+		topaz_irqc: interrupt-controller@e0000000 {
+			compatible = "openmitrastar,topaz-uart0-irqc";
+			reg = <0xe0000000 0x5c>;
+			reg-names = "sysctl";
+			interrupt-controller;
+			#address-cells = <0>;
+			#interrupt-cells = <2>;
+			interrupt-parent = <&core_intc>;
+			/* BASIC: UART0 aggregator only; GPIO/timer/misc absent. */
+			interrupts = <24>;
+		};
+
+		uart0: serial@f0000000 {
+			compatible = "ns16550a";
+			reg = <0xf0000000 0x20>;
+			interrupt-parent = <&topaz_irqc>;
+			interrupts = <16 IRQ_TYPE_LEVEL_HIGH>;
+			clocks = <&uart_clk>;
+			clock-names = "baudclk";
+			current-speed = <115200>;
+			reg-shift = <2>;
+			reg-io-width = <4>;
+			no-loopback-test;
+			status = "okay";
+		};
+	};
+};
